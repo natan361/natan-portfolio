@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nathan Chaim — AI Systems Implementer</title>
+  <meta name="description" content="Nathan Chaim — AI Systems Implementer from Jerusalem. Websites, renders, videos, and automations — from idea to final result." />
+  <meta property="og:title"       content="Nathan Chaim — AI Systems Implementer" />
+  <meta property="og:description" content="Websites, renders, videos, and automations — from idea to final result." />
+  <meta property="og:type"        content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+  <meta property="og:image" content="assets/logo.png" />
+
+  <!-- Fonts: Syne (display) · Space Mono (labels) · Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Skip to main content (accessibility / IS 5568) ── -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#main-content" class="skip-link" lang="he" dir="rtl">דלג לתוכן הראשי</a>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FULL-SITE FIXED BACKGROUND VIDEO
+     Fixed to viewport — scroll position controls playback.
+     Drop your generated video at: assets/videos/hero-bg.mp4
+     (720p MP4, H.264, 10 seconds, no audio)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="site-bg"></div>
+<div class="site-video-bg">
+  <video
+    id="site-video"
+    class="site-video"
+    muted
+    playsinline
+    preload="auto"
+    disablepictureinpicture
+  >
+    <source src="assets/videos/hero-bg.mp4" type="video/mp4" />
+  </video>
+</div>
+<div class="site-video-overlay"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="#top" class="nav-logo" aria-label="Home">
+    <img src="assets/logo.png" alt="Nathan Chaim" class="nav-logo-img" />
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#visualizations">Visualizations</a></li>
+    <li><a href="#websites">Websites</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="services.html">Services</a></li>
+  </ul>
+
+  <a href="services.html" class="nav-cta">Services</a>
+
+  <button class="nav-mobile-btn touch" aria-label="Open menu" aria-expanded="false">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <line x1="3" y1="6"  x2="21" y2="6"  />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  </button>
+</nav>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="top" class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="hero-inner">
+
+    <div class="hero-status reveal">
+      <span class="hero-status-dot"></span>
+      AI Systems Implementer &nbsp;·&nbsp; Jerusalem
+    </div>
+
+    <h1 class="hero-name" id="hero-name" aria-label="NATAN">NATAN</h1>
+
+    <p class="hero-tagline" id="hero-tagline" aria-label="Turning ideas into real things.">
+      Turning ideas into real things.
+    </p>
+
+    <!-- Skill ticker -->
+    <div class="ticker-wrap reveal reveal-delay-3">
+      <div class="ticker">
+        <span class="ticker-item">AI Automations</span>
+        <span class="ticker-item">Realistic Renders</span>
+        <span class="ticker-item">Website Development</span>
+        <span class="ticker-item">Video Production</span>
+        <span class="ticker-item">3D Visualizations</span>
+        <span class="ticker-item">Integrations</span>
+        <span class="ticker-item">AI Systems</span>
+        <span class="ticker-item">Simulations</span>
+      </div>
+    </div>
+
+    <a href="#visualizations" class="hero-cta reveal reveal-delay-4">
+      See the work
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+      </svg>
+    </a>
+
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     VISUALIZATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     MOBILE CATEGORY TABS (hidden on desktop ≥641px)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="mobile-tabs" id="mobile-tabs" role="tablist" aria-label="Work categories">
+  <button class="mobile-tab active" data-target="visualizations" aria-label="Visualizations">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    Renders
+    <span class="mobile-tab-count">9</span>
+  </button>
+  <button class="mobile-tab" data-target="websites" aria-label="Websites">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    Websites
+    <span class="mobile-tab-count">6</span>
+  </button>
+  <button class="mobile-tab" data-target="videos" aria-label="Videos">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Videos
+    <span class="mobile-tab-count">1</span>
+  </button>
+</div>
+
+<div class="section-divider mobile-hide"></div>
+<section id="visualizations" aria-labelledby="viz-heading">
+  <div class="section">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">AI Visualizations</div>
+        <h2 class="section-title">From basic 3D<br>to photorealistic.</h2>
+      </div>
+      <span class="section-count">9 renders · Drag to compare →</span>
+    </div>
+
+    <div class="viz-grid">
+
+      <!-- 1 · Luxury Living Room -->
+      <article class="viz-card reveal">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF1.png"  alt="Luxury Living Room — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF1.png" alt="Luxury Living Room — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Luxury Living Room</div>
+          <div class="viz-card-sub">Interior Design · AI Photorealistic Render</div>
+        </div>
+      </article>
+
+      <!-- 2 · Commercial Lobby -->
+      <article class="viz-card reveal reveal-delay-1">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF2.png"  alt="Commercial Lobby — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF2.jpg" alt="Commercial Lobby — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Commercial Lobby</div>
+          <div class="viz-card-sub">Corporate Space · Architectural Visualization</div>
+        </div>
+      </article>
+
+      <!-- 3 · Biophilic Courtyard -->
+      <article class="viz-card reveal reveal-delay-2">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF3.png"  alt="Biophilic Courtyard — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF3.jpg" alt="Biophilic Courtyard — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Biophilic Courtyard</div>
+          <div class="viz-card-sub">Commercial Complex · Landscape Design</div>
+        </div>
+      </article>
+
+      <!-- 4 · Modern Villa Exterior -->
+      <article class="viz-card reveal">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF4.png"  alt="Modern Villa — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF4.jpg" alt="Modern Villa — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Modern Villa Exterior</div>
+          <div class="viz-card-sub">Residential · Architectural Visualization</div>
+        </div>
+      </article>
+
+      <!-- 5 · Sunset Villa -->
+      <article class="viz-card reveal reveal-delay-1">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF5.png"  alt="Sunset Villa — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF5.jpg" alt="Sunset Villa — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Sunset Villa</div>
+          <div class="viz-card-sub">Residential · Dramatic Lighting</div>
+        </div>
+      </article>
+
+      <!-- 6 · Indoor Pool -->
+      <article class="viz-card reveal reveal-delay-2">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF6.png"  alt="Indoor Pool — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF6.jpg" alt="Indoor Pool — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Indoor Pool</div>
+          <div class="viz-card-sub">Luxury Amenity · Interior Render</div>
+        </div>
+      </article>
+
+      <!-- 7 · Corporate Office -->
+      <article class="viz-card reveal">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF7.png"  alt="Corporate Office — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF7.jpg" alt="Corporate Office — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Corporate Office</div>
+          <div class="viz-card-sub">Commercial Interior · Workplace Design</div>
+        </div>
+      </article>
+
+      <!-- 8 · Villa with Pool -->
+      <article class="viz-card reveal reveal-delay-1">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF8.png"  alt="Villa with Pool — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF8.jpg" alt="Villa with Pool — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Villa with Pool</div>
+          <div class="viz-card-sub">Residential · Exterior &amp; Landscape</div>
+        </div>
+      </article>
+
+      <!-- 9 · Urban Apartment -->
+      <article class="viz-card reveal reveal-delay-2">
+        <div class="compare">
+          <img class="compare-after"     src="assets/renders/after/AF9.png"  alt="Urban Apartment — After" />
+          <img class="compare-before-img" src="assets/renders/before/BF9.jpg" alt="Urban Apartment — Before" />
+          <div class="compare-handle">
+            <div class="compare-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+            </div>
+          </div>
+          <span class="compare-badge compare-badge-before">Before</span>
+          <span class="compare-badge compare-badge-after">After</span>
+        </div>
+        <div class="viz-card-info">
+          <div class="viz-card-title">Urban Apartment</div>
+          <div class="viz-card-sub">Interior Design · Living Space</div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     WEBSITES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="section-divider mobile-hide"></div>
+<section id="websites">
+  <div class="section">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">Web Development</div>
+        <h2 class="section-title">Websites I built.</h2>
+      </div>
+      <span class="section-count">6 sites · Click to open →</span>
+    </div>
+
+    <div class="sites-grid">
+
+      <!-- 1 · Par Yosef -->
+      <a href="https://peeryosef-rceslhwd.manus.space" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">peeryosef-rceslhwd.manus.space</span></div>
+          </div>
+          <div class="site-screenshot"><img src="assets/websites/site1.jpg" alt="Par Yosef" /></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">פאר יוסף · Par Yosef</div>
+                <div class="site-desc">Synagogue &amp; Torah study hall website — institution presence with event info and community resources.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">Manus AI</span><span class="site-tag">Hebrew</span></div>
+          </div>
+        </article>
+      </a>
+
+      <!-- 2 · AdCraft Natan -->
+      <a href="https://adcraftnatan.lovable.app" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal reveal-delay-1">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">adcraftnatan.lovable.app</span></div>
+          </div>
+          <div class="site-screenshot"><div class="site-screenshot-placeholder" style="background:linear-gradient(160deg,#12082a 0%,#1e0f40 50%,#0d0620 100%);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:rgba(232,255,75,0.5);letter-spacing:-0.02em;">AdCraft</span></div></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">AdCraft Natan</div>
+                <div class="site-desc">AI-powered advertising creation platform — generate and manage ad campaigns with intelligent automation.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">React</span><span class="site-tag">Lovable</span><span class="site-tag">AI</span></div>
+          </div>
+        </article>
+      </a>
+
+      <!-- 3 · Aliens -->
+      <a href="https://alian45454.lovable.app" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal reveal-delay-2">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">alian45454.lovable.app</span></div>
+          </div>
+          <div class="site-screenshot"><img src="assets/websites/site3.jpg" alt="Aliens" /></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">חייזרים · Aliens</div>
+                <div class="site-desc">Space-themed interactive web experience — identify and track alien sightings with a cinematic dark UI.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">React</span><span class="site-tag">Lovable</span></div>
+          </div>
+        </article>
+      </a>
+
+      <!-- 4 · LeKadsho -->
+      <a href="https://lekadsho.com" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">lekadsho.com</span></div>
+          </div>
+          <div class="site-screenshot"><img src="assets/websites/site4.jpg" alt="LeKadsho" /></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">לְקַדְּשׁוֹ · LeKadsho</div>
+                <div class="site-desc">Smart Shabbat preparation platform — location-based reminders, customizable checklists, weekly reset.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">React</span><span class="site-tag">Custom Domain</span></div>
+          </div>
+        </article>
+      </a>
+
+      <!-- 5 · Bar Armon HaNatziv -->
+      <a href="https://busbarjl-haiojnej.manus.space" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal reveal-delay-1">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">busbarjl-haiojnej.manus.space</span></div>
+          </div>
+          <div class="site-screenshot"><img src="assets/websites/site5.jpg" alt="Bar Armon HaNatziv" /></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">Barmon – Armon HaNatziv</div>
+                <div class="site-desc">Jerusalem bar &amp; nightlife venue — atmospheric branding site with gallery and location info.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">Manus AI</span><span class="site-tag">Hospitality</span></div>
+          </div>
+        </article>
+      </a>
+
+      <!-- 6 · Conor McGregor -->
+      <a href="https://conor-site-nxawerpn.manus.space" target="_blank" rel="noopener noreferrer">
+        <article class="site-card reveal reveal-delay-2">
+          <div class="site-chrome">
+            <span class="chrome-dot chrome-dot-r"></span><span class="chrome-dot chrome-dot-y"></span><span class="chrome-dot chrome-dot-g"></span>
+            <div class="chrome-bar"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="chrome-bar-text">conor-site-nxawerpn.manus.space</span></div>
+          </div>
+          <div class="site-screenshot"><img src="assets/websites/site6.jpg" alt="Conor McGregor" /></div>
+          <div class="site-info">
+            <div class="site-info-header">
+              <div>
+                <div class="site-name">Conor McGregor · The Notorious</div>
+                <div class="site-desc">Fighter editorial website — dramatic black &amp; white design showcasing the MMA champion's brand.</div>
+              </div>
+              <span class="site-link-btn" aria-label="Open site"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+            </div>
+            <div class="site-tags"><span class="site-tag">Manus AI</span><span class="site-tag">Editorial</span></div>
+          </div>
+        </article>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     VIDEOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="section-divider mobile-hide"></div>
+<section id="videos">
+  <div class="section">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">Video Production</div>
+        <h2 class="section-title">AI videos<br>with a message.</h2>
+      </div>
+    </div>
+
+    <div class="video-wrap reveal reveal-delay-1">
+      <div class="video-card">
+
+        <!--
+          HOW TO ADD YOUR VIDEO:
+          Replace the entire .video-embed div contents with:
+          <iframe
+            src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1"
+            title="Video title"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+
+          Your video ID is the part after "v=" in the YouTube URL:
+          e.g. https://youtu.be/dQw4w9WgXcQ → ID is dQw4w9WgXcQ
+        -->
+
+        <a href="https://www.youtube.com/watch?v=USpKBukrZnQ" target="_blank" rel="noopener noreferrer" class="video-thumb-link">
+          <img
+            class="video-thumb-img"
+            src="https://img.youtube.com/vi/USpKBukrZnQ/maxresdefault.jpg"
+            alt="להיות עצמך · Be Yourself"
+          />
+          <div class="video-thumb-overlay">
+            <button class="video-play" aria-label="Watch on YouTube" type="button" tabindex="-1">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#0B0B0B">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+            <span class="video-yt-label">Watch on YouTube</span>
+          </div>
+        </a>
+
+        <div class="video-info">
+          <div class="video-title">להיות עצמך &nbsp;·&nbsp; Be Yourself</div>
+          <div class="video-desc">An AI-produced short film — created with AI video generation tools from concept to final cut.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ABOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="section-divider"></div>
+<section id="about">
+  <div class="section">
+    <div class="section-label reveal">About</div>
+
+    <div class="about-grid" style="margin-top:32px;">
+
+      <!-- Avatar -->
+      <div class="reveal">
+        <div class="about-photo-wrap">
+          <img
+            src="assets/photo.png"
+            alt="Nathan Chaim"
+            class="about-photo"
+          />
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="reveal reveal-delay-1">
+        <div class="about-name">Nathan Chaim</div>
+        <div class="about-role">AI Systems Implementer</div>
+        <div class="about-location">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Jerusalem, Israel
+        </div>
+
+        <p class="about-bio">
+          I'm a fast learner with a strong interest in AI, automation, website
+          building, and digital content creation. During my studies I built several
+          websites and gained hands-on experience with tools like n8n, Make, Claude,
+          Lovable, Manus, and more. I also hold a Certificate of Completion from
+          Cornelius College as an AI Systems Implementer. I served as a combat
+          soldier in the IDF while simultaneously studying AI on behalf of the army.
+          What drives me most is taking an unclear idea and turning it into something
+          that actually works — from first concept to final result.
+        </p>
+
+        <div class="skills-grid">
+          <span class="skill-tag">AI Automations</span>
+          <span class="skill-tag">No-code Websites</span>
+          <span class="skill-tag">3D Models &amp; CNC</span>
+          <span class="skill-tag">AI Video &amp; Images</span>
+          <span class="skill-tag">Computer Repair</span>
+          <span class="skill-tag">n8n</span>
+          <span class="skill-tag">Make</span>
+          <span class="skill-tag">Lovable</span>
+          <span class="skill-tag">Manus</span>
+          <span class="skill-tag">Claude</span>
+          <span class="skill-tag">ChatGPT</span>
+          <span class="skill-tag">Gemini</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">Codex</span>
+        </div>
+
+        <div class="about-actions">
+          <a href="https://wa.me/972556807812" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="mailto:ntyyml72@gmail.com" class="btn-primary" style="background:rgba(232,255,75,0.12);color:var(--accent);border:0.5px solid rgba(232,255,75,0.25);">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Email
+          </a>
+          <a href="https://www.linkedin.com/in/naty-eylam-b32429218/" target="_blank" rel="noopener noreferrer" class="btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Resume
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<footer class="footer">
+  <a href="#top" class="footer-logo" aria-label="Back to top">
+    <img src="assets/logo.png" alt="Nathan Chaim" class="nav-logo-img" />
+  </a>
+
+  <span class="footer-copy">© 2026 Nathan Chaim · Jerusalem</span>
+
+  <div class="footer-links">
+    <a href="https://wa.me/972556807812" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WhatsApp" style="color:#25D366;border-color:rgba(37,211,102,0.25);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/naty-eylam-b32429218/" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="LinkedIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+    <a href="mailto:ntyyml72@gmail.com" class="footer-link" aria-label="Email">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+  </div>
+</footer>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     LEGAL BAR (bottom of site)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="legal-bar" role="contentinfo" aria-label="Legal and compliance links">
+  <span class="legal-bar-copy">© 2026 Nathan Chaim · AI Systems Implementer · Jerusalem, Israel</span>
+
+  <nav class="legal-bar-links" aria-label="Legal links">
+    <a href="accessibility.html" target="_blank" rel="noopener noreferrer" class="legal-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/></svg>
+      Accessibility Statement
+    </a>
+    <span class="legal-sep" aria-hidden="true">·</span>
+    <button class="legal-link" id="btn-terms">Terms of Use</button>
+    <span class="legal-sep" aria-hidden="true">·</span>
+    <a href="mailto:ntyyml72@gmail.com" class="legal-link">Contact</a>
+  </nav>
+
+  <span class="legal-bar-badge" aria-label="Compliant with Israeli Standard 5568, WCAG 2.1 AA">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/></svg>
+    IS 5568 · WCAG 2.1 AA
+  </span>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FLOATING ACCESSIBILITY BUTTON (IS 5568)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<button class="a11y-fab" id="a11y-fab" aria-label="Open accessibility widget" aria-expanded="false" aria-controls="a11y-panel">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <circle cx="12" cy="4" r="2"/>
+    <path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/>
+  </svg>
+</button>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ACCESSIBILITY WIDGET PANEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="a11y-backdrop" id="a11y-backdrop" aria-hidden="true"></div>
+
+<aside class="a11y-panel" id="a11y-panel" role="dialog" aria-modal="true"
+       aria-labelledby="a11y-panel-title" aria-hidden="true">
+
+  <!-- Header -->
+  <div class="a11y-panel-header">
+    <div class="a11y-panel-title-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <circle cx="12" cy="4" r="2"/>
+        <path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/>
+      </svg>
+      <h2 class="a11y-panel-title" id="a11y-panel-title">Accessibility</h2>
+    </div>
+    <button class="a11y-panel-close" id="a11y-panel-close" aria-label="Close accessibility panel">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="a11y-panel-body">
+
+    <!-- TEXT SIZE -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">Text Size</div>
+      <div class="a11y-size-row" role="group" aria-label="Text size">
+        <button class="a11y-size-btn" data-scale="0.85" aria-label="Small text" aria-pressed="false">A<span style="font-size:0.65em;vertical-align:sub;">−</span></button>
+        <button class="a11y-size-btn active" data-scale="1"    aria-label="Default text size" aria-pressed="true">A</button>
+        <button class="a11y-size-btn" data-scale="1.2"  aria-label="Large text" aria-pressed="false">A<span style="font-size:0.65em;vertical-align:super;">+</span></button>
+        <button class="a11y-size-btn" data-scale="1.4"  aria-label="Extra large text" aria-pressed="false">A<span style="font-size:0.65em;vertical-align:super;">++</span></button>
+      </div>
+    </div>
+
+    <!-- DISPLAY TOGGLES -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">Display</div>
+
+      <div class="a11y-toggle-row">
+        <span class="a11y-toggle-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          High Contrast
+        </span>
+        <button class="a11y-switch" id="toggle-contrast"
+                role="switch" aria-checked="false" aria-label="Toggle high contrast mode">
+          <span class="a11y-switch-thumb"></span>
+        </button>
+      </div>
+
+      <div class="a11y-toggle-row">
+        <span class="a11y-toggle-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Reduce Motion
+        </span>
+        <button class="a11y-switch" id="toggle-motion"
+                role="switch" aria-checked="false" aria-label="Toggle reduce motion">
+          <span class="a11y-switch-thumb"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- FEATURES LIST -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">Implemented Features</div>
+      <ul class="a11y-features" role="list">
+        <li class="af-ok"><span aria-hidden="true">✓</span> Keyboard-only navigation</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Screen reader support (NVDA / JAWS)</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Logical heading hierarchy (H1 → H3)</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> ARIA roles and labels</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Alt text on all images</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Color contrast 19.4:1 (min. 4.5:1)</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Skip to content link</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Responsive text resizing (200%)</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Visible focus indicators</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Accessible modal dialogs</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Semantic HTML landmarks</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Touch targets ≥ 44×44 px</li>
+        <li class="af-warn"><span aria-hidden="true">⚠</span> Video captions <em>(planned)</em></li>
+        <li class="af-warn"><span aria-hidden="true">⚠</span> Slider keyboard control <em>(planned)</em></li>
+      </ul>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="a11y-group">
+      <div class="a11y-group-label">Accessibility Contact</div>
+      <div class="a11y-contact-block">
+        <div class="a11y-contact-name">Nathan Chaim</div>
+        <a href="mailto:ntyyml72@gmail.com" class="a11y-contact-link">ntyyml72@gmail.com</a>
+        <a href="tel:+972556807812" class="a11y-contact-link">055-680-7812</a>
+        <span class="a11y-contact-note">Response within 5 business days</span>
+      </div>
+    </div>
+
+    <!-- FULL STATEMENT LINK -->
+    <a href="accessibility.html" target="_blank" rel="noopener noreferrer" class="a11y-full-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Full Accessibility Statement (WCAG 2.1 AA / IS 5568)
+    </a>
+
+  </div><!-- /body -->
+</aside>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     TERMS OF USE MODAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="modal-overlay" id="terms-modal" role="dialog" aria-modal="true"
+     aria-labelledby="terms-modal-title" hidden>
+  <div class="modal-box" tabindex="-1">
+    <div class="modal-header">
+      <h2 class="modal-title" id="terms-modal-title">Terms of Use</h2>
+      <button class="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p><small>Last updated: June 2026</small></p>
+
+      <h3>1. Website Purpose</h3>
+      <p>This website is the personal portfolio of Nathan Chaim, an AI Systems Implementer based in Jerusalem, Israel. It is intended to showcase professional work including AI visualizations, websites, and video productions.</p>
+
+      <h3>2. Intellectual Property</h3>
+      <p>All content on this website — including images, videos, text, visualizations, and design — is the intellectual property of Nathan Chaim unless otherwise stated. You may not reproduce, distribute, or use any content without prior written permission.</p>
+
+      <h3>3. Use of the Website</h3>
+      <p>You may browse this website for personal, non-commercial purposes. Any commercial use, scraping, or automated access is prohibited without written consent.</p>
+
+      <h3>4. Before/After Visualizations</h3>
+      <p>The AI-generated visualizations displayed are examples of professional work and are presented for portfolio purposes only. They do not represent specific real-estate properties or commit to any specific deliverable.</p>
+
+      <h3>5. External Links</h3>
+      <p>This website may contain links to external websites. Nathan Chaim is not responsible for the content or privacy practices of those sites.</p>
+
+      <h3>6. Disclaimer</h3>
+      <p>This website is provided "as is" without any warranties. Nathan Chaim makes no representations regarding the accuracy or completeness of any information on the site.</p>
+
+      <h3>7. Contact</h3>
+      <p>For any questions regarding these terms, please contact: <a href="mailto:ntyyml72@gmail.com">ntyyml72@gmail.com</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     COOKIE CONSENT BANNER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Cookie consent" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h.01M12 8h.01M16 12h.01M12 16h.01"/></svg>
+      <p>This site stores your language preference locally on your device. No tracking, no third-party cookies, no analytics.</p>
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-accept" id="cookie-accept">Got it</button>
+      <button class="cookie-btn cookie-btn-decline" id="cookie-decline">Decline</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

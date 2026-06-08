@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — Nathan Chaim</title>
+  <meta name="description" content="Nathan Chaim offers architectural visualization, web development, AI automation and AI video creation services for businesses and creators." />
+  <meta property="og:title"       content="Services — Nathan Chaim" />
+  <meta property="og:description" content="Turning ideas into digital solutions through AI, web development and visualization." />
+  <meta property="og:type"        content="website" />
+
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SERVICES PAGE — specific styles
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+    /* ── Page hero ──────────────────────────────────── */
+    .svc-hero {
+      position: relative;
+      padding: 120px 28px 72px;
+      overflow: hidden;
+      min-height: 52vh;
+      display: flex;
+      align-items: center;
+    }
+    .svc-hero-orb-1 {
+      position: absolute;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,255,75,0.09) 0%, transparent 70%);
+      filter: blur(80px);
+      top: -60px; right: -80px;
+      pointer-events: none;
+      animation: orb-float-a 20s ease-in-out infinite;
+    }
+    .svc-hero-orb-2 {
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%);
+      filter: blur(70px);
+      bottom: 0; left: -60px;
+      pointer-events: none;
+      animation: orb-float-b 24s ease-in-out infinite;
+    }
+    .svc-hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+    .svc-hero-label {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .svc-hero-label::before {
+      content: ""; display: block;
+      width: 24px; height: 1px; background: var(--accent);
+    }
+    .svc-hero-title {
+      font-family: var(--sans);
+      font-size: clamp(36px, 5.5vw, 68px);
+      font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
+      color: var(--white); margin-bottom: 22px;
+      max-width: 820px;
+    }
+    .svc-hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      font-weight: 300; line-height: 1.75;
+      color: var(--muted); max-width: 560px;
+    }
+
+    /* ── Services grid ──────────────────────────────── */
+    .svc-section {
+      padding: 0 28px 80px;
+    }
+    .svc-inner {
+      max-width: 1200px; margin: 0 auto;
+    }
+    .svc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    /* ── Service card ───────────────────────────────── */
+    .svc-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
+    }
+    .svc-card:hover {
+      border-color: var(--border-2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    /* Card top band with icon */
+    .svc-card-top {
+      padding: 28px 28px 24px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .svc-card-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .svc-card-header { flex: 1; }
+    .svc-card-tag {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: 0.16em;
+      text-transform: uppercase; margin-bottom: 6px;
+      display: block;
+    }
+    .svc-card-title {
+      font-family: var(--sans);
+      font-size: clamp(17px, 2vw, 22px);
+      font-weight: 700; letter-spacing: -0.025em;
+      color: var(--white); line-height: 1.2;
+    }
+
+    /* Description */
+    .svc-card-desc {
+      padding: 22px 28px 0;
+      font-size: 14px; font-weight: 300;
+      line-height: 1.85; color: var(--muted);
+    }
+
+    /* How I Work */
+    .svc-how {
+      padding: 22px 28px 28px;
+    }
+    .svc-how-label {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .svc-how-label::after {
+      content: ""; flex: 1; height: 0.5px; background: var(--border);
+    }
+    .svc-steps { list-style: none; }
+    .svc-step {
+      display: flex; align-items: flex-start; gap: 14px;
+      position: relative; padding-bottom: 14px;
+    }
+    .svc-step:last-child { padding-bottom: 0; }
+    /* Connecting line */
+    .svc-step:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 15px; top: 28px;
+      width: 1px; bottom: 0;
+      background: var(--border);
+    }
+    .svc-step-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      flex-shrink: 0; z-index: 1;
+      border: 0.5px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      transition: color 250ms, border-color 250ms, background 250ms;
+    }
+    .svc-card:hover .svc-step-num {
+      /* First step highlights on card hover */
+    }
+    .svc-step:first-child .svc-step-num {
+      color: var(--black);
+      border-color: transparent;
+    }
+    .svc-step-text {
+      font-size: 13px; font-weight: 300;
+      color: var(--muted); line-height: 1.7;
+      padding-top: 5px;
+    }
+
+    /* ── Per-service accent colors ──────────────────── */
+    /* 1. Architectural Visualization — sky blue */
+    .svc-arch .svc-card-icon {
+      background: rgba(56,189,248,0.12);
+      border: 0.5px solid rgba(56,189,248,0.25);
+      color: #38bdf8;
+    }
+    .svc-arch .svc-card-tag { color: #38bdf8; }
+    .svc-arch:hover        { border-color: rgba(56,189,248,0.3); }
+    .svc-arch .svc-step:first-child .svc-step-num {
+      background: #38bdf8; color: #07080f;
+    }
+
+    /* 2. Web Development — indigo */
+    .svc-web .svc-card-icon {
+      background: rgba(129,140,248,0.12);
+      border: 0.5px solid rgba(129,140,248,0.25);
+      color: #818cf8;
+    }
+    .svc-web .svc-card-tag { color: #818cf8; }
+    .svc-web:hover        { border-color: rgba(129,140,248,0.3); }
+    .svc-web .svc-step:first-child .svc-step-num {
+      background: #818cf8; color: #07080f;
+    }
+
+    /* 3. AI Automation — electric yellow */
+    .svc-auto .svc-card-icon {
+      background: var(--accent-dim);
+      border: 0.5px solid rgba(232,255,75,0.25);
+      color: var(--accent);
+    }
+    .svc-auto .svc-card-tag { color: var(--accent); }
+    .svc-auto:hover        { border-color: rgba(232,255,75,0.3); }
+    .svc-auto .svc-step:first-child .svc-step-num {
+      background: var(--accent); color: #07080f;
+    }
+
+    /* 4. AI Video — orange */
+    .svc-video .svc-card-icon {
+      background: rgba(251,146,60,0.12);
+      border: 0.5px solid rgba(251,146,60,0.25);
+      color: #fb923c;
+    }
+    .svc-video .svc-card-tag { color: #fb923c; }
+    .svc-video:hover        { border-color: rgba(251,146,60,0.3); }
+    .svc-video .svc-step:first-child .svc-step-num {
+      background: #fb923c; color: #07080f;
+    }
+
+    /* ── Contact section ───────────────────────────── */
+    .svc-contact-section {
+      padding: 20px 28px 88px;
+    }
+    .svc-contact-box {
+      max-width: 1200px; margin: 0 auto;
+      background: linear-gradient(135deg,
+        rgba(232,255,75,0.06) 0%,
+        rgba(56,189,248,0.04) 50%,
+        transparent 100%);
+      border: 0.5px solid rgba(232,255,75,0.18);
+      border-radius: 24px;
+      padding: 56px 48px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 40px;
+      flex-wrap: wrap;
+    }
+    .svc-contact-left { max-width: 480px; }
+    .svc-contact-label {
+      font-family: var(--mono);
+      font-size: 10px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .svc-contact-label::before {
+      content: ""; width: 18px; height: 1px; background: var(--accent);
+    }
+    .svc-contact-title {
+      font-family: var(--sans);
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--white); line-height: 1.1; margin-bottom: 14px;
+    }
+    .svc-contact-sub {
+      font-size: 14px; font-weight: 300;
+      line-height: 1.8; color: var(--muted);
+    }
+    .svc-contact-btns {
+      display: flex; flex-direction: column; gap: 12px;
+      flex-shrink: 0;
+    }
+    .svc-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      padding: 13px 24px; border-radius: 100px;
+      text-decoration: none; transition: all 200ms ease;
+      white-space: nowrap; min-width: 200px;
+      justify-content: flex-start;
+    }
+    .svc-btn-email {
+      background: var(--accent); color: var(--black);
+    }
+    .svc-btn-email:hover {
+      box-shadow: 0 0 0 7px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .svc-btn-wa {
+      background: #25D366; color: #fff;
+    }
+    .svc-btn-wa:hover {
+      box-shadow: 0 0 0 7px rgba(37,211,102,0.22);
+      transform: translateY(-1px);
+    }
+    .svc-btn-ig {
+      background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #515bd4 100%);
+      color: #fff;
+    }
+    .svc-btn-ig:hover {
+      box-shadow: 0 0 0 7px rgba(221,42,123,0.2);
+      transform: translateY(-1px);
+    }
+
+    /* ── Responsive ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-contact-box { flex-direction: column; padding: 40px 28px; }
+      .svc-contact-btns { width: 100%; }
+      .svc-btn { min-width: unset; width: 100%; justify-content: center; }
+    }
+    @media (max-width: 640px) {
+      .svc-hero  { padding: 100px 20px 52px; }
+      .svc-section { padding: 0 20px 60px; }
+      .svc-contact-section { padding: 0 20px 68px; }
+      .svc-card-top  { padding: 20px 20px 18px; }
+      .svc-card-desc { padding: 18px 20px 0; }
+      .svc-how       { padding: 18px 20px 22px; }
+      .svc-hero-orb-1 { width: 220px; height: 220px; }
+      .svc-hero-orb-2 { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Skip links -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#main-content" class="skip-link" lang="he" dir="rtl">דלג לתוכן הראשי</a>
+
+<!-- Fixed background -->
+<div class="site-bg"></div>
+<div class="site-video-bg">
+  <video id="site-video" class="site-video" muted playsinline preload="auto" disablepictureinpicture>
+    <source src="assets/videos/hero-bg.mp4" type="video/mp4" />
+  </video>
+</div>
+<div class="site-video-overlay"></div>
+
+<!-- ━━ NAV ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav-logo" aria-label="Home">
+    <img src="assets/logo.png" alt="Nathan Chaim" class="nav-logo-img" />
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html#visualizations">Visualizations</a></li>
+    <li><a href="index.html#websites">Websites</a></li>
+    <li><a href="index.html#videos">Videos</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="services.html" class="active" aria-current="page">Services</a></li>
+  </ul>
+
+  <a href="#contact" class="nav-cta">Let's Talk</a>
+
+  <button class="nav-mobile-btn touch" aria-label="Open menu" aria-expanded="false">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- ━━ MAIN ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="svc-hero" aria-labelledby="svc-hero-title">
+    <div class="svc-hero-orb-1"></div>
+    <div class="svc-hero-orb-2"></div>
+    <div class="svc-hero-inner">
+      <div class="svc-hero-label reveal">Services</div>
+      <h1 class="svc-hero-title reveal reveal-delay-1" id="svc-hero-title">
+        Turning ideas into<br>digital solutions.
+      </h1>
+      <p class="svc-hero-sub reveal reveal-delay-2">
+        I help businesses, creators and professionals turn ideas into digital solutions
+        through AI, web development and visualization.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICES GRID -->
+  <section class="svc-section" aria-label="Services">
+    <div class="svc-inner">
+      <div class="svc-grid">
+
+        <!-- ① Architectural Visualization -->
+        <article class="svc-card svc-arch reveal" aria-labelledby="svc-arch-title">
+          <div class="svc-card-top">
+            <div class="svc-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                <line x1="12" y1="12" x2="12" y2="16"/>
+                <line x1="10" y1="14" x2="14" y2="14"/>
+              </svg>
+            </div>
+            <div class="svc-card-header">
+              <span class="svc-card-tag">Architecture & 3D</span>
+              <h2 class="svc-card-title" id="svc-arch-title">Architectural Visualization</h2>
+            </div>
+          </div>
+
+          <div class="svc-card-desc">
+            <p>If a client has a 3D model or a building that is still under construction, I create realistic visualizations showing how the final project will look.</p>
+            <p>These renders help architects, developers and businesses present their projects with confidence.</p>
+          </div>
+
+          <div class="svc-how">
+            <div class="svc-how-label">How I Work</div>
+            <ol class="svc-steps" role="list">
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">01</span>
+                <span class="svc-step-text">Client sends a 3D model or construction photos.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">02</span>
+                <span class="svc-step-text">I understand the desired style and requirements.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">03</span>
+                <span class="svc-step-text">I create high-quality photorealistic renders.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">04</span>
+                <span class="svc-step-text">Revisions are made until the client is satisfied.</span>
+              </li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- ② Web Development -->
+        <article class="svc-card svc-web reveal reveal-delay-1" aria-labelledby="svc-web-title">
+          <div class="svc-card-top">
+            <div class="svc-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div class="svc-card-header">
+              <span class="svc-card-tag">Web & Digital</span>
+              <h2 class="svc-card-title" id="svc-web-title">Web Development</h2>
+            </div>
+          </div>
+
+          <div class="svc-card-desc">
+            <p>I build modern and personalized websites based on each client's needs.</p>
+            <p>Whether it's a portfolio, landing page or business website, every project is tailored to the client's goals.</p>
+          </div>
+
+          <div class="svc-how">
+            <div class="svc-how-label">How I Work</div>
+            <ol class="svc-steps" role="list">
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">01</span>
+                <span class="svc-step-text">We discuss goals and requirements.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">02</span>
+                <span class="svc-step-text">The client completes a short questionnaire.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">03</span>
+                <span class="svc-step-text">I design and develop the website.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">04</span>
+                <span class="svc-step-text">We refine everything together until the client is happy.</span>
+              </li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- ③ AI Automation -->
+        <article class="svc-card svc-auto reveal" aria-labelledby="svc-auto-title">
+          <div class="svc-card-top">
+            <div class="svc-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="13 2 13 9 20 9"/>
+                <polygon points="13 2 3 9 13 9 13 2"/>
+                <polyline points="11 22 11 15 4 15"/>
+                <polygon points="11 22 21 15 11 15 11 22"/>
+              </svg>
+            </div>
+            <div class="svc-card-header">
+              <span class="svc-card-tag">AI & Automation</span>
+              <h2 class="svc-card-title" id="svc-auto-title">AI Automation</h2>
+            </div>
+          </div>
+
+          <div class="svc-card-desc">
+            <p>I build custom automation systems that save time and simplify repetitive tasks.</p>
+            <p>From customer responses to scheduling systems and AI workflows, every solution is built specifically for the client's needs.</p>
+          </div>
+
+          <div class="svc-how">
+            <div class="svc-how-label">How I Work</div>
+            <ol class="svc-steps" role="list">
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">01</span>
+                <span class="svc-step-text">We identify what needs to be automated.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">02</span>
+                <span class="svc-step-text">I design the workflow and architecture.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">03</span>
+                <span class="svc-step-text">I build and test the system.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">04</span>
+                <span class="svc-step-text">Final adjustments according to the client's requirements.</span>
+              </li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- ④ AI Video Creation -->
+        <article class="svc-card svc-video reveal reveal-delay-1" aria-labelledby="svc-vid-title">
+          <div class="svc-card-top">
+            <div class="svc-card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="23 7 16 12 23 17 23 7"/>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+              </svg>
+            </div>
+            <div class="svc-card-header">
+              <span class="svc-card-tag">AI Video</span>
+              <h2 class="svc-card-title" id="svc-vid-title">AI Video Creation</h2>
+            </div>
+          </div>
+
+          <div class="svc-card-desc">
+            <p>I create AI-generated videos based on the client's vision and goals.</p>
+            <p>From promotional content to cinematic videos, every project is fully customized to tell the right story.</p>
+          </div>
+
+          <div class="svc-how">
+            <div class="svc-how-label">How I Work</div>
+            <ol class="svc-steps" role="list">
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">01</span>
+                <span class="svc-step-text">Client explains the idea and objectives.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">02</span>
+                <span class="svc-step-text">We define the style and direction together.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">03</span>
+                <span class="svc-step-text">I create the video using AI generation tools.</span>
+              </li>
+              <li class="svc-step">
+                <span class="svc-step-num" aria-hidden="true">04</span>
+                <span class="svc-step-text">Final revisions are made before delivery.</span>
+              </li>
+            </ol>
+          </div>
+        </article>
+
+      </div><!-- /grid -->
+    </div><!-- /inner -->
+  </section>
+
+  <!-- CONTACT -->
+  <section class="svc-contact-section reveal" id="contact" aria-labelledby="contact-title">
+    <div class="svc-contact-box">
+
+      <div class="svc-contact-left">
+        <div class="svc-contact-label">Contact</div>
+        <h2 class="svc-contact-title" id="contact-title">Let's Work Together</h2>
+        <p class="svc-contact-sub">
+          Have a project in mind? Feel free to reach out and tell me about your idea.
+          I'll get back to you within 5 business days.
+        </p>
+      </div>
+
+      <div class="svc-contact-btns">
+        <a href="mailto:ntyyml72@gmail.com" class="svc-btn svc-btn-email" aria-label="Send email to Nathan Chaim">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          Email Me
+        </a>
+
+        <a href="https://wa.me/972556807812" target="_blank" rel="noopener noreferrer"
+           class="svc-btn svc-btn-wa" aria-label="Chat on WhatsApp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+          </svg>
+          WhatsApp
+        </a>
+
+        <!-- Replace YOUR_USERNAME with your Instagram handle -->
+        <a href="https://instagram.com/YOUR_USERNAME" target="_blank" rel="noopener noreferrer"
+           class="svc-btn svc-btn-ig" aria-label="Follow on Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          Instagram
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ━━ FOOTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<footer class="footer">
+  <a href="index.html" class="footer-logo" aria-label="Back to home">
+    <img src="assets/logo.png" alt="Nathan Chaim" class="nav-logo-img" />
+  </a>
+  <span class="footer-copy">© 2026 Nathan Chaim · Jerusalem</span>
+  <div class="footer-links">
+    <a href="https://wa.me/972556807812" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WhatsApp" style="color:#25D366;border-color:rgba(37,211,102,0.25);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/naty-eylam-b32429218/" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="LinkedIn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+    <a href="mailto:ntyyml72@gmail.com" class="footer-link" aria-label="Email">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+  </div>
+</footer>
+
+<!-- Legal Bar -->
+<div class="legal-bar" role="contentinfo" aria-label="Legal and compliance links">
+  <span class="legal-bar-copy">© 2026 Nathan Chaim · AI Systems Implementer · Jerusalem, Israel</span>
+  <nav class="legal-bar-links" aria-label="Legal links">
+    <a href="accessibility.html" target="_blank" rel="noopener noreferrer" class="legal-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/></svg>
+      Accessibility Statement
+    </a>
+    <span class="legal-sep" aria-hidden="true">·</span>
+    <button class="legal-link" id="btn-terms">Terms of Use</button>
+    <span class="legal-sep" aria-hidden="true">·</span>
+    <a href="mailto:ntyyml72@gmail.com" class="legal-link">Contact</a>
+  </nav>
+  <span class="legal-bar-badge" aria-label="Compliant with Israeli Standard 5568, WCAG 2.1 AA">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/></svg>
+    IS 5568 · WCAG 2.1 AA
+  </span>
+</div>
+
+<!-- Floating Accessibility Button -->
+<button class="a11y-fab" id="a11y-fab" aria-label="Open accessibility widget" aria-expanded="false" aria-controls="a11y-panel">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <circle cx="12" cy="4" r="2"/>
+    <path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/>
+  </svg>
+</button>
+
+<!-- Accessibility Panel -->
+<div class="a11y-backdrop" id="a11y-backdrop" aria-hidden="true"></div>
+<aside class="a11y-panel" id="a11y-panel" role="dialog" aria-modal="true" aria-labelledby="a11y-panel-title" aria-hidden="true">
+  <div class="a11y-panel-header">
+    <div class="a11y-panel-title-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M19 7H5a1 1 0 0 0 0 2h5v3l-2 6h2l1.5-4h1L14 18h2l-2-6v-3h5a1 1 0 0 0 0-2z"/></svg>
+      <h2 class="a11y-panel-title" id="a11y-panel-title">Accessibility</h2>
+    </div>
+    <button class="a11y-panel-close" id="a11y-panel-close" aria-label="Close accessibility panel">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="a11y-panel-body">
+    <div class="a11y-group">
+      <div class="a11y-group-label">Text Size</div>
+      <div class="a11y-size-row" role="group" aria-label="Text size">
+        <button class="a11y-size-btn" data-scale="0.85" aria-label="Small" aria-pressed="false">A<span style="font-size:.65em;vertical-align:sub;">−</span></button>
+        <button class="a11y-size-btn active" data-scale="1" aria-label="Default" aria-pressed="true">A</button>
+        <button class="a11y-size-btn" data-scale="1.2" aria-label="Large" aria-pressed="false">A<span style="font-size:.65em;vertical-align:super;">+</span></button>
+        <button class="a11y-size-btn" data-scale="1.4" aria-label="XL" aria-pressed="false">A<span style="font-size:.65em;vertical-align:super;">++</span></button>
+      </div>
+    </div>
+    <div class="a11y-group">
+      <div class="a11y-group-label">Display</div>
+      <div class="a11y-toggle-row">
+        <span class="a11y-toggle-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>High Contrast</span>
+        <button class="a11y-switch" id="toggle-contrast" role="switch" aria-checked="false" aria-label="Toggle high contrast"><span class="a11y-switch-thumb"></span></button>
+      </div>
+      <div class="a11y-toggle-row">
+        <span class="a11y-toggle-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>Reduce Motion</span>
+        <button class="a11y-switch" id="toggle-motion" role="switch" aria-checked="false" aria-label="Toggle reduce motion"><span class="a11y-switch-thumb"></span></button>
+      </div>
+    </div>
+    <div class="a11y-group">
+      <div class="a11y-group-label">Features</div>
+      <ul class="a11y-features" role="list">
+        <li class="af-ok"><span aria-hidden="true">✓</span> Keyboard navigation</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Screen reader support</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> ARIA roles and labels</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Alt text on all images</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Color contrast 19.4:1</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Skip to content link</li>
+        <li class="af-ok"><span aria-hidden="true">✓</span> Responsive text resizing</li>
+      </ul>
+    </div>
+    <div class="a11y-group">
+      <div class="a11y-group-label">Contact</div>
+      <div class="a11y-contact-block">
+        <div class="a11y-contact-name">Nathan Chaim</div>
+        <a href="mailto:ntyyml72@gmail.com" class="a11y-contact-link">ntyyml72@gmail.com</a>
+        <a href="tel:+972556807812" class="a11y-contact-link">055-680-7812</a>
+        <span class="a11y-contact-note">Response within 5 business days</span>
+      </div>
+    </div>
+    <a href="accessibility.html" target="_blank" rel="noopener noreferrer" class="a11y-full-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Full Accessibility Statement
+    </a>
+  </div>
+</aside>
+
+<!-- Terms Modal -->
+<div class="modal-overlay" id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title" hidden>
+  <div class="modal-box" tabindex="-1">
+    <div class="modal-header">
+      <h2 class="modal-title" id="terms-modal-title">Terms of Use</h2>
+      <button class="modal-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p><small>Last updated: June 2026</small></p>
+      <h3>1. Website Purpose</h3><p>This website is the personal portfolio and services page of Nathan Chaim, AI Systems Implementer, Jerusalem, Israel.</p>
+      <h3>2. Intellectual Property</h3><p>All content is the intellectual property of Nathan Chaim. You may not reproduce or distribute any content without written permission.</p>
+      <h3>3. Services</h3><p>The services described on this website are offered subject to separate agreements between Nathan Chaim and individual clients.</p>
+      <h3>4. Contact</h3><p><a href="mailto:ntyyml72@gmail.com">ntyyml72@gmail.com</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Cookie consent" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h.01M12 8h.01M16 12h.01M12 16h.01"/></svg>
+      <p>This site stores your preferences locally. No tracking, no third-party cookies.</p>
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-accept" id="cookie-accept">Got it</button>
+      <button class="cookie-btn cookie-btn-decline" id="cookie-decline">Decline</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Restore saved preferences on page load
+  (function () {
+    const scale = parseFloat(localStorage.getItem("natan_font_scale") || "1");
+    if (scale !== 1) document.documentElement.style.fontSize = `${scale * 100}%`;
+    if (localStorage.getItem("natan_high_contrast") === "1")
+      document.documentElement.classList.add("high-contrast");
+    if (localStorage.getItem("natan_reduce_motion") === "1" ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      document.documentElement.classList.add("reduce-motion");
+  })();
+</script>
+</body>
+</html>
