@@ -126,8 +126,8 @@ document.querySelectorAll(".compare").forEach((el) => new CompareSlider(el));
 
 /* ── 4. Mobile Category Tabs ──────────────────────────── */
 (function () {
-  const tabs     = document.querySelectorAll(".mobile-tab");
-  const sections = {
+  const tabs       = document.querySelectorAll(".mobile-tab");
+  const sectionMap = {
     visualizations: document.getElementById("visualizations"),
     websites:       document.getElementById("websites"),
     videos:         document.getElementById("videos"),
@@ -137,46 +137,69 @@ document.querySelectorAll(".compare").forEach((el) => new CompareSlider(el));
     return window.innerWidth <= 640;
   }
 
-  function activate(target) {
+  /* Force reveal animations for elements that were hidden (display:none)
+     when the IntersectionObserver first ran — they never got .visible */
+  function revealSection(sectionEl) {
+    if (!sectionEl) return;
+    setTimeout(() => {
+      sectionEl.querySelectorAll(".reveal:not(.visible)").forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 60 && rect.bottom > -60) {
+          el.classList.add("visible");
+        } else {
+          // Re-observe so it animates as user scrolls into it
+          revealObserver.observe(el);
+        }
+      });
+    }, 60); // small delay so display:block has painted
+  }
+
+  /* scroll=true only when triggered by a user tap (not on init) */
+  function activate(target, scroll) {
     // Update tab buttons
     tabs.forEach((tab) =>
       tab.classList.toggle("active", tab.dataset.target === target)
     );
+
     // Show / hide sections
-    Object.entries(sections).forEach(([key, el]) => {
+    Object.entries(sectionMap).forEach(([key, el]) => {
       if (!el) return;
-      el.classList.toggle("mob-active", key === target);
+      const isActive = key === target;
+      el.classList.toggle("mob-active", isActive);
+      if (isActive) revealSection(el);
     });
-    // Scroll to just below the tab bar
-    const tabBar = document.getElementById("mobile-tabs");
-    if (tabBar) {
-      const y = tabBar.getBoundingClientRect().bottom + window.scrollY;
-      window.scrollTo({ top: y - 54, behavior: "smooth" });
+
+    // Scroll so the tab bar sits just below the nav (only on user tap)
+    if (scroll) {
+      const tabBar = document.getElementById("mobile-tabs");
+      if (tabBar) {
+        // Use .top (not .bottom) so the bar is fully visible under the nav
+        const tabTop = tabBar.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, tabTop - 54), behavior: "smooth" });
+      }
     }
   }
 
   function initMobile() {
     if (isMobile()) {
-      // Default: show visualizations
-      activate("visualizations");
+      activate("visualizations", false); // false = don't scroll on page load
     } else {
-      // Desktop: make all sections visible, remove mob-active class
-      Object.values(sections).forEach((el) => {
+      // Desktop: show all sections, remove mobile state
+      Object.values(sectionMap).forEach((el) => {
         if (el) el.classList.remove("mob-active");
       });
     }
   }
 
-  // Wire up tab clicks
+  // Wire up tab clicks — scroll only on actual user tap
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      if (isMobile()) activate(tab.dataset.target);
+      if (isMobile()) activate(tab.dataset.target, true);
     });
   });
 
-  // Run on load and on resize
   initMobile();
-  window.addEventListener("resize", initMobile);
+  window.addEventListener("resize", () => initMobile());
 })();
 
 /* ── 6. Cursor Proximity Text Effect ──────────────────── */
@@ -295,6 +318,9 @@ class CursorProximity {
 
 /* — Init on hero name — */
 (function () {
+  // No mouse on touch-only devices → skip the RAF loop entirely (saves battery)
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+
   const hero    = document.getElementById("top");
   const nameEl  = document.getElementById("hero-name");
   const tagEl   = document.getElementById("hero-tagline");
@@ -505,22 +531,52 @@ document.querySelectorAll(".ticker").forEach((ticker) => {
 })();
 
 /* ── 11. Mobile nav ─────────────────────────────────────── */
-const mobileBtn = document.querySelector(".nav-mobile-btn");
-const navLinksEl = document.querySelector(".nav-links");
+(function () {
+  const mobileBtn  = document.querySelector(".nav-mobile-btn");
+  const navLinksEl = document.querySelector(".nav-links");
+  if (!mobileBtn || !navLinksEl) return;
 
-if (mobileBtn && navLinksEl) {
-  mobileBtn.addEventListener("click", () => {
-    const open = navLinksEl.style.display === "flex";
-    navLinksEl.style.cssText = open
-      ? ""
-      : "display:flex; flex-direction:column; position:fixed; top:60px; left:0; right:0; background:rgba(11,11,11,0.97); padding:20px 28px; gap:4px; z-index:99; border-bottom:0.5px solid rgba(237,236,235,0.07);";
-    mobileBtn.setAttribute("aria-expanded", String(!open));
+  const NAV_H = 54; // mobile nav height (px) — must match CSS
+
+  function openNav() {
+    navLinksEl.style.cssText =
+      `display:flex; flex-direction:column; position:fixed;` +
+      ` top:${NAV_H}px; left:0; right:0;` +
+      ` background:rgba(11,11,11,0.97);` +
+      ` padding:20px 28px; gap:4px; z-index:99;` +
+      ` border-bottom:0.5px solid rgba(237,236,235,0.07);`;
+    mobileBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeNav() {
+    navLinksEl.style.cssText = "";
+    mobileBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function isOpen() {
+    return navLinksEl.style.display === "flex";
+  }
+
+  // Toggle on hamburger click
+  mobileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isOpen() ? closeNav() : openNav();
   });
 
-  // Close on nav link click
+  // Close when any nav link is clicked
   navLinksEl.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
-      navLinksEl.style.cssText = "";
-    })
+    a.addEventListener("click", closeNav)
   );
-}
+
+  // Close when tapping outside the nav
+  document.addEventListener("click", (e) => {
+    if (isOpen() && !navLinksEl.contains(e.target) && e.target !== mobileBtn) {
+      closeNav();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen()) closeNav();
+  });
+})();
