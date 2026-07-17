@@ -1,0 +1,29 @@
+# ── The duplicate that broke the deploy ────────────────
+# `natan-portfolio/` is a byte-identical copy of this site WITH ITS OWN
+# .git. Git recorded it as a gitlink (mode 160000) pointing at a commit
+# in a repo it has no URL for, so every clone dies on submodule
+# checkout — which is exactly what Netlify hit.
+# 167MB, and none of it is needed: this folder is the real site.
+natan-portfolio/
+
+# ── Reference material — MUST NOT be published ─────────
+# Full-page screenshots of another studio's site, kept locally as a
+# design reference. Publishing them would host a competitor's pages on
+# Natan's own commercial domain: a copyright exposure, and proof from
+# his own server that he copied them. 78MB of pure downside.
+A site to emulate/
+
+# ── Superseded originals ───────────────────────────────
+# Everything here was compressed into assets-opt/ (46MB -> 3.2MB).
+# Only two files are still referenced by the live pages, so the rest is
+# dead weight that would ship on every deploy.
+assets/renders/
+assets/websites/
+assets/photo.png
+assets/resume.pdf
+
+# ── Local noise ────────────────────────────────────────
+desktop.ini
+Thumbs.db
+.DS_Store
+*.log
