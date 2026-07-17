@@ -1,0 +1,1114 @@
+/* ═══════════════════════════════════════════════════════
+   נתן חיים — בניית אתרים לעסקים
+   Hebrew-first, RTL. Written with logical properties so a
+   later LTR pass needs no mirrored rules.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Theme tokens ──────────────────────────────────────
+   Dark is the brand and stays the default. Light is a real
+   second design, not an inversion.
+
+   --accent splits in two on purpose:
+     --accent      text-safe  (yellow FAILS on light: 1.3:1)
+     --accent-fill button fill (stays brand yellow in both
+                    themes; the text sitting ON it is black,
+                    so it clears contrast either way)
+   ──────────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  --black:     #0B0B0B;
+  --surface:   #131316;
+  --surface-2: #1B1B1F;
+  --white:     #EDECEB;
+  --dim:       #9C9C93;
+  --faint:     #84847B;
+
+  --accent:      #E8FF4B;
+  --accent-fill: #E8FF4B;
+  --accent-dim:  rgba(232,255,75,0.10);
+  --accent-ink:  #0B0B0B;
+
+  /* The contrast surface: where money is discussed. */
+  --paper:     #F4F3EF;
+  --paper-ink: #16161A;
+  --paper-dim: #5A5A52;
+  --paper-line:rgba(22,22,26,0.14);
+  --paper-eyebrow: #E8FF4B;
+  --price-card: #FFFFFF;
+
+  --danger: #FF6B4A;
+  --ok:     #4FBF85;
+  --border:   rgba(237,236,235,0.10);
+  --border-2: rgba(237,236,235,0.20);
+
+  --nav-bg: rgba(11,11,11,.82);
+}
+
+:root, :root[data-theme="light"] {
+  --black:     #F5F4F0;   /* page ground — the default */
+  --surface:   #FFFFFF;
+  --surface-2: #ECEAE3;
+  --white:     #16161A;   /* text */
+  --dim:       #55554D;
+  --faint:     #6A6A61;
+
+  --accent:      #1A1A1F;  /* ink. yellow is a FILL, never text on light */
+  --accent-fill: #E8FF4B;  /* brand yellow survives as the fill */
+  --accent-dim:  rgba(232,255,75,0.30);   /* the yellow stays, as a wash */
+  --accent-ink:  #0B0B0B;
+
+  /* On a light page the contrast surface goes the other way:
+     white cards on a warmer ground still reads as "different". */
+  --paper:     #FFFFFF;
+  --paper-ink: #16161A;
+  --paper-dim: #55554D;
+  --paper-line:rgba(22,22,26,0.12);
+  --paper-eyebrow: #1A1A1F;
+  --price-card: #FAF9F5;
+
+  --danger: #C43C1B;
+  --ok:     #16794E;
+  --border:   rgba(22,22,26,0.12);
+  --border-2: rgba(22,22,26,0.22);
+}
+
+/* Light is the default. Someone whose system is set to dark, and who
+   hasn't chosen here, gets dark — respecting the OS without making it
+   the brand's opening statement. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --black: #0B0B0B; --surface: #131316; --surface-2: #1B1B1F;
+    --white: #EDECEB; --dim: #9C9C93; --faint: #84847B;
+    --accent: #E8FF4B; --accent-fill: #E8FF4B;
+    --accent-dim: rgba(232,255,75,0.10); --accent-ink: #0B0B0B;
+    --paper: #F4F3EF; --paper-ink: #16161A; --paper-dim: #5A5A52;
+    --paper-line: rgba(22,22,26,0.14); --paper-eyebrow: #647500; --price-card: #FFFFFF;
+    --danger: #FF6B4A; --ok: #4FBF85;
+    --border: rgba(237,236,235,0.10); --border-2: rgba(237,236,235,0.20);
+    --nav-bg: rgba(11,11,11,.82);
+  }
+}
+
+:root {
+  /* Latin resolves to Montserrat — literally the reference's face.
+     Hebrew has no Montserrat, so it falls through to Heebo: the
+     closest geometric match, with the 400-900 range their
+     weight-driven hierarchy depends on. */
+  --display: "Montserrat", "Heebo", system-ui, sans-serif;
+  --body:    "Assistant", system-ui, sans-serif;
+  --mono:    "Space Mono", monospace;
+
+  --r:    10px;
+  --r-lg: 16px;
+  --pad:  clamp(20px, 5vw, 40px);
+  --gap:  clamp(56px, 9vw, 104px);
+  --nav-h: 66px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 0;
+}
+p { margin: 0; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; font-size: inherit; cursor: pointer; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute; inset-inline-start: -9999px; top: 8px; z-index: 999;
+  background: var(--accent-fill); color: var(--accent-ink);
+  padding: 10px 18px; border-radius: 8px; font-weight: 700;
+}
+.skip-link:focus { inset-inline-start: 8px; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: var(--pad); }
+section { padding-block: var(--gap); }
+
+/* ── Eyebrow / section heads ───────────────────────── */
+.eyebrow {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em;
+  color: var(--accent); margin-bottom: 14px; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.eyebrow::before {
+  content: ""; width: 18px; height: 3px; border-radius: 2px;
+  background: var(--accent-fill); flex: none;
+}
+.sec-title { font-size: clamp(28px, 4.4vw, 42px); font-weight: 700; letter-spacing: -0.02em; }
+.sec-lede {
+  color: var(--dim); margin-top: 14px; max-width: 58ch; font-size: 18px;
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  background: var(--accent-fill); color: var(--accent-ink);
+  font-weight: 700; font-size: 16px;
+  padding: 14px 26px; border: 1px solid var(--accent-fill); border-radius: 999px;
+  text-decoration: none; min-height: 52px;
+  transition: filter .2s ease, transform .2s ease;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: scale(.98); }
+
+.btn-ghost {
+  background: none; color: var(--white); border-color: var(--border-2);
+}
+.btn-ghost:hover { background: var(--surface-2); filter: none; border-color: var(--white); }
+
+.btn-on-paper { background: var(--paper-ink); color: var(--paper); border-color: var(--paper-ink); }
+
+/* ═══════════ NAV ═══════════
+   A floating pill rather than a full-bleed bar. Taken from the
+   reference's layout grammar: a contained, rounded chrome reads as
+   designed, where an edge-to-edge strip reads as a browser toolbar.
+   ═══════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; inset-inline: 0; top: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center; gap: 18px;
+  padding-inline: var(--pad);
+  transition: transform .38s cubic-bezier(.22,.8,.3,1);
+  background: none; border: none;   /* the pill carries the chrome now */
+}
+/* The pill itself. Sits behind the contents so it can round and blur
+   without the children needing to know about it. */
+.nav::before {
+  content: ""; position: absolute; z-index: -1;
+  inset-block: 8px; inset-inline: var(--pad);
+  border-radius: 999px;
+  background: var(--nav-bg);
+  border: 1px solid transparent;
+  backdrop-filter: blur(14px);
+  transition: border-color .3s ease, box-shadow .3s ease, opacity .3s ease;
+  opacity: 0;
+}
+.nav.scrolled::before {
+  opacity: 1;
+  border-color: var(--border-2);
+  box-shadow: 0 8px 30px -12px rgba(0,0,0,.28);
+}
+:root[data-theme="dark"] .nav.scrolled::before { box-shadow: 0 8px 30px -10px rgba(0,0,0,.6); }
+.nav.gone { transform: translateY(calc(-100% - 10px)); }
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+  padding-inline-start: 14px;
+}
+.nav-logo img { width: 32px; height: 32px; object-fit: contain; }
+.nav-logo span { font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+
+.nav-links {
+  display: flex; gap: 4px; list-style: none; margin: 0; padding: 0;
+  margin-inline-start: auto;
+}
+.nav-links a {
+  text-decoration: none; color: var(--dim); font-size: 14.5px; font-weight: 600;
+  padding: 8px 14px; border-radius: 999px;
+  transition: color .2s ease, background .2s ease;
+  display: inline-flex; align-items: center; min-height: 38px;
+}
+.nav-links a:hover { color: var(--white); background: var(--surface-2); }
+/* The page you're on is stated, not guessed at. */
+.nav-links a[aria-current="page"] {
+  color: var(--white); background: var(--surface-2);
+}
+.nav .btn {
+  padding: 9px 18px; min-height: 40px; font-size: 14.5px;
+  margin-inline-end: 8px;
+}
+
+.nav-burger {
+  display: none; background: none; border: 1px solid var(--border-2);
+  border-radius: 999px; color: var(--white); padding: 8px;
+  min-width: 42px; min-height: 42px; margin-inline-start: auto;
+  margin-inline-end: 8px;
+}
+
+/* ═══════════ HERO ═══════════ */
+.hero {
+  min-height: clamp(560px, 92svh, 900px);
+  display: grid; align-items: center;
+  padding-block: calc(var(--nav-h) + 36px) 56px;
+  position: relative; overflow: hidden;
+}
+
+/* Two columns. The copy no longer sits alone against 60% of
+   empty ground — the other half is real work. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+.hero-copy { min-width: 0; }
+
+.hero-visual { position: relative; min-width: 0; perspective: 1400px; }
+.hero-stack {
+  position: relative;
+  aspect-ratio: 4 / 3.4;
+  transform-style: preserve-3d;
+}
+.hero-win {
+  position: absolute; inset-inline-start: 0;
+  width: 84%; overflow: hidden;
+  will-change: transform;
+}
+.hero-win .hero-shot {
+  width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center;
+  background: var(--surface-2); display: block;
+}
+/* Stacked, not tiled: depth from overlap and scale, which is
+   cheaper and calmer than three equal cards in a row. */
+.hero-win-back  { top: 0;   inset-inline-start: 16%; width: 78%; opacity: .38; filter: saturate(.5); }
+.hero-win-mid   { top: 16%; inset-inline-start: 8%;  width: 84%; opacity: .66; filter: saturate(.75); }
+.hero-win-front { top: 34%; inset-inline-start: 0;   width: 92%; }
+.hero-win-front { box-shadow: 0 50px 90px -34px rgba(0,0,0,.75); }
+/* Light ground: a soft shadow disappears, so it needs to be tighter
+   and darker, plus a hairline to hold the edge. */
+:root:not([data-theme="dark"]) .hero-win-front {
+  box-shadow: 0 26px 50px -18px rgba(22,22,26,.30), 0 2px 8px rgba(22,22,26,.08);
+}
+:root:not([data-theme="dark"]) .hero-win { border-color: rgba(22,22,26,.16); }
+:root:not([data-theme="dark"]) .hero-win-back,
+:root:not([data-theme="dark"]) .hero-win-mid {
+  box-shadow: 0 14px 30px -14px rgba(22,22,26,.22);
+}
+
+.hero-cap {
+  position: absolute; inset-block-end: -14px; inset-inline-start: 0;
+  font-family: var(--mono); font-size: 11.5px; color: var(--dim);
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 5px 11px; border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.hero-cap::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ok);
+}
+/* One quiet atmospheric wash. No orbs, no video — the offer carries it. */
+.hero::before {
+  content: ""; position: absolute; z-index: 0;
+  inset-block-start: -30%; inset-inline-end: -10%;
+  width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
+  background: radial-gradient(circle, var(--accent-dim) 0%, transparent 62%);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 1; }
+
+.hero-status {
+  display: inline-flex; align-items: center; gap: 9px;
+  border: 1px solid var(--border-2); border-radius: 999px;
+  padding: 7px 15px; font-size: 13.5px; color: var(--dim);
+  margin-bottom: 26px;
+}
+.hero-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  box-shadow: 0 0 0 3px rgba(110,231,168,.18);
+}
+
+.hero h1 {
+  font-size: clamp(38px, 7.2vw, 76px);
+  line-height: 1.06;
+  max-width: 16ch;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+
+.hero-sub {
+  margin-top: 22px; font-size: clamp(17px, 2.1vw, 21px);
+  color: var(--dim); max-width: 46ch; line-height: 1.6;
+}
+.hero-cta { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+.hero-note { margin-top: 18px; font-size: 14px; color: var(--faint); }
+
+/* ═══════════ TRUST STRIP ═══════════ */
+.trust {
+  border-block: 1px solid var(--border);
+  padding-block: 26px;
+  background: var(--surface);
+}
+.trust-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px; text-align: center;
+}
+.trust-n {
+  font-family: var(--display); font-size: 30px; color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.trust-l { font-size: 14px; color: var(--dim); margin-top: 2px; }
+
+/* ═══════════ PROBLEM ═══════════ */
+.prob-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px; margin-top: 42px;
+}
+.prob {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 26px 24px;
+}
+.prob-icon {
+  width: 42px; height: 42px; border-radius: 11px;
+  background: var(--accent-dim); color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  display: grid; place-items: center; margin-bottom: 18px;
+  transition: background .25s ease, transform .25s ease;
+}
+.prob:hover .prob-icon { background: var(--accent-fill); color: var(--accent-ink); }
+.prob h3 { font-size: 19px; margin-bottom: 8px; }
+.prob p { color: var(--dim); font-size: 15.5px; line-height: 1.65; }
+
+/* ═══════════ WORK TEASER (the button, not the gallery) ═══════════ */
+.teaser {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: clamp(30px, 5vw, 52px);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 30px; flex-wrap: wrap;
+}
+.teaser h2 { font-size: clamp(24px, 3.4vw, 34px); }
+.teaser p { color: var(--dim); margin-top: 10px; max-width: 44ch; }
+.teaser-stats {
+  display: flex; gap: 22px; margin-top: 20px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 13px; color: var(--faint);
+}
+.teaser-stats b { color: var(--accent); font-weight: 400; }
+
+/* ═══════════ PROCESS ═══════════ */
+.steps { margin-top: 46px; display: grid; gap: 2px; }
+.step {
+  display: grid; grid-template-columns: 62px 1fr auto; gap: 22px;
+  align-items: start;
+  padding: 26px 4px; border-top: 1px solid var(--border);
+}
+.step:last-child { border-bottom: 1px solid var(--border); }
+.step-n {
+  font-family: var(--mono); font-size: 13px; color: var(--accent);
+  border: 1px solid var(--border-2); border-radius: 8px;
+  width: 40px; height: 40px; display: grid; place-items: center;
+}
+.step h3 { font-size: 20px; margin-bottom: 6px; }
+.step p { color: var(--dim); font-size: 15.5px; max-width: 56ch; }
+.step-when {
+  font-family: var(--mono); font-size: 12.5px; color: var(--faint);
+  white-space: nowrap; padding-top: 10px;
+}
+
+/* ═══════════ PRICING — light ground ═══════════ */
+.paper {
+  background: var(--paper); color: var(--paper-ink);
+}
+.paper .eyebrow { color: var(--paper-eyebrow); }
+.paper .sec-lede { color: var(--paper-dim); }
+
+.price-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px; margin-top: 44px;
+}
+.price {
+  background: var(--price-card); border: 1px solid var(--paper-line);
+  border-radius: var(--r-lg); padding: 30px 26px;
+  display: flex; flex-direction: column;
+}
+.price.featured {
+  border-color: var(--paper-ink); border-width: 2px;
+  position: relative;
+}
+.price-badge {
+  position: absolute; inset-block-start: -12px; inset-inline-start: 26px;
+  background: var(--paper-ink); color: var(--paper);
+  font-size: 12px; font-family: var(--mono); padding: 4px 12px; border-radius: 999px;
+}
+.price h3 { font-size: 21px; }
+.price-for { color: var(--paper-dim); font-size: 14.5px; margin-top: 4px; }
+.price-tag {
+  font-family: var(--display); font-size: 34px; margin-block: 18px 4px;
+  font-variant-numeric: tabular-nums;
+}
+.price-tag small { font-size: 15px; color: var(--paper-dim); font-family: var(--body); }
+.price ul {
+  list-style: none; margin: 20px 0 26px; padding: 0;
+  display: flex; flex-direction: column; gap: 9px;
+  font-size: 15px; flex: 1;
+}
+.price li { display: flex; gap: 9px; align-items: flex-start; }
+.price li svg { flex: none; margin-top: 5px; color: #4A7A1F; }
+.price .btn { width: 100%; }
+
+.price-note {
+  margin-top: 26px; font-size: 14.5px; color: var(--paper-dim); text-align: center;
+}
+
+/* ═══════════ FAQ ═══════════ */
+.faq { max-width: 800px; margin-top: 42px; }
+details {
+  border-bottom: 1px solid var(--paper-line);
+}
+details summary {
+  cursor: pointer; padding: 20px 0; font-weight: 700; font-size: 17.5px;
+  list-style: none; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; min-height: 44px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+  content: "+"; font-family: var(--mono); font-size: 20px; color: var(--paper-dim);
+  flex: none; transition: transform .22s ease;
+}
+details[open] summary::after { transform: rotate(45deg); }
+details p {
+  padding-bottom: 22px; color: var(--paper-dim); font-size: 16px;
+  max-width: 65ch;
+}
+
+/* ═══════════ ABOUT ═══════════ */
+.about {
+  display: grid; grid-template-columns: 210px 1fr; gap: clamp(24px, 4vw, 44px);
+  align-items: center;
+}
+.about-photo-wrap {
+  position: relative; width: 210px; flex: none;
+  border-radius: 20px; padding: 5px;
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--accent) 55%, transparent),
+    transparent 55%);
+}
+.about-photo {
+  width: 100%; aspect-ratio: 1; border-radius: 16px;
+  object-fit: cover; object-position: top center;
+  border: 1px solid var(--border-2);
+  /* The source photo is underexposed against a dark ground. */
+  filter: brightness(1.18) contrast(1.06) saturate(1.05);
+  background: var(--surface-2);
+}
+.about h2 { font-size: clamp(24px, 3.2vw, 32px); }
+.about p { color: var(--dim); margin-top: 14px; max-width: 58ch; }
+.about-name { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+
+/* ═══════════ CONTACT ═══════════ */
+.contact-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: clamp(28px, 5vw, 52px);
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 56px);
+}
+.contact-card h2 { font-size: clamp(26px, 3.6vw, 36px); }
+.contact-card > div > p { color: var(--dim); margin-top: 12px; max-width: 40ch; }
+.contact-direct {
+  margin-top: 26px; display: flex; flex-direction: column; gap: 10px;
+}
+.contact-direct a {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--dim); text-decoration: none; font-size: 15.5px;
+  min-height: 44px;
+}
+.contact-direct a:hover { color: var(--accent); }
+
+.field { margin-bottom: 15px; }
+.field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.field .req { color: var(--accent); }
+.input {
+  width: 100%; background: var(--black); color: var(--white);
+  border: 1px solid var(--border-2); border-radius: 9px;
+  padding: 12px 14px; min-height: 48px; font-family: inherit; font-size: 16px;
+  transition: border-color .18s ease;
+}
+.input:focus { border-color: var(--accent); outline: none; }
+textarea.input { min-height: 92px; resize: vertical; }
+.form-msg { border-radius: 9px; padding: 12px 14px; font-size: 14.5px; margin-bottom: 14px; }
+.form-msg.err { background: rgba(255,107,74,.12); border: 1px solid var(--danger); color: var(--danger); }
+.form-msg.ok  { background: rgba(110,231,168,.10); border: 1px solid var(--ok); color: var(--ok); }
+.form-fine { font-size: 13px; color: var(--faint); margin-top: 12px; }
+
+/* ═══════════ FOOTER ═══════════ */
+.footer {
+  border-top: 1px solid var(--border); padding-block: 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 20px; flex-wrap: wrap;
+  color: var(--faint); font-size: 14px;
+}
+.footer a { color: var(--faint); text-decoration: none; }
+.footer a:hover { color: var(--white); }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+
+/* ═══════════ NAV TOOLS (theme + language) ═══════════ */
+.nav-tools { display: flex; gap: 5px; align-items: center; }
+.icon-btn {
+  background: none; border: 1px solid var(--border-2); color: var(--dim);
+  border-radius: 999px; min-width: 38px; min-height: 38px;
+  display: grid; place-items: center;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.icon-btn:hover { color: var(--white); border-color: var(--white); }
+.icon-btn.lang {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+  padding-inline: 10px;
+}
+/* Show the icon for the theme you'd switch TO, not the one you're in. */
+.i-sun { display: none; }
+.i-moon { display: block; }   /* light is default -> offer the moon */
+:root[data-theme="light"] .i-sun { display: none; }
+:root[data-theme="light"] .i-moon { display: block; }
+:root[data-theme="dark"] .i-moon { display: none; }
+:root[data-theme="dark"] .i-sun { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .i-moon { display: none; }
+  :root:not([data-theme]) .i-sun { display: block; }
+}
+
+/* The arrow means "forward". Forward flips with the writing direction. */
+[dir="ltr"] .arr { transform: scaleX(-1); }
+
+/* ═══════════ TESTIMONIALS ═══════════ */
+.test-grid {
+  display: grid; gap: 18px; margin-top: 44px;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+}
+.test {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 26px 24px; margin: 0;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.test blockquote {
+  margin: 0; font-size: 16.5px; line-height: 1.65; color: var(--white);
+}
+.test blockquote::before { content: "„"; color: var(--accent); font-size: 26px; line-height: 0; }
+.test figcaption {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);
+}
+.test figcaption img {
+  width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none;
+}
+.test figcaption b { display: block; font-size: 15px; }
+.test figcaption span { display: block; font-size: 13px; color: var(--faint); }
+
+/* ═══════════ REVEAL ═══════════ */
+.reveal { opacity: 0; transform: translateY(18px); }
+.reveal.in {
+  opacity: 1; transform: none;
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,.8,.3,1);
+}
+.reveal.d1.in { transition-delay: .07s; }
+.reveal.d2.in { transition-delay: .14s; }
+.reveal.d3.in { transition-delay: .21s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RHYTHM — the fix for "black and not inviting"
+
+   The problem was never the black. It was UNBROKEN black:
+   fifteen sections of the same ground with almost nothing
+   photographic in them. A page with no light and no faces
+   reads as a wall.
+
+   `.paper` already inverted one section for the pricing.
+   This generalises it: the page now breathes dark → light →
+   dark, and Natan's own renders supply the colour. Not stock
+   photography — his actual work, which breaks the dark AND
+   proves capability at the same time.
+   ═══════════════════════════════════════════════════════ */
+/* `.paper` is a TOKEN SCOPE, not a background swap.
+   Flipping only the background left --accent at #E8FF4B on a
+   cream ground: 1.3:1, invisible. Redefining the tokens means
+   anything dropped in here is correct by construction instead
+   of needing its own patch selector. */
+.paper {
+  --black:     var(--paper);
+  --surface:   var(--price-card);
+  --surface-2: color-mix(in srgb, var(--paper-ink) 6%, var(--paper));
+  --white:     var(--paper-ink);
+  --dim:       var(--paper-dim);
+  --faint:     #6A6A61;              /* 4.9:1 on paper */
+  --accent:    var(--paper-eyebrow); /* text-safe; the fill stays yellow */
+  --accent-dim: color-mix(in srgb, var(--paper-eyebrow) 12%, transparent);
+  --border:    var(--paper-line);
+  --border-2:  color-mix(in srgb, var(--paper-ink) 22%, transparent);
+
+  background: var(--paper); color: var(--paper-ink);
+  position: relative;
+}
+/* Soften the seam so the flip reads as a change of room,
+   not as two pages glued together. */
+.paper::before,
+.paper::after {
+  content: ""; position: absolute; inset-inline: 0; height: 90px;
+  pointer-events: none;
+}
+.paper::before { top: 0;    background: linear-gradient(to bottom, color-mix(in srgb, var(--black) 60%, transparent), transparent); }
+.paper::after  { bottom: 0; background: linear-gradient(to top,    color-mix(in srgb, var(--black) 60%, transparent), transparent); }
+
+.paper .sec-title, .paper h2, .paper h3 { color: var(--paper-ink); }
+.paper .btn-ghost { color: var(--paper-ink); border-color: var(--paper-line); }
+.paper .btn-ghost:hover { background: color-mix(in srgb, var(--paper-ink) 8%, transparent); border-color: var(--paper-ink); }
+
+/* ── Real sites as atmosphere ─────────────────────────
+   Screenshots of sites Natan built, dimmed hard behind a
+   section. Colour and light with no stock photo and no
+   licence problem — the material is his.
+
+   Deliberately NOT the architectural renders: they're side
+   work, and a render behind a section says "I do renders".
+   The product is websites, so the atmosphere is websites. */
+.lit { position: relative; overflow: hidden; isolation: isolate; }
+.lit-bg {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: .22; filter: saturate(.75);
+}
+:root[data-theme="light"] .lit-bg { opacity: .14; }
+/* The scrim is what keeps text legible over a photograph.
+   Without it this trick fails WCAG the moment the image is busy. */
+.lit::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg,
+    var(--black) 0%,
+    color-mix(in srgb, var(--black) 82%, transparent) 45%,
+    var(--black) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════
+   CRAFT LAYER
+   This site is the product. Everything below exists to make
+   that legible in four seconds, without a word.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Grain. Kills the sterile flat-vector look. ── */
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none; opacity: .035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="light"] body::after { opacity: .05; mix-blend-mode: multiply; }
+
+/* ── GSAP reveal ──────────────────────────────────────
+   CSS does NOT hide these. It used to, and the result was a
+   site where three of four stats and the entire problem
+   section never appeared: hidden by CSS, waiting on a batch
+   callback that didn't always fire.
+
+   Content is visible by default. motion.js hides .fx itself,
+   at runtime, only once it has committed to revealing it —
+   and only when motion is wanted. Every failure mode now
+   ends with the content ON SCREEN instead of gone. */
+
+/* ── Nav retreats on the way down ── */
+.nav { transition: border-color .3s ease, transform .38s cubic-bezier(.22,.8,.3,1); }
+.nav.gone { transform: translateY(-100%); }
+
+/* ── Hero: bigger, with depth behind it ── */
+.hero h1 { font-size: clamp(44px, 9vw, 110px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
+.hero h1 .ch { display: inline-block; will-change: transform; }
+/* SplitText measures lines; overflow must not clip the rise. */
+.hero h1 .word { overflow: hidden; display: inline-block; padding-block: .08em; }
+
+.hero::after {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  inset-block-end: -40%; inset-inline-start: -15%;
+  width: 60vw; height: 60vw; max-width: 720px; max-height: 720px;
+  background: radial-gradient(circle, var(--accent-dim) 0%, transparent 65%);
+  opacity: .6;
+}
+
+/* ── Glass + glow: depth without a single drop shadow ── */
+.glass {
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-2);
+}
+.glow { position: relative; overflow: hidden; }
+.glow::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  opacity: 0; transition: opacity .3s ease;
+  background: radial-gradient(340px circle at var(--mx) var(--my),
+              var(--accent-dim), transparent 70%);
+}
+.glow:hover::before { opacity: 1; }
+
+.tilt { transform-style: preserve-3d; will-change: transform; }
+
+/* ═══════════ STATS ═══════════ */
+.stats { border-block: 1px solid var(--border); background: var(--surface); }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px; padding-block: 44px;
+}
+.stat { text-align: center; }
+.stat-n {
+  font-family: var(--display); font-weight: 700; font-size: clamp(34px, 5vw, 54px);
+  color: var(--white); line-height: 1; font-variant-numeric: tabular-nums;
+  display: inline-block; position: relative;
+}
+/* A marker stroke under the figure — the yellow used the way a
+   highlighter is used, rather than smeared into the glyphs. */
+.stat-n::after {
+  content: ""; position: absolute; z-index: -1;
+  inset-inline: -4px; inset-block-end: 4px; height: 34%;
+  background: var(--accent-fill); opacity: .85; border-radius: 2px;
+}
+:root[data-theme="dark"] .stat-n::after { opacity: .22; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .stat-n::after { opacity: .22; } }
+.stat { text-align: center; isolation: isolate; }
+.stat-l { color: var(--dim); font-size: 14.5px; margin-top: 8px; }
+
+/* ═══════════ SERVICES ═══════════
+   One stroke width, one 24px grid, no fills, round caps. Icons read
+   as a set because they obey the same rules — not because they came
+   from the same download. */
+.svc-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 16px; margin-top: 44px;
+}
+.svc {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 26px 24px;
+  transition: border-color .25s ease, transform .25s ease;
+}
+.svc:hover { border-color: var(--border-2); transform: translateY(-2px); }
+.svc-i {
+  display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent-dim); margin-bottom: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent-fill) 30%, transparent);
+}
+.svc-i svg {
+  width: 21px; height: 21px;
+  fill: none; stroke: var(--white);
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.svc:hover .svc-i { background: var(--accent-fill); }
+.svc:hover .svc-i svg { stroke: var(--accent-ink); }
+.svc h3 { font-size: 19px; margin-bottom: 8px; }
+.svc p { color: var(--dim); font-size: 15px; line-height: 1.65; }
+
+/* ═══════════ MARQUEE ═══════════ */
+.marq {
+  overflow: hidden; border-block-end: 1px solid var(--border);
+  padding-block: 22px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marq-track {
+  display: flex; gap: 52px; width: max-content;
+  animation: slide 34s linear infinite;
+}
+.marq:hover .marq-track { animation-play-state: paused; }
+.marq-item {
+  font-family: var(--mono); font-size: 14px; color: var(--faint);
+  white-space: nowrap; display: flex; align-items: center; gap: 10px;
+}
+.marq-item::before { content: "◆"; color: var(--accent); font-size: 8px; }
+@keyframes slide { to { transform: translateX(-50%); } }
+[dir="rtl"] .marq-track { animation-name: slide-rtl; }
+@keyframes slide-rtl { to { transform: translateX(50%); } }
+
+/* ═══════════════════════════════════════════════════════
+   THE SIGNATURE — a site that builds itself
+   A wireframe fills in as you scroll and lands on real work.
+   Natan's product, as an animation.
+   ═══════════════════════════════════════════════════════ */
+.build { position: relative; }
+.build-pin { min-height: 100svh; display: grid; align-items: center; }
+.build-pin > .wrap { width: 100%; justify-self: stretch; }
+/* The mock is the point of this section — it gets the space.
+   Copy narrows and moves to the edge; the screen takes over half. */
+.build .wrap { max-width: 1340px; }
+.build-inner {
+  display: grid; grid-template-columns: minmax(200px, 290px) 1fr;
+  gap: clamp(24px, 4vw, 60px); align-items: center;
+}
+.build-stage { min-width: 0; }
+/* A grid item defaults to min-width:auto and refuses to shrink below
+   its min-content. The nowrap step pills made that 575px and shoved
+   the whole section 129px off a 497px screen. */
+.build-copy { min-width: 0; }
+.build-steps { min-width: 0; max-width: 100%; }
+.build-copy .sec-title { font-size: clamp(24px, 2.6vw, 34px); }
+.build-copy .sec-lede { font-size: 16px; }
+.build-steps { list-style: none; margin: 26px 0 0; padding: 0; }
+.build-step {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0; color: var(--faint); font-size: 16px;
+  transition: color .35s ease;
+}
+.build-step::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor; flex: none;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.build-step.on { color: var(--accent); }
+.build-step.on::before { transform: scale(1.9); box-shadow: 0 0 0 5px var(--accent-dim); }
+
+/* Mock browser */
+.browser {
+  border: 1px solid var(--border-2); border-radius: 12px;
+  overflow: hidden; background: var(--surface);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.55);
+}
+:root[data-theme="light"] .browser { box-shadow: 0 40px 80px -34px rgba(0,0,0,.28); }
+.browser-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-2); flex: none; }
+.browser-url {
+  margin-inline-start: 10px; font-family: var(--mono); font-size: 11px;
+  color: var(--faint); direction: ltr;
+}
+.build-body {
+  /* Pinned dark on purpose, independent of the section's token
+     scope. It is a SCREEN — it should glow against the light
+     page the way a monitor does, and the grey wireframe needs a
+     dark ground to be visible at all. */
+  --screen:    #0B0B0B;
+  --screen-2:  #1B1B1F;
+  --screen-line: #6A6A62;
+  --wf-fill: 0;
+  position: relative; aspect-ratio: 16 / 10;
+  padding: 14px; display: flex; flex-direction: column; gap: 10px;
+  background: var(--screen);
+}
+.wf-stack { position: absolute; inset: 14px; display: flex; flex-direction: column; gap: 10px; }
+.wf {
+  border-radius: 5px;
+  /* grey skeleton -> real colour, driven by one scrubbed variable */
+  background: color-mix(in srgb, rgba(232,255,75,.14) calc(var(--wf-fill) * 100%), var(--screen-2));
+  border: 1px solid rgba(237,236,235,.10);
+  will-change: transform;
+}
+.wf-nav { height: 9%; }
+.wf-hero { flex: 1; position: relative; display: grid; align-content: center; gap: 8px; padding: 0 12px; }
+.wf-row { display: flex; gap: 10px; height: 26%; }
+.wf-row .wf { flex: 1; }
+.wf-line {
+  height: 7px; border-radius: 4px; background: var(--screen-line);
+  transform: scaleX(0); transform-origin: inline-start;
+}
+.wf-line.w1 { width: 72%; } .wf-line.w2 { width: 46%; } .wf-line.w3 { width: 58%; }
+.wf-accent {
+  opacity: 0; height: 20px; width: 74px; border-radius: 999px;
+  background: #E8FF4B; margin-top: 6px;
+}
+.build-real {
+  position: absolute; inset: 0; opacity: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+.build-cap {
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  margin-top: 14px; text-align: center;
+}
+
+/* ═══════════ HORIZONTAL WORK GALLERY ═══════════ */
+.hz { overflow: hidden; }
+.hz-head { padding-block-end: 30px; }
+.hz-view { overflow: hidden; }
+.hz-track { display: flex; gap: 22px; width: max-content; padding-inline: var(--pad); }
+.hz-card {
+  width: clamp(280px, 34vw, 430px); flex: none;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden; text-decoration: none;
+  transition: border-color .25s ease;
+}
+.hz-card:hover { border-color: var(--accent); }
+.hz-shot { aspect-ratio: 3/2; background: var(--surface-2); overflow: hidden; }
+.hz-shot img { width: 100%; height: 100%; object-fit: cover; }
+.hz-body { padding: 18px 20px; }
+.hz-name { font-family: var(--display); font-size: 18px; }
+.hz-desc { color: var(--dim); font-size: 14.5px; margin-top: 5px; }
+.hz-hint {
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  display: flex; align-items: center; gap: 8px; margin-top: 18px;
+}
+
+@media (max-width: 860px) {
+  .build-inner { grid-template-columns: 1fr; gap: 24px; }
+  .build-pin { min-height: auto; padding-block: 40px; }
+  /* No pin on a phone — it becomes a normal touch-scrolled rail. */
+  .hz-view { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .hz-track { width: max-content; }
+  .hz-card { scroll-snap-align: start; width: 78vw; }
+}
+
+/* ── "Go deeper" link out of a summary section ── */
+.more { margin-top: 32px; }
+.more a {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--accent); text-decoration: none; font-weight: 600;
+  font-size: 15.5px; min-height: 44px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s ease, gap .2s ease;
+}
+.more a::after {
+  content: "←"; font-family: var(--mono); transition: transform .2s ease;
+}
+[dir="ltr"] .more a::after { content: "→"; }
+.more a:hover { border-bottom-color: var(--accent); gap: 12px; }
+.more.on-paper a { color: var(--paper-eyebrow); }
+.more.on-paper a:hover { border-bottom-color: var(--paper-eyebrow); }
+
+/* ═══════════ MOBILE ACTION BAR ═══════════
+   Phone traffic arrives from a paid ad and scrolls with a thumb.
+   The contact form is at the bottom of a long page; this puts the
+   two things that actually start a conversation permanently within
+   thumb reach. Desktop never sees it. */
+.mobile-bar { display: none; }
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE — a different design, not a smaller one
+
+   The first pass here only shrank numbers: 54px became 27px.
+   Natan's words: "the site just becomes compressed, and that's
+   it." He was right. Scaling desktop down is not designing for
+   a phone. What follows changes STRUCTURE — what appears, in
+   what order, and what earns its place at all.
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  :root { --gap: 54px; --nav-h: 60px; }
+
+  /* ── Nav ── */
+  .nav { gap: 10px; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column; gap: 0;
+    position: fixed; inset-block-start: var(--nav-h); inset-inline: 0;
+    background: var(--black); border-bottom: 1px solid var(--border);
+    padding: 8px var(--pad) 20px;
+    max-height: calc(100dvh - var(--nav-h)); overflow-y: auto;
+  }
+  .nav-links.open a {
+    padding: 15px 0; border-bottom: 1px solid var(--border);
+    font-size: 17px; color: var(--white);
+  }
+  .nav-tools { margin-inline-start: auto; }
+  .nav > .nav-cta { display: none; }
+  .nav-burger { display: grid; place-items: center; margin-inline-start: 0; }
+
+  /* ── Hero: the offer and one tap, nothing else ──
+     No stack: it would push the CTA under the fold, and paid
+     traffic that has to scroll to find the ask is paid traffic
+     you lose. */
+  .hero { min-height: auto; padding-block: calc(var(--nav-h) + 26px) 40px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .hero h1 { font-size: clamp(30px, 8.6vw, 40px); line-height: 1.1; }
+  .hero-sub { font-size: 16px; margin-top: 14px; }
+  .hero-status { margin-bottom: 16px; font-size: 12px; padding: 6px 12px; }
+  .hero-cta { flex-direction: column; align-items: stretch; margin-top: 24px; gap: 10px; }
+  .hero-cta .btn { width: 100%; }
+  .hero-note { font-size: 13px; margin-top: 14px; }
+  .hero::before, .hero::after { display: none; }   /* two washes on a small screen is mud */
+
+  /* ── Numbers: a 2×2 block, aligned, not four centred towers ── */
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 24px 14px; padding-block: 28px; }
+  .stat { text-align: start; }
+  .stat-n { font-size: 26px; }
+  .stat-l { font-size: 12.5px; margin-top: 3px; }
+
+  /* ── Section heads ── */
+  .sec-title { font-size: clamp(23px, 6.4vw, 29px); }
+  .sec-lede { font-size: 16px; margin-top: 10px; }
+  .eyebrow { font-size: 11px; margin-bottom: 9px; }
+
+  /* ── The signature: the screen IS the section on a phone.
+        Copy above it, steps become a horizontal rail below —
+        a vertical list next to a 16:10 screen wastes the width. */
+  .build .wrap { max-width: none; }
+  .build-pin { min-height: auto; padding-block: 8px; }
+  .build-inner { grid-template-columns: 1fr; gap: 20px; }
+  .build-copy .sec-title { font-size: clamp(23px, 6.4vw, 29px); }
+  .build-copy .sec-lede { font-size: 15.5px; }
+  .build-steps {
+    display: flex; gap: 8px; overflow-x: auto; margin-top: 16px;
+    padding-bottom: 4px; scrollbar-width: none;
+  }
+  .build-steps::-webkit-scrollbar { display: none; }
+  .build-step {
+    flex: none; padding: 7px 13px; font-size: 13px;
+    border: 1px solid var(--border-2); border-radius: 999px;
+    white-space: nowrap;
+  }
+  .build-step::before { display: none; }
+  .build-step.on { border-color: var(--accent); background: var(--accent-dim); }
+  .browser { border-radius: 10px; }
+
+  /* ── Problem cards: no tilt (no cursor to tilt toward) ── */
+  .prob { padding: 20px 18px; }
+  .prob h3 { font-size: 17px; }
+  .prob p { font-size: 15px; }
+  .prob-icon { width: 34px; height: 34px; margin-bottom: 12px; }
+  .tilt { transform: none !important; }
+
+  /* ── Work rail: a real swipeable carousel ── */
+  .hz-card { width: 80vw; }
+  .hz-hint { font-size: 11.5px; }
+  .hz-body { padding: 14px 16px; }
+  .hz-name { font-size: 16.5px; }
+  .hz-desc { font-size: 14px; }
+
+  /* ── Process: the timing pill sits under the step, not beside ── */
+  .step { grid-template-columns: 34px 1fr; gap: 14px; padding: 20px 2px; }
+  .step-n { width: 34px; height: 34px; font-size: 11px; }
+  .step h3 { font-size: 18px; }
+  .step p { font-size: 15px; }
+  .step-when { grid-column: 2; padding-top: 6px; font-size: 11.5px; }
+
+  /* ── Pricing ── */
+  .price { padding: 24px 20px; }
+  .price-tag { font-size: 28px; }
+  .price ul { font-size: 14.5px; gap: 8px; }
+
+  /* ── About: portrait first, then the words ── */
+  .about { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 20px; }
+  .about p { text-align: start; }
+  .about-photo-wrap { width: 132px; }
+  .about h2 { font-size: clamp(21px, 5.8vw, 26px); }
+
+  /* ── Contact ── */
+  .contact-card { grid-template-columns: 1fr; padding: 22px 18px; }
+
+  .test blockquote { font-size: 15.5px; }
+  .faq details summary { font-size: 16px; }
+  .marq { padding-block: 15px; }
+  .marq-track { gap: 32px; }
+  .marq-item { font-size: 12.5px; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .teaser { flex-direction: column; align-items: stretch; }
+  .teaser .btn { width: 100%; }
+}
+
+/* Very small phones — 320px still has to work. */
+@media (max-width: 360px) {
+  .nav-logo span { display: none; }
+  .mobile-bar .btn { font-size: 14px; gap: 6px; }
+}

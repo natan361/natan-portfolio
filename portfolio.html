@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="pfmeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>תיק עבודות — נתן חיים</title>
+<meta name="description" content="אתרים שבניתי לעסקים ולמוסדות, הדמיות אדריכליות וסרטונים." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  try {
+    var s = localStorage.getItem("natan-theme");
+    if (s) document.documentElement.dataset.theme = s;
+  } catch (e) {}
+</script>
+<style>
+  /* ── Portfolio-only primitives ── */
+  .pf-head { padding-block: calc(var(--nav-h) + 56px) 8px; }
+  .pf-head h1 { font-size: clamp(34px, 6vw, 58px); }
+
+  .pf-tabs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-block: 34px 0;
+    position: sticky; top: var(--nav-h); z-index: 40;
+    background: var(--black); padding-block: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pf-tab {
+    background: none; border: 1px solid var(--border-2); color: var(--dim);
+    padding: 9px 18px; border-radius: 999px; min-height: 44px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  .pf-tab:hover { color: var(--white); }
+  .pf-tab[aria-selected="true"] {
+    color: var(--accent); border-color: var(--accent); background: var(--accent-dim);
+  }
+  .pf-tab .n {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--surface-2); color: var(--dim);
+    padding: 1px 7px; border-radius: 999px;
+  }
+  .pf-tab[aria-selected="true"] .n { background: var(--accent); color: var(--accent-ink); }
+
+  .grid {
+    display: grid; gap: 20px; padding-block: 40px 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+
+  /* ── Site card ── */
+  .site {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); overflow: hidden; text-decoration: none;
+    display: flex; flex-direction: column;
+    transition: border-color .22s ease, transform .22s ease;
+  }
+  .site:hover { border-color: var(--border-2); transform: translateY(-3px); }
+  .site-shot {
+    aspect-ratio: 3 / 2; background: var(--surface-2);
+    border-bottom: 1px solid var(--border); overflow: hidden;
+  }
+  .site-shot img { width: 100%; height: 100%; object-fit: cover; }
+  .site-shot-none {
+    width: 100%; height: 100%; display: grid; place-items: center;
+    color: var(--faint); font-size: 13px;
+  }
+  .site-body { padding: 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .site-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .site-name { font-family: var(--display); font-size: 19px; }
+  .site-desc { color: var(--dim); font-size: 15px; line-height: 1.6; flex: 1; }
+  .site-go {
+    flex: none; width: 34px; height: 34px; border-radius: 8px;
+    border: 1px solid var(--border-2); display: grid; place-items: center;
+    color: var(--dim); transition: color .2s, border-color .2s, background .2s;
+  }
+  .site:hover .site-go { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+
+  /* ── The story ── */
+  .case {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .case-row { display: grid; gap: 3px; }
+  .case-k {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .case-v { color: var(--dim); font-size: 14.5px; line-height: 1.6; }
+  .tag {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    border: 1px solid var(--border); border-radius: 999px; padding: 2px 9px;
+  }
+
+  /* ── Compare card ── */
+  .rend {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .compare {
+    position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+    cursor: ew-resize; background: var(--surface-2); user-select: none;
+  }
+  .compare img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    pointer-events: none; -webkit-user-drag: none;
+  }
+  .compare-before-img { z-index: 2; }
+  .compare-handle {
+    position: absolute; top: 0; bottom: 0; left: 50%; z-index: 3;
+    width: 3px; background: var(--accent); transform: translateX(-50%);
+    cursor: ew-resize;
+  }
+  .compare-handle::before {
+    content: ""; position: absolute; inset-block: 0; left: -12px; right: -12px;
+  }
+  .compare-btn {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--accent); display: grid; place-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.4);
+    transition: transform .18s ease;
+  }
+  .compare-handle:hover .compare-btn,
+  .compare-handle.dragging .compare-btn { transform: translate(-50%, -50%) scale(1.12); }
+  .compare-handle:focus-visible { outline: none; }
+  .compare-handle:focus-visible .compare-btn { outline: 3px solid #fff; outline-offset: 2px; }
+  .compare-badge {
+    position: absolute; top: 12px; z-index: 4;
+    font-family: var(--mono); font-size: 11px;
+    background: rgba(0,0,0,.72); color: #fff;
+    padding: 3px 10px; border-radius: 999px;
+    transition: opacity .2s ease; pointer-events: none;
+  }
+  .compare-badge-before { inset-inline-start: 12px; }
+  .compare-badge-after { inset-inline-end: 12px; }
+  .rend-body { padding: 16px 20px; }
+  .rend-title { font-family: var(--display); font-size: 17px; }
+  .rend-sub { color: var(--faint); font-size: 13.5px; margin-top: 2px; }
+
+  /* ── Video card ── */
+  .vid {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .vid video,
+  .vid iframe { width: 100%; aspect-ratio: 16/9; background: #000; display: block; border: 0; }
+  .vid video { object-fit: cover; }
+  .vid-body { padding: 16px 20px; }
+  .vid-title { font-family: var(--display); font-size: 17px; }
+  .vid-desc { color: var(--dim); font-size: 14.5px; margin-top: 4px; }
+
+  /* ── States ── */
+  .state {
+    grid-column: 1 / -1; text-align: center; color: var(--dim);
+    border: 1px dashed var(--border-2); border-radius: var(--r-lg);
+    padding: 60px 24px;
+  }
+  .state strong { display: block; font-family: var(--display); font-size: 19px; color: var(--white); margin-bottom: 8px; }
+  .sk { border-radius: var(--r-lg); background: var(--surface); height: 280px; animation: p 1.4s ease-in-out infinite; }
+  @keyframes p { 50% { opacity: .45; } }
+
+  /* ── Bottom CTA ── */
+  .pf-cta {
+    margin-block: var(--gap) 0; text-align: center;
+    border-top: 1px solid var(--border); padding-block: var(--gap);
+  }
+  .pf-cta h2 { font-size: clamp(26px, 4vw, 38px); }
+  .pf-cta p { color: var(--dim); margin-block: 12px 26px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="pf-head">
+    <p class="eyebrow" data-i18n="pf.eyebrow">תיק עבודות</p>
+    <h1 data-i18n="pf.title">מה שבניתי.</h1>
+    <p class="sec-lede" data-i18n="pf.lede">
+      אתרים לעסקים ולמוסדות. וגם הדמיות אדריכליות וסרטונים —
+      בשביל מי שמחפש דווקא את זה.
+    </p>
+  </header>
+
+  <div class="pf-tabs" role="tablist" aria-label="קטגוריות">
+    <button class="pf-tab" role="tab" data-tab="sites" aria-selected="true" aria-controls="panel">
+      <span data-i18n="pf.sites">אתרים</span> <span class="n" data-count="sites">–</span>
+    </button>
+    <button class="pf-tab" role="tab" data-tab="renders" aria-selected="false" aria-controls="panel">
+      <span data-i18n="pf.renders">הדמיות</span> <span class="n" data-count="renders">–</span>
+    </button>
+    <button class="pf-tab" role="tab" data-tab="videos" aria-selected="false" aria-controls="panel">
+      <span data-i18n="pf.videos">סרטונים</span> <span class="n" data-count="videos">–</span>
+    </button>
+  </div>
+
+  <div class="grid" id="panel" role="tabpanel">
+    <div class="sk"></div><div class="sk"></div><div class="sk"></div>
+  </div>
+
+  <section class="pf-cta">
+    <h2 data-i18n="pf.ctat">רוצה אתר כזה לעסק שלך?</h2>
+    <p data-i18n="pf.ctap">שיחה של 15 דקות, בלי עלות ובלי התחייבות.</p>
+    <a href="index.html#contact" class="btn" data-i18n="pf.cta">בוא נדבר</a>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
+import { initCompares } from "./compare.js";
+import { t, currentLang } from "./i18n.js";
+
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const panel = document.getElementById("panel");
+const tabs = [...document.querySelectorAll(".pf-tab")];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+const ARROW = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+const state = (title, body) =>
+  `<div class="state"><strong>${esc(title)}</strong>${esc(body)}</div>`;
+
+/* The story behind a project — the thing that separates a
+   screenshot from proof of judgement. Renders only what Natan
+   actually wrote; an empty "Challenge:" heading says less than
+   no heading at all. */
+const story = r => {
+  const en = currentLang() === "en";
+  const pick = k => (en && r[k + "_en"]) || r[k + "_he"];
+  const rows = [
+    ["case.challenge", "האתגר", pick("challenge")],
+    ["case.decision",  "ההחלטה", pick("decision")],
+    ["case.outcome",   "התוצאה", pick("outcome")],
+  ].filter(([, , v]) => v);
+  if (!rows.length) return "";
+  return `<div class="case">${rows.map(([k, he, v]) => `
+    <div class="case-row">
+      <span class="case-k">${esc(t(k) || he)}</span>
+      <p class="case-v">${esc(v)}</p>
+    </div>`).join("")}</div>`;
+};
+
+const RENDER = {
+  sites: rows => rows.map(r => `
+    <a class="site" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+      <div class="site-shot">${r.screenshot_url
+        ? `<img src="${esc(r.screenshot_url)}" alt="${esc(r.name_he)}" loading="lazy" />`
+        : `<div class="site-shot-none">${esc(t("pf.noshot") || "אין צילום מסך")}</div>`}</div>
+      <div class="site-body">
+        <div class="site-top">
+          <span class="site-name">${esc(r.name_he)}</span>
+          <span class="site-go" aria-hidden="true">${ARROW}</span>
+        </div>
+        ${r.description_he ? `<p class="site-desc">${esc(r.description_he)}</p>` : ""}
+        ${r.tags?.length ? `<div class="tags">${r.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
+        ${story(r)}
+      </div>
+    </a>`).join(""),
+
+  renders: rows => rows.map(r => `
+    <article class="rend">
+      <div class="compare">
+        <img class="compare-after" src="${esc(r.after_url)}" alt="${esc(r.title_he)} — ${esc(t("pf.after") || "אחרי")}" loading="lazy" />
+        <img class="compare-before-img" src="${esc(r.before_url)}" alt="${esc(r.title_he)} — ${esc(t("pf.before") || "לפני")}" loading="lazy" />
+        <span class="compare-badge compare-badge-before">${esc(t("pf.before") || "לפני")}</span>
+        <span class="compare-badge compare-badge-after">${esc(t("pf.after") || "אחרי")}</span>
+        <div class="compare-handle">
+          <div class="compare-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B0B0B" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="matrix(-1,0,0,1,24,0)"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="rend-body">
+        <div class="rend-title">${esc(r.title_he)}</div>
+        ${r.subtitle_he ? `<div class="rend-sub">${esc(r.subtitle_he)}</div>` : ""}
+      </div>
+    </article>`).join(""),
+
+  videos: rows => rows.map(r => `
+    <article class="vid">
+      ${r.youtube_id
+        ? `<iframe src="https://www.youtube-nocookie.com/embed/${esc(r.youtube_id)}?rel=0&modestbranding=1"
+             title="${esc(r.title_he)}" loading="lazy" allowfullscreen
+             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`
+        : `<video controls preload="none" ${r.poster_url ? `poster="${esc(r.poster_url)}"` : ""}>
+             <source src="${esc(r.video_url)}" type="video/mp4" />
+           </video>`}
+      <div class="vid-body">
+        <div class="vid-title">${esc(r.title_he)}</div>
+        ${r.description_he ? `<p class="vid-desc">${esc(r.description_he)}</p>` : ""}
+      </div>
+    </article>`).join(""),
+};
+
+const EMPTY = () => ({
+  sites:   [t("pf.empty.sites")   || "עוד אין אתרים להצגה", t("pf.empty.body") || "יופיעו כאן ברגע שיתווספו בניהול."],
+  renders: [t("pf.empty.renders") || "עוד אין הדמיות",      t("pf.empty.body") || "יופיעו כאן ברגע שיתווספו בניהול."],
+  videos:  [t("pf.empty.videos")  || "עוד אין סרטונים",     t("pf.empty.body") || "יופיעו כאן ברגע שיתווספו בניהול."],
+});
+
+const cache = {};
+let active = "sites";
+
+async function load(kind) {
+  if (cache[kind]) return cache[kind];
+  const { data, error } = await sb.from(kind).select("*")
+    .eq("is_published", true).order("sort_order").order("created_at");
+  if (error) throw error;
+  cache[kind] = data || [];
+  document.querySelector(`[data-count="${kind}"]`).textContent = String(cache[kind].length);
+  return cache[kind];
+}
+
+async function show(kind) {
+  active = kind;
+  tabs.forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === kind)));
+  panel.innerHTML = `<div class="sk"></div><div class="sk"></div><div class="sk"></div>`;
+  try {
+    const rows = await load(kind);
+    if (!rows.length) { panel.innerHTML = state(...EMPTY()[kind]); return; }
+    panel.innerHTML = RENDER[kind](rows);
+    if (kind === "renders") initCompares(panel);
+  } catch (e) {
+    panel.innerHTML = state(t("pf.err") || "לא הצלחתי לטעון את התוכן", t("pf.errbody") || "בדוק את החיבור לאינטרנט ורענן את העמוד.");
+  }
+}
+
+tabs.forEach(t => t.addEventListener("click", () => { if (t.dataset.tab !== active) show(t.dataset.tab); }));
+
+addEventListener("natan:lang", () => show(active));
+
+// Warm the counters so the tabs aren't showing "–" while you browse.
+show("sites");
+Promise.all(["renders", "videos"].map(k => load(k).catch(() => {})));
+</script>
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "portfolio.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

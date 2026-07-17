@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="pricemeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>מחירים — כמה עולה אתר לעסק קטן | נתן חיים</title>
+<meta name="description" content="מחירים גלויים לבניית אתר לעסק קטן: מה כלול בכל חבילה, מה לא, תנאי תשלום, ומה העלויות השוטפות אחרי." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  .page-head { padding-block: calc(var(--nav-h) + 60px) 0; }
+  .page-head h1 { font-size: clamp(32px, 5.6vw, 54px); }
+
+  .tbl-wrap { overflow-x: auto; margin-top: 40px; border: 1px solid var(--border); border-radius: var(--r-lg); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15.5px; }
+  th, td { text-align: start; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  thead th { background: var(--surface); font-family: var(--display); font-weight: 400; font-size: 17px; }
+  thead th:first-child { width: 34%; }
+  tbody th { font-weight: 600; color: var(--dim); font-size: 15px; }
+  tr:last-child td, tr:last-child th { border-bottom: none; }
+  .yes { color: var(--accent); }
+  .no { color: var(--faint); }
+  td .note { display: block; font-size: 13px; color: var(--faint); margin-top: 2px; }
+  .col-hot { background: var(--accent-dim); }
+
+  .after-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin-top: 26px;
+  }
+  .after {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 22px;
+  }
+  .after h3 { font-size: 18px; margin-bottom: 6px; }
+  .after .amt { font-family: var(--mono); color: var(--accent); font-size: 15px; margin-bottom: 8px; }
+  .after p { color: var(--dim); font-size: 15px; }
+
+  .honest {
+    border-inline-start: 3px solid var(--accent); background: var(--accent-dim);
+    border-radius: 0 var(--r) var(--r) 0; padding: 20px 22px; margin-top: 34px;
+  }
+  .honest h3 { font-size: 18px; margin-bottom: 8px; }
+  .honest p { color: var(--dim); font-size: 15.5px; max-width: 62ch; }
+  .honest p + p { margin-top: 10px; }
+
+  .end-cta { border-top: 1px solid var(--border); margin-top: var(--gap); padding-block: var(--gap); text-align: center; }
+  .end-cta h2 { font-size: clamp(26px, 4vw, 38px); }
+  .end-cta p { color: var(--dim); margin-block: 12px 26px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="page-head">
+    <p class="eyebrow" data-i18n="price.eyebrow">מחירים</p>
+    <h1 data-i18n="pricepage.h1">מה עולה, ומה לא כלול.</h1>
+    <p class="sec-lede" data-i18n="pricepage.lede">
+      רוב בוני האתרים לא מפרסמים מחיר כי הם רוצים שתתקשר קודם.
+      אני מפרסם, כי אם התקציב שלך לא מתאים — עדיף לשנינו לדעת עכשיו ולא אחרי שיחה של רבע שעה.
+    </p>
+  </header>
+
+  <!-- ⚠️ נתן: כל המספרים בעמוד הזה מומצאים. תן לי אמיתיים ואחליף. -->
+  <div class="tbl-wrap">
+    <table>
+      <caption class="sr-only">השוואת חבילות</caption>
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" data-i18n="price.1t">כרטיס ביקור</th>
+          <th scope="col" class="col-hot" data-i18n="price.2t">אתר תדמית</th>
+          <th scope="col" data-i18n="price.3t">אתר + פרסום</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r0">מחיר</th>
+          <td><b>₪1,500</b><span class="note" data-i18n="pricepage.from">החל מ־</span></td>
+          <td class="col-hot"><b>₪3,500</b><span class="note" data-i18n="pricepage.from">החל מ־</span></td>
+          <td><b data-i18n="price.3tag">בהתאמה אישית</b></td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r1">מתאים ל</th>
+          <td data-i18n="pricepage.r1a">עסק שצריך שימצאו אותו</td>
+          <td class="col-hot" data-i18n="pricepage.r1b">עסק שרוצה שהאתר יביא פניות</td>
+          <td data-i18n="pricepage.r1c">עסק שרוצה גם תנועה</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r2">עמודים</th>
+          <td data-i18n="pricepage.r2a">1</td>
+          <td class="col-hot" data-i18n="pricepage.r2b">לפי הצורך</td>
+          <td data-i18n="pricepage.r2c">לפי הצורך</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r3">מותאם לנייד</th>
+          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r4">וואטסאפ וחיוג</th>
+          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r5">טופס פניות</th>
+          <td class="no">—</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r6">גלריה / המלצות / שאלות</th>
+          <td class="no">—</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r7">ליווי אחרי העלייה</th>
+          <td data-i18n="pricepage.r7a">שבועיים</td>
+          <td class="col-hot" data-i18n="pricepage.r7b">חודש</td>
+          <td data-i18n="pricepage.r7c">כל זמן הקמפיין</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r8">קמפיין פייסבוק</th>
+          <td class="no">—</td><td class="col-hot no">—</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r9">זמן אספקה</th>
+          <td data-i18n="pricepage.r9a">שבוע</td>
+          <td class="col-hot" data-i18n="pricepage.r9b">שבועיים</td>
+          <td data-i18n="pricepage.r9c">שבועיים+</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r10">אחסון שנה ראשונה</th>
+          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th scope="row" data-i18n="pricepage.r11">הדומיין על שמך</th>
+          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <section>
+    <h2 class="sec-title" data-i18n="pricepage.after">מה עולה כסף אחרי</h2>
+    <p class="sec-lede" data-i18n="pricepage.afterlede">
+      זה החלק שאף אחד לא אומר לך מראש, ואז זה מגיע כהפתעה. אז הנה, מראש.
+    </p>
+    <div class="after-grid">
+      <article class="after">
+        <h3 data-i18n="pricepage.a1t">דומיין</h3>
+        <div class="amt" data-i18n="pricepage.a1p">~₪60 לשנה</div>
+        <p data-i18n="pricepage.a1d">משולם ישירות לרשם, על שמך. לא עובר דרכי ואני לא לוקח עליו כלום.</p>
+      </article>
+      <article class="after">
+        <h3 data-i18n="pricepage.a2t">אחסון</h3>
+        <div class="amt" data-i18n="pricepage.a2p">שנה ראשונה כלולה</div>
+        <p data-i18n="pricepage.a2d">אחר כך עלות שנתית קטנה, ישירות לספק. לאתרים שאני בונה זה בדרך כלל זניח.</p>
+      </article>
+      <article class="after">
+        <h3 data-i18n="pricepage.a3t">שינויים</h3>
+        <div class="amt" data-i18n="pricepage.a3p">כלול בחודש הראשון</div>
+        <p data-i18n="pricepage.a3d">אחרי זה לפי שעה — או שאני בונה לך ממשק שתעדכן לבד, ואז זה חינם לתמיד.</p>
+      </article>
+      <article class="after">
+        <h3 data-i18n="pricepage.a4t">תקציב פרסום</h3>
+        <div class="amt" data-i18n="pricepage.a4p">משולם למטא ישירות</div>
+        <p data-i18n="pricepage.a4d">רק בחבילת הפרסום. הכסף הולך לפייסבוק, לא אליי — אתה רואה בדיוק לאן.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="honest">
+    <h3 data-i18n="pricepage.h3">מתי לא כדאי לך לעבוד איתי</h3>
+    <p data-i18n="pricepage.h3a">
+      אם אתה צריך חנות אונליין עם מאות מוצרים, מערכת הזמנות מורכבת, או משהו שמתחבר
+      לתוכנת הנהלת חשבונות — זה לא מה שאני עושה הכי טוב, ואני אגיד לך את זה בשיחה
+      במקום לקחת את הכסף וללמוד על חשבונך.
+    </p>
+    <p data-i18n="pricepage.h3b">
+      ואם התקציב שלך מתחת ל־₪1,500 — תשקיע אותו קודם בפרופיל עסקי מסודר בגוגל.
+      זה יביא לך יותר, וזה בחינם. תחזור אליי כשהעסק יגדל.
+    </p>
+  </div>
+
+  <section class="end-cta">
+    <h2 data-i18n="pricepage.ctat">רוצה מחיר מדויק לעסק שלך?</h2>
+    <p data-i18n="pricepage.ctap">רבע שעה של שיחה, והצעה בכתב תוך 24 שעות.</p>
+    <a href="index.html#contact" class="btn" data-i18n="price.cta">לקבלת הצעה</a>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "pricing.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

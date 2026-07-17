@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="procmeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>איך זה עובד — בניית אתר מהשיחה ועד העלייה לאוויר | נתן חיים</title>
+<meta name="description" content="התהליך המלא של בניית אתר: שיחה, הצעה במחיר סגור, בנייה, ועלייה לאוויר. מה אני צריך ממך בכל שלב וכמה זמן זה לוקח." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  .page-head { padding-block: calc(var(--nav-h) + 60px) 0; }
+  .page-head h1 { font-size: clamp(32px, 5.6vw, 54px); }
+
+  .phase {
+    display: grid; grid-template-columns: 78px 1fr;
+    gap: clamp(20px, 3vw, 34px);
+    padding-block: clamp(34px, 5vw, 52px);
+    border-top: 1px solid var(--border);
+  }
+  .phase-mark {
+    font-family: var(--mono); font-size: 13px; color: var(--accent);
+    border: 1px solid var(--border-2); border-radius: 10px;
+    width: 54px; height: 54px; display: grid; place-items: center;
+    position: sticky; top: calc(var(--nav-h) + 20px);
+  }
+  .phase h2 { font-size: clamp(23px, 3vw, 30px); }
+  .phase-when {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--accent);
+    background: var(--accent-dim); border-radius: 999px;
+    padding: 4px 12px; margin-bottom: 12px;
+  }
+  .phase-lede { color: var(--dim); font-size: 17.5px; margin-top: 10px; max-width: 60ch; }
+
+  .need {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 20px 22px; margin-top: 24px;
+  }
+  .need h3 {
+    font-size: 15px; font-family: var(--body); font-weight: 700;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .need h3 svg { color: var(--accent); flex: none; }
+  .need ul { margin: 0; padding-inline-start: 20px; color: var(--dim); font-size: 15.5px; }
+  .need li { margin-bottom: 6px; }
+  .need li:last-child { margin-bottom: 0; }
+
+  .warn {
+    border-inline-start: 3px solid var(--danger);
+    background: color-mix(in srgb, var(--danger) 8%, transparent);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 16px 18px; margin-top: 20px; font-size: 15.5px; color: var(--dim);
+  }
+  .warn b { color: var(--white); }
+
+  .end-cta {
+    border-top: 1px solid var(--border); margin-top: 20px;
+    padding-block: var(--gap); text-align: center;
+  }
+  .end-cta h2 { font-size: clamp(26px, 4vw, 38px); }
+  .end-cta p { color: var(--dim); margin-block: 12px 26px; }
+
+  @media (max-width: 700px) {
+    .phase { grid-template-columns: 1fr; gap: 14px; }
+    .phase-mark { position: static; width: 46px; height: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="page-head">
+    <p class="eyebrow" data-i18n="proc.eyebrow">התהליך</p>
+    <h1 data-i18n="procpage.h1">מהשיחה ועד אתר חי.<br>בלי הפתעות באמצע.</h1>
+    <p class="sec-lede" data-i18n="procpage.lede">
+      זה כל התהליך, כולל מה אני צריך ממך בכל שלב ומה בדרך כלל מעכב.
+      אני מפרסם את זה כי רוב האנשים שנשרפו פעם אחת נשרפו בדיוק בגלל שלא ידעו מה הולך לקרות.
+    </p>
+  </header>
+
+  <!-- ── 01 ── -->
+  <section class="phase">
+    <div class="phase-mark">01</div>
+    <div>
+      <span class="phase-when">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="procpage.1w">15 דקות · בלי עלות</span>
+      </span>
+      <h2 data-i18n="procpage.1t">שיחה קצרה</h2>
+      <p class="phase-lede" data-i18n="procpage.1p">
+        אני שואל מה העסק עושה, מי הלקוח שלך, ואיך הוא מגיע אליך היום.
+        המטרה של השיחה היא לא למכור לך — היא להבין אם אתה בכלל צריך אתר, ואם אני האדם הנכון.
+        לפעמים התשובה היא שאתה צריך דף פייסבוק מסודר ולא אתר, ואני אגיד לך את זה.
+      </p>
+
+      <div class="need">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-i18n="procpage.need">מה אני צריך ממך</span>
+        </h3>
+        <ul>
+          <li data-i18n="procpage.1n1">רבע שעה שבה אתה לא באמצע משהו</li>
+          <li data-i18n="procpage.1n2">מה אתה רוצה שיקרה כשמישהו נוחת על האתר — טלפון? הזמנה? שיגיע לחנות?</li>
+          <li data-i18n="procpage.1n3">אם יש לך אתר קיים או מתחרה שאתה אוהב — תשלח קישור</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 ── -->
+  <section class="phase">
+    <div class="phase-mark">02</div>
+    <div>
+      <span class="phase-when">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="procpage.2w">תוך 24 שעות</span>
+      </span>
+      <h2 data-i18n="procpage.2t">הצעה ומחיר סגור</h2>
+      <p class="phase-lede" data-i18n="procpage.2p">
+        אתה מקבל מסמך אחד: מה בדיוק ייבנה, כמה עמודים, מה כלול ומה לא, כמה זמן, וכמה זה עולה.
+        המחיר הזה לא זז. אם באמצע תבקש משהו שלא היה בהצעה — אני אגיד לך כמה זה מוסיף
+        לפני שאני עושה את זה, לא בחשבונית בסוף.
+      </p>
+
+      <div class="need">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-i18n="procpage.need">מה אני צריך ממך</span>
+        </h3>
+        <ul>
+          <li data-i18n="procpage.2n1">לקרוא את ההצעה ולהגיד אם משהו חסר</li>
+          <li data-i18n="procpage.2n2">אישור בכתב — הודעת וואטסאפ מספיקה</li>
+        </ul>
+      </div>
+
+      <div class="warn" data-i18n-html="procpage.2warn">
+        <b>שקיפות:</b> אני גובה מקדמה של 40% בשלב הזה, והשאר בעלייה לאוויר.
+        זה מקובל בענף וזה מה שמאפשר לי להתחיל לעבוד. אם זה לא נוח לך — תגיד, נמצא פתרון.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 ── -->
+  <section class="phase">
+    <div class="phase-mark">03</div>
+    <div>
+      <span class="phase-when">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="procpage.3w">7–14 יום</span>
+      </span>
+      <h2 data-i18n="procpage.3t">בנייה</h2>
+      <p class="phase-lede" data-i18n="procpage.3p">
+        תוך כמה ימים אתה מקבל קישור לאתר חי שרק אתה רואה. אתה עובר עליו ואומר מה לשנות —
+        בשפה שלך, לא בשפה טכנית. "הכפתור הזה לא בולט" זה משוב מצוין.
+        אנחנו עושים שתי סבבי תיקונים, וזה בדרך כלל מספיק.
+      </p>
+
+      <div class="need">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-i18n="procpage.need">מה אני צריך ממך</span>
+        </h3>
+        <ul>
+          <li data-i18n="procpage.3n1">טקסטים — או לפחות מה אתה רוצה להגיד. אני יכול לנסח, אבל התוכן צריך לבוא ממך</li>
+          <li data-i18n="procpage.3n2">תמונות של העסק. אם אין — נדבר על זה</li>
+          <li data-i18n="procpage.3n3">לוגו, אם יש. אם אין — גם זה פתיר</li>
+          <li data-i18n="procpage.3n4">משוב תוך יומיים-שלושה, לא תוך שבועיים</li>
+        </ul>
+      </div>
+
+      <div class="warn" data-i18n-html="procpage.3warn">
+        <b>מה שבאמת מעכב:</b> כמעט תמיד זה התכנים. אני יכול לבנות אתר בשבוע —
+        אבל אם אני מחכה שבועיים לתמונות, האתר עולה בעוד שבועיים. זה השלב שתלוי בך.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 ── -->
+  <section class="phase">
+    <div class="phase-mark">04</div>
+    <div>
+      <span class="phase-when">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="procpage.4w">יום אחד</span>
+      </span>
+      <h2 data-i18n="procpage.4t">עולה לאוויר</h2>
+      <p class="phase-lede" data-i18n="procpage.4p">
+        אני מחבר את האתר לדומיין, מוודא שהוא מהיר ותקין בנייד, ומעביר לך את כל המפתחות.
+        הדומיין רשום על שמך, החשבון על שמך, והאתר שלך — גם אם מחר תרצה לעבור למישהו אחר.
+      </p>
+
+      <div class="need">
+        <h3>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span data-i18n="procpage.4after">ואחרי?</span>
+        </h3>
+        <ul>
+          <li data-i18n="procpage.4n1">חודש ראשון: שינויים קטנים כלולים, בלי תוספת</li>
+          <li data-i18n="procpage.4n2">אחרי זה: או שאני עושה בתשלום לפי שעה, או שאני בונה לך ממשק לעדכן לבד</li>
+          <li data-i18n="procpage.4n3">אני לא נעלם. אתה מדבר איתי, לא עם תמיכה</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="end-cta">
+    <h2 data-i18n="procpage.ctat">נשמע הגיוני?</h2>
+    <p data-i18n="procpage.ctap">השלב הראשון הוא רבע שעה, בלי עלות ובלי התחייבות.</p>
+    <a href="index.html#contact" class="btn" data-i18n="pf.cta">בוא נדבר</a>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "process.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

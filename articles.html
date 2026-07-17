@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="artmeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>מדריכים — מה הופך אתר לאתר שעובד | נתן חיים</title>
+<meta name="description" content="מדריכים לבעלי עסקים: למה לקוח סוגר תוך שלוש שניות, מה הופך אתר למביא פניות, מה באמת משנה בנייד, וכמה אתר צריך לעלות." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  document.documentElement.classList.add("js");
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  .page-head { padding-block: calc(var(--nav-h) + 60px) 0; }
+  .page-head h1 { font-size: clamp(32px, 5.6vw, 54px); }
+
+  .art-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 34px; }
+  .art-nav a {
+    font-size: 14px; color: var(--dim); text-decoration: none;
+    border: 1px solid var(--border-2); border-radius: 999px;
+    padding: 8px 15px; min-height: 40px; display: inline-flex; align-items: center;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  .art-nav a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+  .art {
+    padding-block: clamp(44px, 6vw, 76px) 0;
+    scroll-margin-top: calc(var(--nav-h) + 20px);
+    border-top: 1px solid var(--border);
+  }
+  .art:first-of-type { border-top: none; }
+  .art-meta {
+    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .art h2 { font-size: clamp(26px, 3.6vw, 38px); max-width: 22ch; }
+  .art-lede {
+    font-size: clamp(17px, 2vw, 20px); color: var(--dim);
+    margin-top: 16px; max-width: 62ch; line-height: 1.6;
+  }
+  .art-body { margin-top: 30px; max-width: 68ch; }
+  .art-body p { margin-bottom: 18px; color: var(--dim); font-size: 17px; }
+  .art-body h3 {
+    font-size: 21px; margin: 34px 0 12px; color: var(--white);
+  }
+  .art-body strong { color: var(--white); }
+  .art-body ul { margin: 0 0 18px; padding-inline-start: 22px; color: var(--dim); }
+  .art-body li { margin-bottom: 9px; font-size: 16.5px; }
+  .art-body a { color: var(--accent); text-underline-offset: 3px; }
+
+  .pull {
+    border-inline-start: 3px solid var(--accent);
+    background: var(--accent-dim);
+    border-radius: 0 var(--r) var(--r) 0;
+    padding: 18px 22px; margin: 26px 0;
+    font-size: 18px; color: var(--white); line-height: 1.55;
+  }
+  .pull b { color: var(--accent); }
+
+  .checkgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px; margin: 24px 0;
+  }
+  .checkcard {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 18px 20px;
+  }
+  .checkcard b { display: block; margin-bottom: 5px; font-size: 15.5px; }
+  .checkcard span { color: var(--dim); font-size: 14.5px; }
+
+
+  /* ── Article layout: copy and a visual, side by side ──
+     Taken from the reference's grammar, not its pictures: it pairs a
+     visual with copy 2–3 times in a long page and lets its own work
+     carry the rest. It never uses a photo to fill space.
+
+     Natan has no photography, and stock would undercut the whole
+     "you talk to me" pitch. So each guide gets a diagram that argues
+     its own point — original, weightless, and proof of craft. */
+  .art-grid {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(28px, 4vw, 56px); align-items: center;
+  }
+  .art-figure {
+    position: relative; border-radius: var(--r-lg);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: clamp(22px, 3vw, 34px); min-width: 0;
+    overflow: hidden;
+  }
+  .art-figure::before {
+    content: ""; position: absolute; inset-block-start: -40%; inset-inline-end: -30%;
+    width: 70%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-dim), transparent 65%);
+    pointer-events: none;
+  }
+  .fig-cap {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    margin-top: 16px; text-align: center;
+  }
+
+  /* 1 · three seconds */
+  .fig-clock { display: grid; gap: 9px; }
+  .fig-bar { display: grid; grid-template-columns: 62px 1fr; gap: 12px; align-items: center; }
+  .fig-bar span { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+  .fig-track { height: 9px; border-radius: 5px; background: var(--surface-2); overflow: hidden; }
+  .fig-fill { height: 100%; border-radius: 5px; background: var(--accent); }
+  .fig-fill.warn { background: var(--danger); }
+
+  /* 2 · the leak */
+  .fig-funnel { display: grid; gap: 7px; justify-items: center; }
+  .fig-step {
+    border-radius: 7px; padding: 9px 0; text-align: center;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--dim); font-family: var(--mono);
+  }
+  .fig-step.live { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  /* 3 · thumb reach */
+  .fig-phone {
+    width: 132px; margin: 0 auto; aspect-ratio: 9/17;
+    border: 2px solid var(--border-2); border-radius: 18px;
+    position: relative; overflow: hidden; background: var(--surface-2);
+  }
+  .fig-reach {
+    position: absolute; inset-block-end: -18%; inset-inline: -12%;
+    aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 34%, transparent), transparent 70%);
+  }
+  .fig-dot {
+    position: absolute; height: 15px; border-radius: 4px;
+    inset-inline: 14px; background: var(--faint);
+  }
+  .fig-dot.top { top: 14px; }
+  .fig-dot.good { inset-block-end: 14px; background: var(--accent); }
+
+  /* 4 · price spread */
+  .fig-spread { display: grid; gap: 12px; }
+  .fig-quote {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 12px 14px; border-radius: 8px;
+    background: var(--surface-2); border: 1px solid var(--border);
+  }
+  .fig-quote b { font-family: var(--mono); font-size: 15px; color: var(--accent); }
+  .fig-quote span { font-size: 12.5px; color: var(--faint); }
+
+  /* 5 · keep or replace */
+  .fig-scale { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fig-side {
+    border-radius: 9px; padding: 14px 12px; text-align: center;
+    border: 1px solid var(--border); background: var(--surface-2);
+  }
+  .fig-side b { display: block; font-size: 20px; font-family: var(--display); }
+  .fig-side span { font-size: 11.5px; color: var(--faint); }
+  .fig-side.keep b { color: var(--ok); }
+  .fig-side.swap b { color: var(--accent); }
+
+  @media (max-width: 860px) {
+    .art-grid { grid-template-columns: 1fr; }
+    /* Visual after the copy on a phone: the argument comes first,
+       the illustration supports it. */
+    .art-figure { order: 2; }
+  }
+
+  .end-cta {
+    border-top: 1px solid var(--border); margin-top: var(--gap);
+    padding-block: var(--gap); text-align: center;
+  }
+  .end-cta h2 { font-size: clamp(26px, 4vw, 38px); }
+  .end-cta p { color: var(--dim); margin-block: 12px 26px; }
+
+  @media (max-width: 700px) {
+    .art-body p, .art-body li { font-size: 16px; }
+    .pull { font-size: 16.5px; padding: 15px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="page-head">
+    <p class="eyebrow" data-i18n="art.eyebrow">מדריכים</p>
+    <h1 data-i18n="art.h1">מה באמת מפריד בין אתר יפה לאתר שעובד.</h1>
+    <p class="sec-lede" data-i18n="art.lede">
+      זה מה שאני מסביר לכל לקוח בשיחה הראשונה. אין כאן סודות ואין כאן מכירה —
+      אם תיקח את זה ותיישם לבד, מצוין. אם תעדיף שאני אעשה, אני כאן.
+    </p>
+    <nav class="art-nav" aria-label="מדריכים">
+      <a href="#seconds" data-i18n="art.n1">3 השניות הראשונות</a>
+      <a href="#leads" data-i18n="art.n2">אתר שמביא פניות</a>
+      <a href="#mobile" data-i18n="art.n3">האמת על נייד</a>
+      <a href="#cost" data-i18n="art.n4">כמה אתר עולה</a>
+      <a href="#redesign" data-i18n="art.n5">מתי להחליף אתר</a>
+      <a href="#seo" data-i18n="art.n6">SEO בעברית פשוטה</a>
+    </nav>
+  </header>
+
+  <!-- ═══════════ 1 ═══════════ -->
+  <article class="art" id="seconds">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.1meta">רושם ראשוני</p>
+    <h2 data-i18n="art.1h">למה לקוח סוגר את האתר שלך תוך 3 שניות</h2>
+    <p class="art-lede" data-i18n="art.1lede">
+      הוא לא קרא כלום. הוא לא שקל. הוא הרגיש משהו והלך.
+      וזה קורה הרבה לפני שהוא הגיע למילה הראשונה שכתבת.
+    </p>
+
+    <div class="art-body">
+      <p data-i18n="art.1p1">
+        בעל עסק שנוחת על אתר לא קורא אותו — הוא <strong>סורק</strong> אותו. תוך פחות משנייה
+        המוח שלו מקבל החלטה אחת: "זה נראה רציני, או שזה נראה כמו משהו שמישהו עשה בברך?"
+        ההחלטה הזו נעשית לפני קריאה, והיא כמעט תמיד סופית.
+      </p>
+
+      <h3 data-i18n="art.1h1">שלושת הדברים שהוא מרגיש לפני שהוא קורא</h3>
+      <div class="checkgrid">
+        <div class="checkcard">
+          <b data-i18n="art.1c1t">מהירות</b>
+          <span data-i18n="art.1c1">אתר שלוקח יותר משלוש שניות בנייד מאבד חלק ניכר מהמבקרים לפני שהם ראו משהו. הם לא כועסים — הם פשוט חוזרים לגוגל.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.1c2t">סדר</b>
+          <span data-i18n="art.1c2">העין מחפשת מבנה: כותרת, משפט, כפתור. אם הכול באותו גודל ובאותו משקל, אין למה להיאחז — וזה מרגיש כמו רעש.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.1c3t">עדכניות</b>
+          <span data-i18n="art.1c3">גרדיאנטים, צללים כבדים, פינות מעוגלות מדי, תמונות סטוק של אנשים מחייכים — כל אלה מתארכים אתר לעשור מסוים. הלקוח לא יודע להסביר, אבל הוא מזהה.</span>
+        </div>
+      </div>
+
+      <div class="pull" data-i18n-html="art.1pull">
+        הטעות הכי נפוצה: להשקיע הכול ב<b>מה שכתוב</b> ולא במה ש<b>מרגישים</b>.
+        אף אחד לא יקרא את הטקסט המצוין שלך אם הרושם הראשון אמר לו ללכת.
+      </div>
+
+      <h3 data-i18n="art.1h2">מה עושים עם זה</h3>
+      <p data-i18n="art.1p2">
+        תפתח את האתר שלך בטלפון, על חבילת גלישה ולא על ה-Wi-Fi של המשרד. תספור בקול:
+        אחת, שתיים, שלוש. אם עדיין לא ראית כותרת ברורה וכפתור — זו הבעיה שלך,
+        ושום שיפור בטקסט לא יפתור אותה.
+      </p>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-clock">
+          <div class="fig-bar"><span>0.0s</span><div class="fig-track"><div class="fig-fill" style="width:8%"></div></div></div>
+          <div class="fig-bar"><span>1.0s</span><div class="fig-track"><div class="fig-fill" style="width:34%"></div></div></div>
+          <div class="fig-bar"><span>2.0s</span><div class="fig-track"><div class="fig-fill" style="width:66%"></div></div></div>
+          <div class="fig-bar"><span>3.0s</span><div class="fig-track"><div class="fig-fill warn" style="width:100%"></div></div></div>
+        </div>
+        <p class="fig-cap" data-i18n="art.1fig">רוב ההחלטה נסגרת לפני שנייה אחת</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════ 2 ═══════════ -->
+  <article class="art" id="leads">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.2meta">המרה</p>
+    <h2 data-i18n="art.2h">מה הופך אתר לאתר שמביא פניות</h2>
+    <p class="art-lede" data-i18n="art.2lede">
+      אתר יפה שלא מייצר טלפונים הוא הוצאה. ההבדל בין השניים הוא בדרך כלל
+      לא עיצוב — אלא חיכוך.
+    </p>
+
+    <div class="art-body">
+      <p data-i18n="art.2p1">
+        כל צעד שאתה מבקש מלקוח לעשות מוריד חלק ממי שימשיך. זה נכון גם כשהצעד קטן.
+        אתר שמביא פניות הוא אתר שהוריד את מספר הצעדים למינימום, ולא אתר שצעק חזק יותר.
+      </p>
+
+      <h3 data-i18n="art.2h1">איפה בורחות הפניות</h3>
+      <ul>
+        <li data-i18n="art.2l1"><strong>אין כפתור, יש "תפריט".</strong> אם הפעולה שאתה רוצה קבורה בניווט, היא לא תקרה. היא צריכה להיות כפתור שרואים בלי לגלול.</li>
+        <li data-i18n="art.2l2"><strong>טופס עם שמונה שדות.</strong> כל שדה מיותר גובה. שם וטלפון מספיקים כדי להתקשר; את השאר תשאל בשיחה.</li>
+        <li data-i18n="art.2l3"><strong>"צור קשר" כפעולה.</strong> זו לא הצעה, זו משימה. "קבל הצעת מחיר" או "בוא נדבר 15 דקות" אומרים ללקוח מה הוא מקבל.</li>
+        <li data-i18n="art.2l4"><strong>מספר טלפון שאי אפשר ללחוץ עליו.</strong> בנייד, מספר שהוא לא קישור חיוג הוא מספר שצריך לזכור ולהקליד. רובם לא יטרחו.</li>
+        <li data-i18n="art.2l5"><strong>אין תשובה להתנגדות.</strong> "כמה זה עולה" ו"כמה זמן" הן השאלות שעוצרות אנשים. אם האתר לא עונה, הם לא מתקשרים לברר — הם הולכים.</li>
+      </ul>
+
+      <div class="pull" data-i18n-html="art.2pull">
+        הבדיקה הכי פשוטה שיש: תן את הטלפון שלך למישהו שלא מכיר את העסק ותגיד
+        <b>"תזמין אצלי"</b>. אל תעזור לו. תסתכל איפה הוא נתקע. שם הבעיה.
+      </div>
+
+      <h3 data-i18n="art.2h2">ומה עם עיצוב?</h3>
+      <p data-i18n="art.2p2">
+        עיצוב עושה דבר אחד קריטי: הוא קונה לך את האמון להתחיל. אבל אחרי שהאמון קיים,
+        מה שמכריע זה כמה קל להרים טלפון. <strong>עיצוב פותח את הדלת, חוסר חיכוך מכניס אותם פנימה.</strong>
+      </p>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-funnel">
+          <div class="fig-step" style="width:100%">100 · נחתו</div>
+          <div class="fig-step" style="width:78%">78 · גללו</div>
+          <div class="fig-step" style="width:41%">41 · מצאו כפתור</div>
+          <div class="fig-step" style="width:22%">22 · פתחו טופס</div>
+          <div class="fig-step live" style="width:9%">9 · שלחו</div>
+        </div>
+        <p class="fig-cap" data-i18n="art.2fig">כל שלב גובה. פחות שלבים = יותר פניות</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════ 3 ═══════════ -->
+  <article class="art" id="mobile">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.3meta">נייד</p>
+    <h2 data-i18n="art.3h">האמת על נייד: זה לא "שהאתר נכנס למסך"</h2>
+    <p class="art-lede" data-i18n="art.3lede">
+      רוב האתרים "עובדים בנייד". מעטים <em>מעוצבים</em> לנייד. ההבדל הוא
+      מי מהם מביא לך טלפון.
+    </p>
+
+    <div class="art-body">
+      <p data-i18n="art.3p1">
+        "מותאם לנייד" הפך למילה ריקה. ברוב המקרים זה אומר שהאתר הוקטן ונדחס לרוחב המסך.
+        הכול שם — פשוט קטן יותר. זה לא התאמה, זה כיווץ.
+      </p>
+
+      <h3 data-i18n="art.3h1">מה באמת שונה בנייד</h3>
+      <div class="checkgrid">
+        <div class="checkcard">
+          <b data-i18n="art.3c1t">אגודל, לא עכבר</b>
+          <span data-i18n="art.3c1">החלק הנוח למגע הוא התחתון של המסך. כפתור חשוב שיושב למעלה דורש מהיד לזוז. זו הסיבה שסרגל פעולה תחתון עובד.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.3c2t">פחות, לא קטן יותר</b>
+          <span data-i18n="art.3c2">עמודה אחת לא אומרת שכל מה שהיה בדסקטופ צריך להיערם. חלק מהדברים פשוט לא צריכים להיות שם.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.3c3t">סדר אחר</b>
+          <span data-i18n="art.3c3">מה שבדסקטופ יושב בצד, בנייד צריך להחליט אם הוא ראשון או אחרון. לפעמים התמונה היפה צריכה לרדת כדי שהכפתור יעלה.</span>
+        </div>
+      </div>
+
+      <div class="pull" data-i18n-html="art.3pull">
+        רוב הלקוחות שלך יגיעו מהטלפון — הרבה מהם ישר ממודעה.
+        אם אתה בונה קודם לדסקטופ ואז "מתאים", <b>בנית קודם למיעוט</b>.
+      </div>
+
+      <p data-i18n="art.3p2">
+        בדיקה בת דקה: פתח את האתר בטלפון, החזק ביד אחת, ונסה להזמין בלי להזיז את היד השנייה.
+        אם נאלצת — האתר עובד בנייד אבל לא מעוצב לנייד.
+      </p>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-phone">
+          <div class="fig-reach"></div>
+          <div class="fig-dot top"></div>
+          <div class="fig-dot good"></div>
+        </div>
+        <p class="fig-cap" data-i18n="art.3fig">אזור האגודל. הכפתור למעלה — מחוץ לו</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════ 4 ═══════════ -->
+  <article class="art" id="cost">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.4meta">מחיר</p>
+    <h2 data-i18n="art.4h">למה הצעת מחיר אחת אומרת ₪1,500 והשנייה ₪15,000</h2>
+    <p class="art-lede" data-i18n="art.4lede">
+      שתיהן יכולות להיות הוגנות. הן פשוט מוכרות דברים שונים —
+      ורוב בעלי העסקים לא יודעים לשאול מה ההבדל.
+    </p>
+
+    <div class="art-body">
+      <p data-i18n="art.4p1">
+        "אתר" זו מילה שמתארת חמישה מוצרים שונים. בלי לדעת מי מהם על השולחן,
+        השוואת מחירים היא ניחוש.
+      </p>
+
+      <h3 data-i18n="art.4h1">מה באמת קובע את המחיר</h3>
+      <ul>
+        <li data-i18n="art.4l1"><strong>כמה מזה מותאם לך.</strong> תבנית מוכנה שהוחלפו בה טקסטים היא עבודה של יומיים. אתר שנבנה סביב העסק שלך זו עבודה אחרת לגמרי.</li>
+        <li data-i18n="art.4l2"><strong>מי כותב את התוכן.</strong> אם התכנים שלך מוכנים, זה זול. אם צריך לנסח, לצלם ולארגן — זו חצי מהעבודה.</li>
+        <li data-i18n="art.4l3"><strong>מה קורה אחרי.</strong> יש הצעות זולות שנגמרות ביום העלייה. יש יקרות שכוללות ליווי לשנה. שתיהן לגיטימיות, זה פשוט לא אותו דבר.</li>
+        <li data-i18n="art.4l4"><strong>מי הבעלים.</strong> אתר על פלטפורמה שאתה שוכר אינו אתר שלך. עזבת — אין לך כלום. זה החלק שהכי כדאי לשאול עליו.</li>
+      </ul>
+
+      <div class="pull" data-i18n-html="art.4pull">
+        שלוש שאלות שיסננו כל הצעה: <b>הדומיין על שמי?</b> · <b>מה כלול אחרי העלייה?</b> ·
+        <b>אם אעבור למישהו אחר, מה אני לוקח איתי?</b>
+      </div>
+
+      <p data-i18n="art.4p2">
+        ואם מישהו לא מוכן לתת לך מחיר לפני פגישה — זו לא בהכרח רמאות, אבל זה כן אומר
+        שהמחיר תלוי במה שיראה עליך. <a href="pricing.html">אני מפרסם טווחים</a>, כי אני חושב
+        שעדיף לשנינו לדעת מראש אם זה מתאים.
+      </p>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-spread">
+          <div class="fig-quote"><span>תבנית, טקסט מוחלף</span><b>₪1,500</b></div>
+          <div class="fig-quote"><span>נבנה סביב העסק</span><b>₪3,500</b></div>
+          <div class="fig-quote"><span>+ תוכן וצילום</span><b>₪7,000</b></div>
+          <div class="fig-quote"><span>+ מערכת וליווי שנה</span><b>₪15,000</b></div>
+        </div>
+        <p class="fig-cap" data-i18n="art.4fig">אותה מילה. ארבעה מוצרים שונים</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══════════ 5 ═══════════ -->
+  <article class="art" id="redesign">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.5meta">אתר קיים</p>
+    <h2 data-i18n="art.5h">מתי כדאי להחליף אתר, ומתי חבל על הכסף</h2>
+    <p class="art-lede" data-i18n="art.5lede">
+      לא כל אתר ישן צריך להיזרק. ולא כל אתר חדש שווה את המחיר.
+      הנה איך להחליט.
+    </p>
+
+    <div class="art-body">
+      <h3 data-i18n="art.5h1">סימנים שכן שווה להחליף</h3>
+      <ul>
+        <li data-i18n="art.5l1"><strong>הוא לא עובד בנייד.</strong> זה לא "שדרוג" — זה שרוב הלקוחות שלך לא מצליחים להשתמש בו.</li>
+        <li data-i18n="art.5l2"><strong>אתה מתבייש לשלוח את הקישור.</strong> אם אתה שולח מספר טלפון במקום את האתר, האתר עובד נגדך.</li>
+        <li data-i18n="art.5l3"><strong>אתה לא יכול לעדכן כלום לבד.</strong> אתר שדורש מייל למישהו כדי לשנות מחיר הוא אתר שיהיה תמיד מיושן.</li>
+        <li data-i18n="art.5l4"><strong>אתה לא יודע אם הוא מביא משהו.</strong> בלי מדידה אתה משלם על אחסון של ניחוש.</li>
+      </ul>
+
+      <h3 data-i18n="art.5h2">סימנים שדווקא לא</h3>
+      <ul>
+        <li data-i18n="art.5l5"><strong>הוא פשוט "לא באופנה".</strong> אם הוא מהיר, ברור ומביא פניות — עיצוב חדש לא יביא לך יותר. תשקיע בפרסום.</li>
+        <li data-i18n="art.5l6"><strong>הבעיה היא שאין תנועה.</strong> אתר חדש לא מייצר מבקרים. אם אף אחד לא מגיע, החלפת האתר תחליף כלום ביפה יותר.</li>
+        <li data-i18n="art.5l7"><strong>לא ניסית לתקן.</strong> לפעמים כפתור אחד במקום הנכון וטופס קצר יותר עושים את רוב העבודה, בעשירית המחיר.</li>
+      </ul>
+
+      <div class="pull" data-i18n-html="art.5pull">
+        אני אגיד את זה גם בשיחה: <b>אם אין לך תנועה, אל תקנה ממני אתר.</b>
+        קודם תסדר פרופיל עסקי בגוגל — זה בחינם ויביא לך יותר. תחזור אליי אחר כך.
+      </div>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-scale">
+          <div class="fig-side keep"><b>✓</b><span>מהיר · ברור · מביא פניות</span></div>
+          <div class="fig-side swap"><b>↻</b><span>לא בנייד · לא מודדים · לא לשלוח</span></div>
+        </div>
+        <p class="fig-cap" data-i18n="art.5fig">שמאל: תשקיע בפרסום. ימין: תחליף</p>
+      </div>
+    </div>
+  </article>
+
+
+  <!-- ═══════════ 6 ═══════════ -->
+  <article class="art" id="seo">
+    <div class="art-grid">
+      <div>
+    <p class="art-meta" data-i18n="art.6meta">גוגל</p>
+    <h2 data-i18n="art.6h">SEO בעברית פשוטה: איך גוגל בכלל מוצא אותך</h2>
+    <p class="art-lede" data-i18n="art.6lede">
+      זו לא קסם ולא תרמית. גוגל מנסה לענות על שאלה של מישהו,
+      והשאלה היחידה שלו היא: "האתר הזה הוא התשובה הכי טובה?"
+    </p>
+
+    <div class="art-body">
+      <p data-i18n="art.6p1">
+        מוכרים לך SEO כמו קמע. האמת פשוטה בהרבה: גוגל שולח תוכנה שקוראת את האתר שלך,
+        מנסה להבין על מה הוא, ומחליט אם להציג אותו למי שחיפש. כל השאר זה פרטים.
+      </p>
+
+      <h3 data-i18n="art.6h1">שלושת הדברים שבאמת קובעים</h3>
+      <div class="checkgrid">
+        <div class="checkcard">
+          <b data-i18n="art.6c1t">שגוגל יבין על מה האתר</b>
+          <span data-i18n="art.6c1">כותרת ברורה בכל עמוד, טקסט אמיתי ולא רק תמונות, וכתובת שאומרת משהו. אם האתר שלך אומר "ברוכים הבאים" — גוגל לא יודע מה אתה מוכר.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.6c2t">שהוא יהיה מהיר ובנייד</b>
+          <span data-i18n="art.6c2">גוגל מדרג לפי הגרסה הניידת, ומודד כמה מהר הדף נטען ואם הוא קופץ תוך כדי. אתר איטי יורד — זה מדיד ולא דעה.</span>
+        </div>
+        <div class="checkcard">
+          <b data-i18n="art.6c3t">שמישהו יפנה אליך</b>
+          <span data-i18n="art.6c3">קישורים מאתרים אחרים הם ההצבעה. אינדקס עסקים, ספק שאתה עובד איתו, כתבה מקומית. לא צריך מאות — צריך אמיתיים.</span>
+        </div>
+      </div>
+
+      <div class="pull" data-i18n-html="art.6pull">
+        <b>הדבר הכי חשוב לעסק מקומי הוא לא באתר בכלל.</b> זה פרופיל עסקי בגוגל —
+        חינם, לוקח חצי שעה, ומביא יותר מכל מה שתעשה באתר בשנה הראשונה.
+      </div>
+
+      <h3 data-i18n="art.6h2">מה שאני עושה, ומה שאני לא</h3>
+      <ul>
+        <li data-i18n="art.6l1"><strong>כן:</strong> מבנה נכון, כותרות אמיתיות, מהירות, תיאורים לתמונות, וחיבור לפרופיל העסקי. זה כלול, בלי תוספת.</li>
+        <li data-i18n="art.6l2"><strong>כן:</strong> לוודא שגוגל בכלל מצליח לקרוא ולאנדקס את האתר. הרבה אתרים נכשלים כאן ואף אחד לא בודק.</li>
+        <li data-i18n="art.6l3"><strong>לא:</strong> להבטיח לך מקום ראשון. <b>אף אחד לא יכול להבטיח את זה</b> — מי שמבטיח, משקר או קונה לך מילה שאף אחד לא מחפש.</li>
+        <li data-i18n="art.6l4"><strong>לא:</strong> לדחוס מילות מפתח עשרים פעם בעמוד. זה עבד ב-2010 ועכשיו זה מזיק.</li>
+      </ul>
+
+      <p data-i18n="art.6p2">
+        SEO לוקח חודשים. אם אתה צריך טלפונים <em>החודש</em> — זה פרסום ממומן, לא SEO.
+        שניהם לגיטימיים; הם פשוט לא אותו כלי, ומי שמערבב ביניהם מוכר לך זמן.
+      </p>
+    </div>
+      </div>
+      <div class="art-figure">
+        <div class="fig-spread">
+          <div class="fig-quote"><span>פרופיל עסקי בגוגל</span><b>חינם · יום</b></div>
+          <div class="fig-quote"><span>מבנה, מהירות, כותרות</span><b>כלול · שבוע</b></div>
+          <div class="fig-quote"><span>קישורים אמיתיים</span><b>איטי · חודשים</b></div>
+          <div class="fig-quote"><span>פרסום ממומן</span><b>מיידי · משלם</b></div>
+        </div>
+        <p class="fig-cap" data-i18n="art.6fig">מלמעלה למטה: הכי משתלם להכי מהיר</p>
+      </div>
+    </div>
+  </article>
+
+  <section class="end-cta">
+    <h2 data-i18n="art.ctat">רוצה שאסתכל על האתר שלך?</h2>
+    <p data-i18n="art.ctap">רבע שעה, בלי עלות. אגיד לך מה הייתי משנה — גם אם לא תעבוד איתי.</p>
+    <a href="index.html#contact" class="btn" data-i18n="pf.cta">בוא נדבר</a>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "articles.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

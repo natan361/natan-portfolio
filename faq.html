@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="faqmeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>שאלות נפוצות — בניית אתרים לעסקים | נתן חיים</title>
+<meta name="description" content="כל מה ששואלים אותי לפני שמתחילים: מחיר, זמנים, בעלות על האתר, שינויים, אחסון, AI, ומה קורה אם לא אהבת." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  .page-head { padding-block: calc(var(--nav-h) + 60px) 0; }
+  .page-head h1 { font-size: clamp(32px, 5.6vw, 54px); }
+
+  .faq-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 34px; }
+  .faq-nav a {
+    font-size: 14px; color: var(--dim); text-decoration: none;
+    border: 1px solid var(--border-2); border-radius: 999px;
+    padding: 8px 15px; min-height: 40px; display: inline-flex; align-items: center;
+    transition: color .2s, border-color .2s;
+  }
+  .faq-nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .grp { padding-block: clamp(38px, 5vw, 56px) 0; scroll-margin-top: calc(var(--nav-h) + 20px); }
+  .grp h2 {
+    font-size: clamp(21px, 2.8vw, 27px);
+    padding-bottom: 14px; border-bottom: 1px solid var(--border-2);
+  }
+  .qa { border-bottom: 1px solid var(--border); }
+  .qa summary {
+    cursor: pointer; padding: 20px 0; font-weight: 700; font-size: 17.5px;
+    list-style: none; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 44px;
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after {
+    content: "+"; font-family: var(--mono); font-size: 20px; color: var(--faint);
+    flex: none; transition: transform .22s ease;
+  }
+  .qa[open] summary { color: var(--accent); }
+  .qa[open] summary::after { transform: rotate(45deg); }
+  .qa .a { padding-bottom: 22px; color: var(--dim); font-size: 16.5px; max-width: 68ch; }
+  .qa .a p + p { margin-top: 12px; }
+  .qa .a b { color: var(--white); }
+  .qa .a a { color: var(--accent); }
+
+  .end-cta { border-top: 1px solid var(--border); margin-top: var(--gap); padding-block: var(--gap); text-align: center; }
+  .end-cta h2 { font-size: clamp(26px, 4vw, 38px); }
+  .end-cta p { color: var(--dim); margin-block: 12px 26px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="page-head">
+    <p class="eyebrow" data-i18n="faq.eyebrow">שאלות נפוצות</p>
+    <h1 data-i18n="faqpage.h1">כל מה ששואלים אותי.</h1>
+    <p class="sec-lede" data-i18n="faqpage.lede">
+      גם השאלות שאנשים מתביישים לשאול. אם משהו חסר כאן — תשאל אותי ואוסיף.
+    </p>
+    <nav class="faq-nav" aria-label="קיצורי דרך">
+      <a href="#money" data-i18n="faqpage.n1">כסף</a>
+      <a href="#time" data-i18n="faqpage.n2">זמנים</a>
+      <a href="#own" data-i18n="faqpage.n3">בעלות ושליטה</a>
+      <a href="#how" data-i18n="faqpage.n4">איך אני עובד</a>
+      <a href="#risk" data-i18n="faqpage.n5">מה אם משהו משתבש</a>
+    </nav>
+  </header>
+
+  <!-- ── כסף ── -->
+  <section class="grp" id="money">
+    <h2 data-i18n="faqpage.g1">כסף</h2>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q1">כמה זה עולה?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a1">
+        <p>עמוד אחד — החל מ־₪1,500. אתר תדמית — החל מ־₪3,500. הכול מפורט ב<a href="pricing.html">עמוד המחירים</a>, כולל מה לא כלול.</p>
+        <p>המחיר הסופי נקבע אחרי שיחה, לפי מה שהעסק באמת צריך — לא לפי כמה נראה לי שאתה מוכן לשלם.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q2">למה אתה מפרסם מחירים? אף אחד לא עושה את זה.</span></summary>
+      <div class="a" data-i18n-html="faqpage.a2">
+        <p>כי זה חוסך זמן לשנינו. אם התקציב שלך לא מתאים, עדיף שתדע עכשיו מאשר אחרי שיחה של רבע שעה שבה שנינו מרגישים לא נעים.</p>
+        <p>ואם הם לא מפרסמים — שאל את עצמך למה.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q3">איך משלמים?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a3">
+        <p>40% מקדמה כשמאשרים את ההצעה, 60% בעלייה לאוויר. חשבונית על הכול.</p>
+        <p>המחיר בהצעה הוא המחיר בחשבונית. אם תבקש משהו נוסף באמצע — <b>אני אגיד לך כמה זה מוסיף לפני שאני עושה את זה</b>, לא בסוף.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q4">יש עלויות שוטפות?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a4">
+        <p>דומיין, בערך ₪60 לשנה, ישירות לרשם ועל שמך. אחסון — השנה הראשונה כלולה, אחר כך עלות קטנה ישירות לספק.</p>
+        <p>שום דבר מזה לא עובר דרכי ואני לא לוקח עליו אחוזים.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── זמנים ── -->
+  <section class="grp" id="time">
+    <h2 data-i18n="faqpage.g2">זמנים</h2>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q5">כמה זמן זה לוקח?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a5">
+        <p>עמוד אחד — בערך שבוע. אתר תדמית — שבועיים.</p>
+        <p><b>אבל האמת:</b> זה תלוי בך יותר מאשר בי. אני יכול לבנות בשבוע, אבל אם אני מחכה שבועיים לתמונות ולטקסטים — האתר עולה בעוד שבועיים. התכנים הם מה שמעכב, כמעט תמיד.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q6">אני ממהר. אפשר מהר יותר?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a6">
+        <p>לפעמים כן, תלוי מה יש לי על השולחן. תגיד לי בשיחה מה הדדליין ואני אגיד לך אם זה ריאלי — אני לא אבטיח תאריך שאני לא עומד בו כדי לסגור עסקה.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── בעלות ── -->
+  <section class="grp" id="own">
+    <h2 data-i18n="faqpage.g3">בעלות ושליטה</h2>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q7">האתר יהיה בבעלותי?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a7">
+        <p>כן, לגמרי. הדומיין נרשם על שמך, החשבונות על שמך, והקוד שלך.</p>
+        <p>אם מחר תרצה לעבור למישהו אחר — אתה לוקח את הכול ואני מעביר בלי ויכוח. <b>אני לא מחזיק אותך כבן ערובה.</b> זה נשמע מובן מאליו, אבל תשאל מסביב.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q8">אוכל לעדכן את האתר בעצמי?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a8">
+        <p>אם זה חשוב לך — תגיד בשיחה, ואני אבנה לך ממשק ניהול פשוט. אז אתה משנה טקסטים, מחליף תמונות ומוסיף דברים לבד, בלי לשלם לי כלום.</p>
+        <p>יש כאלה שמעדיפים פשוט להתקשר אליי. שתי האפשרויות בסדר.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q9">מה אם ארצה לשנות משהו אחרי שהאתר עלה?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a9">
+        <p>חודש ראשון — שינויים קטנים כלולים. אחרי זה לפי שעה, או דרך ממשק הניהול אם בנינו לך אחד.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── איך אני עובד ── -->
+  <section class="grp" id="how">
+    <h2 data-i18n="faqpage.g4">איך אני עובד</h2>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q10">אתה עובד עם AI. זה אומר שהאתר גנרי?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a10">
+        <p>לא. AI זה כלי, כמו שמקדחה חשמלית היא כלי — היא לא הופכת את הנגר לגרוע יותר.</p>
+        <p>מה שזה כן אומר: אני מספק תוך שבועיים מה שסטודיו מספק בחודשיים, במחיר שמתאים לעסק קטן. <b>התוכן, המבנה וההחלטות — אלה שלי ושלך</b>, לפי העסק שלך. אם תראה אתר שלי שנראה כמו תבנית, אל תשלם לי.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q11">אתה לבד? מה אם תיעלם?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a11">
+        <p>שאלה הוגנת. כן, אני לבד — וזה בדיוק למה הדומיין והחשבונות על שמך מהיום הראשון. גם אם ייעלם — האתר שלך, והוא ממשיך לעבוד.</p>
+        <p>היתרון של לבד: אתה מדבר איתי, לא עם מנהל לקוחות שמעביר הודעות למישהו שלא פגשת.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q12">אני לא מבין בטכנולוגיה בכלל. זו בעיה?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a12">
+        <p>לא, זו העבודה שלי. אתה לא צריך לדעת מה זה דומיין, אחסון או DNS — אני מסדר הכול ומדבר איתך בעברית.</p>
+        <p>המשוב שאני צריך ממך הוא מסוג "הכפתור הזה לא בולט" או "זה לא מרגיש רציני". זה משוב מצוין.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q13">אתה עושה גם הדמיות וסרטונים?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a13">
+        <p>כן — יש דוגמאות ב<a href="portfolio.html">תיק העבודות</a>. אבל העיקר שלי הוא אתרים לעסקים, וזה מה שאני עושה הכי טוב.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── סיכון ── -->
+  <section class="grp" id="risk">
+    <h2 data-i18n="faqpage.g5">מה אם משהו משתבש</h2>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q14">מה אם לא אהבתי את התוצאה?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a14">
+        <p>בגלל זה אתה רואה את האתר תוך כמה ימים ולא בסוף. מתקנים תוך כדי, לא אחרי.</p>
+        <p><b>ואם בשלב הראשון זה לא הולך לכיוון הנכון — עוצרים, ואני מחזיר את המקדמה.</b> אני מעדיף להחזיר כסף מאשר שיסתובב אתר שלי שאתה לא אוהב.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q15">מה אם האתר לא יביא לי לקוחות?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a15">
+        <p>אני אהיה כן איתך: <b>אתר לבד לא מביא לקוחות.</b> מי שמבטיח לך את זה מוכר לך אוויר.</p>
+        <p>אתר טוב הופך מישהו שכבר הגיע אליך ללקוח — במקום שיסגור וילך. כדי שיגיעו מלכתחילה צריך תנועה: גוגל, פייסבוק, המלצות. על זה נדבר בשיחה, ואם צריך — יש <a href="pricing.html">חבילה שכוללת גם פרסום</a>.</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span data-i18n="faqpage.q16">האתר צריך להיות נגיש לפי החוק?</span></summary>
+      <div class="a" data-i18n-html="faqpage.a16">
+        <p>אם העסק שלך נותן שירות לציבור — כנראה שכן, ויש פטורים לפי מחזור. <b>אני לא עורך דין ולא אתן לך ייעוץ משפטי.</b></p>
+        <p>מה שאני כן עושה: בונה נגיש מלכתחילה — ניגודיות תקינה, ניווט מקלדת, תיאורים לתמונות — כי זה נכון גם ככה. זה לא עולה תוספת.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="end-cta">
+    <h2 data-i18n="faqpage.ctat">שאלה שלא ענו עליה כאן?</h2>
+    <p data-i18n="faqpage.ctap">תשאל אותי ישירות. אני עונה תוך 24 שעות.</p>
+    <a href="index.html#contact" class="btn" data-i18n="pf.cta">בוא נדבר</a>
+  </section>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "faq.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

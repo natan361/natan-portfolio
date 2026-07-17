@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>ניהול · נתן חיים</title>
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --black:    #0B0B0B;
+    --surface:  #141417;
+    --surface-2:#1C1C20;
+    --white:    #EDECEB;
+    --dim:      #8E8E86;
+    --faint:    #63635C;
+    --accent:   #E8FF4B;
+    --accent-dim: rgba(232,255,75,0.10);
+    --danger:   #FF6B4A;
+    --ok:       #6EE7A8;
+    --border:   rgba(237,236,235,0.10);
+    --border-2: rgba(237,236,235,0.20);
+    /* Latin resolves to Montserrat — literally the reference's face.
+       Hebrew has no Montserrat, so it falls through to Heebo: the
+       closest geometric match, with the 400-900 range their
+       weight-driven hierarchy depends on. */
+    --display: "Montserrat", "Heebo", system-ui, sans-serif;
+    --body:    "Assistant", system-ui, sans-serif;
+    --mono:    "Space Mono", monospace;
+    --r: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--black); color: var(--white);
+    font-family: var(--body); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.01em; }
+  button, input, select, textarea { font-family: inherit; font-size: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  [hidden] { display: none !important; }
+
+  /* ── Buttons ── */
+  .btn {
+    background: var(--accent); color: var(--black); border: none;
+    font-weight: 700; padding: 11px 18px; border-radius: 8px;
+    cursor: pointer; min-height: 44px;
+    transition: filter .18s ease, opacity .18s ease;
+  }
+  .btn:hover:not(:disabled) { filter: brightness(1.12); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-ghost {
+    background: none; color: var(--white); border: 1px solid var(--border-2);
+  }
+  .btn-ghost:hover:not(:disabled) { background: var(--surface-2); filter: none; }
+  .btn-danger { background: none; color: var(--danger); border: 1px solid var(--danger); }
+  .btn-danger:hover:not(:disabled) { background: rgba(255,107,74,.12); filter: none; }
+  .btn-sm { padding: 6px 12px; min-height: 36px; font-size: 14px; }
+
+  /* ── Login ── */
+  .login-wrap { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+  .login {
+    width: 100%; max-width: 380px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px; padding: 32px 28px;
+  }
+  .login-logo { width: 44px; height: 44px; object-fit: contain; margin-bottom: 18px; }
+  .login h1 { font-size: 24px; margin: 0 0 4px; }
+  .login .sub { color: var(--dim); font-size: 14px; margin: 0 0 24px; }
+
+  /* ── Fields ── */
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block; font-size: 13.5px; font-weight: 600;
+    margin-bottom: 6px; color: var(--white);
+  }
+  .field .req { color: var(--accent); }
+  .field .hint { font-size: 12.5px; color: var(--faint); margin-top: 5px; }
+  .input {
+    width: 100%; background: var(--black); color: var(--white);
+    border: 1px solid var(--border-2); border-radius: 8px;
+    padding: 11px 13px; min-height: 44px;
+    transition: border-color .18s ease;
+  }
+  .input:focus { border-color: var(--accent); outline: none; }
+  .input[dir="ltr"] { font-family: var(--mono); font-size: 14px; }
+  textarea.input { min-height: 84px; resize: vertical; line-height: 1.55; }
+  .check {
+    width: 20px; height: 20px; accent-color: var(--accent);
+    flex: none; cursor: pointer;
+  }
+
+  /* ── Messages ── */
+  .msg { border-radius: 8px; padding: 11px 14px; font-size: 14.5px; margin-bottom: 16px; }
+  .msg-err { background: rgba(255,107,74,.12); border: 1px solid var(--danger); color: var(--danger); }
+  .msg-ok  { background: rgba(110,231,168,.10); border: 1px solid var(--ok); color: var(--ok); }
+
+  /* ── Shell ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 20; background: rgba(11,11,11,.92);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 20px;
+  }
+  .topbar img { width: 32px; height: 32px; object-fit: contain; }
+  .topbar h1 { font-size: 17px; margin: 0; }
+  .topbar .who { margin-inline-start: auto; color: var(--faint); font-size: 13px; font-family: var(--mono); }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 20px 100px; }
+
+  /* ── Tabs ── */
+  .tabs { display: flex; gap: 8px; margin-bottom: 26px; flex-wrap: wrap; }
+  .tab {
+    background: none; border: 1px solid var(--border-2); color: var(--dim);
+    padding: 9px 16px; border-radius: 999px; cursor: pointer; min-height: 42px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: color .18s, border-color .18s, background .18s;
+  }
+  .tab:hover { color: var(--white); }
+  .tab[aria-selected="true"] {
+    color: var(--accent); border-color: var(--accent); background: var(--accent-dim);
+  }
+  .tab .count {
+    font-family: var(--mono); font-size: 11px; background: var(--surface-2);
+    padding: 1px 7px; border-radius: 999px; color: var(--dim);
+  }
+  .tab[aria-selected="true"] .count { background: var(--accent); color: var(--black); }
+
+  /* ── Panel header ── */
+  .panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .panel-head h2 { font-size: 21px; margin: 0; }
+  .panel-head p { margin: 2px 0 0; color: var(--faint); font-size: 13.5px; }
+
+  /* ── Item list ── */
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .item {
+    display: grid; grid-template-columns: 92px 1fr auto; gap: 14px;
+    align-items: center; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--r); padding: 12px;
+  }
+  .item.dim { opacity: .55; }
+  .thumb {
+    width: 92px; height: 62px; border-radius: 6px; object-fit: cover;
+    background: var(--surface-2); border: 1px solid var(--border);
+  }
+  .thumb-none {
+    width: 92px; height: 62px; border-radius: 6px; background: var(--surface-2);
+    border: 1px dashed var(--border-2); display: grid; place-items: center;
+    color: var(--faint); font-size: 11px;
+  }
+  .item-t { font-weight: 700; font-size: 16px; }
+  .item-s {
+    color: var(--faint); font-size: 13px; margin-top: 2px;
+    display: block; overflow-wrap: anywhere;
+  }
+  .item-url { font-family: var(--mono); font-size: 12px; color: var(--dim); direction: ltr; text-align: right; }
+  .item-actions { display: flex; gap: 6px; align-items: center; }
+  .pill {
+    font-size: 11px; font-family: var(--mono); padding: 2px 8px;
+    border-radius: 999px; border: 1px solid var(--faint); color: var(--faint);
+  }
+  .pill.live { border-color: var(--ok); color: var(--ok); }
+
+  /* ── Empty / loading ── */
+  .empty {
+    border: 1px dashed var(--border-2); border-radius: var(--r);
+    padding: 44px 24px; text-align: center; color: var(--dim);
+  }
+  .empty strong { display: block; color: var(--white); font-family: var(--display); font-size: 18px; margin-bottom: 6px; }
+  .skel { height: 88px; border-radius: var(--r); background: var(--surface); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .45; } }
+
+  /* ── Dialog ── */
+  dialog {
+    background: var(--surface); color: var(--white); border: 1px solid var(--border-2);
+    border-radius: 14px; padding: 0; width: min(560px, calc(100vw - 32px));
+    max-height: calc(100dvh - 48px);
+  }
+  dialog::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(3px); }
+  .dlg-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--surface); border-radius: 14px 14px 0 0;
+  }
+  .dlg-head h3 { margin: 0; font-size: 19px; }
+  .dlg-body { padding: 22px; overflow-y: auto; }
+  .dlg-foot {
+    display: flex; gap: 10px; justify-content: flex-start;
+    padding: 16px 22px; border-top: 1px solid var(--border);
+    position: sticky; bottom: 0; background: var(--surface); border-radius: 0 0 14px 14px;
+  }
+  .x {
+    background: none; border: none; color: var(--dim); cursor: pointer;
+    font-size: 22px; line-height: 1; padding: 6px; border-radius: 6px;
+  }
+  .x:hover { color: var(--white); }
+
+  /* ── Upload ── */
+  .drop {
+    border: 1px dashed var(--border-2); border-radius: var(--r);
+    padding: 20px; text-align: center; cursor: pointer; color: var(--dim);
+    transition: border-color .18s, background .18s; font-size: 14px;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-dim); color: var(--white); }
+  .drop input { display: none; }
+  .preview { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+  .preview img, .preview video { width: 110px; height: 74px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+  .preview .nm { font-size: 13px; color: var(--dim); overflow-wrap: anywhere; }
+
+  .spin {
+    width: 15px; height: 15px; border: 2px solid rgba(0,0,0,.25);
+    border-top-color: var(--black); border-radius: 50%;
+    display: inline-block; vertical-align: -2px; margin-inline-end: 7px;
+    animation: rot .7s linear infinite;
+  }
+  @keyframes rot { to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+  @media (max-width: 560px) {
+    .item { grid-template-columns: 64px 1fr; }
+    .thumb, .thumb-none { width: 64px; height: 46px; }
+    .item-actions { grid-column: 1 / -1; justify-content: flex-end; }
+    .item-url { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div class="login-wrap" id="login-screen">
+  <form class="login" id="login-form">
+    <img src="assets/logo.png" alt="" class="login-logo" />
+    <h1>אזור ניהול</h1>
+    <p class="sub">התחבר כדי לנהל את האתרים, ההדמיות והסרטונים.</p>
+    <div id="login-msg"></div>
+    <div class="field">
+      <label for="email">שם משתמש</label>
+      <input class="input" type="text" id="email" dir="ltr" required autocomplete="username" />
+    </div>
+    <div class="field">
+      <label for="password">סיסמה</label>
+      <input class="input" type="password" id="password" dir="ltr" required autocomplete="current-password" />
+    </div>
+    <button class="btn" id="login-btn" style="width:100%">התחבר</button>
+  </form>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app" hidden>
+  <header class="topbar">
+    <img src="assets/logo.png" alt="" />
+    <h1>ניהול תוכן</h1>
+    <span class="who" id="who"></span>
+    <button class="btn btn-ghost btn-sm" id="logout">יציאה</button>
+  </header>
+
+  <main>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="panel-head">
+      <div>
+        <h2 id="panel-title"></h2>
+        <p id="panel-sub"></p>
+      </div>
+      <button class="btn" id="add-btn">+ הוספה</button>
+    </div>
+    <div id="msg"></div>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<!-- ══════════ EDIT DIALOG ══════════ -->
+<dialog id="dlg">
+  <form method="dialog" id="dlg-form">
+    <div class="dlg-head">
+      <h3 id="dlg-title"></h3>
+      <button type="button" class="x" id="dlg-x" aria-label="סגירה">&times;</button>
+    </div>
+    <div class="dlg-body" id="dlg-body"></div>
+    <div class="dlg-foot">
+      <button type="button" class="btn" id="dlg-save">שמירה</button>
+      <button type="button" class="btn btn-ghost" id="dlg-cancel">ביטול</button>
+    </div>
+  </form>
+</dialog>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_KEY, MEDIA_BUCKET } from "./supabase-config.js";
+
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* ─────────────────────────────────────────────────────
+   Content types are described once, here. The list, the
+   form, and the save path are all generated from this —
+   adding a field later means editing one line, not three.
+   ───────────────────────────────────────────────────── */
+const TYPES = {
+  sites: {
+    label: "אתרים",
+    single: "אתר",
+    table: "sites",
+    empty: "עוד לא הוספת אתרים.",
+    sub: "האתרים שבנית. אלה מופיעים בדף הבית ובתיק העבודות.",
+    title: r => r.name_he,
+    sub2:  r => r.description_he,
+    aside: r => r.url,
+    thumb: r => r.screenshot_url,
+    fields: [
+      { name: "name_he",        label: "שם העסק",     type: "text",     required: true },
+      { name: "url",            label: "קישור לאתר",  type: "url",      required: true, ltr: true,
+        hint: "הכתובת המלאה, כולל https://" },
+      { name: "description_he", label: "תיאור קצר",   type: "textarea",
+        hint: "מה בנית לו, במשפט. זה מה שהלקוח הבא קורא." },
+      { name: "tags",           label: "תגיות",       type: "tags",
+        hint: "מופרדות בפסיק. לדוגמה: עברית, חנות, נדל\"ן" },
+      { name: "screenshot_url", label: "צילום מסך",   type: "image" },
+
+      // The story is what turns a screenshot into proof. Empty by
+      // default: these are claims about a real client's business,
+      // so they come from Natan or they don't exist.
+      { name: "challenge_he", label: "הסיפור · מה הם באו איתו?", type: "textarea",
+        hint: "הבעיה בלשון שלהם. \"אין לנו אתר בכלל\" · \"אנשים לא מוצאים אותנו\". 2–3 שורות." },
+      { name: "decision_he",  label: "הסיפור · איזו החלטה קיבלת, ולמה?", type: "textarea",
+        hint: "משהו שלא היה מובן מאליו. זה החלק שמוכיח שאתה חושב ולא רק מבצע." },
+      { name: "outcome_he",   label: "הסיפור · מה השתנה אחרי?", type: "textarea",
+        hint: "רק אם זה אמיתי ומדיד. אם אין מספר — עדיף להשאיר ריק מאשר לנסח משהו מעורפל." },
+    ],
+  },
+  renders: {
+    label: "הדמיות",
+    single: "הדמיה",
+    table: "renders",
+    empty: "עוד לא הוספת הדמיות.",
+    sub: "לפני ואחרי. המבקר גורר את הידית כדי להשוות.",
+    title: r => r.title_he,
+    sub2:  r => r.subtitle_he,
+    thumb: r => r.after_url,
+    fields: [
+      { name: "title_he",    label: "שם ההדמיה", type: "text", required: true },
+      { name: "subtitle_he", label: "תיאור",     type: "text",
+        hint: "לדוגמה: עיצוב פנים · הדמיה פוטוריאליסטית" },
+      { name: "before_url",  label: "תמונת לפני", type: "image", required: true },
+      { name: "after_url",   label: "תמונת אחרי", type: "image", required: true },
+    ],
+  },
+  videos: {
+    label: "סרטונים",
+    single: "סרטון",
+    table: "videos",
+    empty: "עוד לא הוספת סרטונים.",
+    sub: "סרטונים שהפקת. אפשר קישור יוטיוב או קובץ שתעלה.",
+    title: r => r.title_he,
+    sub2:  r => r.description_he,
+    thumb: r => r.poster_url ||
+      (r.youtube_id ? `https://img.youtube.com/vi/${r.youtube_id}/mqdefault.jpg` : null),
+    fields: [
+      { name: "title_he",       label: "שם הסרטון", type: "text", required: true },
+      { name: "description_he", label: "תיאור",     type: "textarea" },
+      { name: "youtube_id",     label: "קישור יוטיוב", type: "youtube", ltr: true,
+        hint: "הדבק את הקישור המלא — אחלץ את המזהה לבד. השאר ריק אם אתה מעלה קובץ." },
+      { name: "video_url",      label: "או קובץ וידאו", type: "video",
+        hint: "רק אם אין יוטיוב. קובץ MP4." },
+      { name: "poster_url",     label: "תמונת שער",    type: "image",
+        hint: "לקובץ בלבד. ליוטיוב התמונה נלקחת אוטומטית." },
+    ],
+    // The database enforces this too, but a 400 from Postgres is a
+    // worse way to learn it than a sentence.
+    validate: p => (!p.youtube_id && !p.video_url)
+      ? "צריך או קישור יוטיוב או קובץ וידאו. אחרת אין מה לנגן." : null,
+  },
+
+  packages: {
+    label: "מחירים",
+    single: "חבילה",
+    table: "packages",
+    empty: "עוד לא הגדרת חבילות.",
+    sub: "החבילות שמופיעות בדף הבית ובעמוד המחירים. שינוי כאן משנה את שניהם.",
+    title: r => r.name_he,
+    sub2:  r => r.price_he,
+    thumb: () => null,
+    fields: [
+      { name: "name_he",  label: "שם החבילה", type: "text", required: true },
+      { name: "for_he",   label: "למי זה מתאים", type: "text",
+        hint: 'לדוגמה: לעסק שרוצה שהאתר יביא פניות' },
+      { name: "price_he", label: "המחיר", type: "text", required: true,
+        hint: 'טקסט חופשי — "החל מ־₪1,500" או "בהתאמה אישית". כתוב בדיוק איך שזה יופיע.' },
+      { name: "features_he", label: "מה כלול", type: "lines",
+        hint: "שורה אחת לכל סעיף. Enter בין שורות." },
+      { name: "is_featured", label: "לסמן כ\"הכי נפוץ\"", type: "bool",
+        hint: "רק חבילה אחת. זו שמקבלת מסגרת בולטת." },
+      { name: "cta_he",   label: "טקסט הכפתור", type: "text",
+        hint: 'ברירת מחדל: "לקבלת הצעה"' },
+    ],
+  },
+
+  testimonials: {
+    label: "המלצות",
+    single: "המלצה",
+    table: "testimonials",
+    empty: "עוד לא הוספת המלצות.",
+    sub: "המלצות אמיתיות בלבד. הסקשן באתר מוסתר כל עוד אין אף אחת מפורסמת.",
+    title: r => r.author_he,
+    sub2:  r => r.quote_he,
+    thumb: r => r.photo_url,
+    fields: [
+      { name: "author_he", label: "שם הלקוח", type: "text", required: true,
+        hint: "שם אמיתי. המלצה אנונימית שווה הרבה פחות." },
+      { name: "role_he",   label: "העסק שלו", type: "text",
+        hint: 'לדוגמה: מסעדה · ירושלים' },
+      { name: "quote_he",  label: "מה הוא אמר", type: "textarea", required: true,
+        hint: "במילים שלו, בלי ליטוש. אם יש מספר — תשאיר אותו." },
+      { name: "photo_url", label: "תמונה", type: "image",
+        hint: "פנים מעלות המרה משמעותית לעומת ציטוט בלי תמונה." },
+    ],
+  },
+};
+
+let current = "sites";
+let rows = {};
+let editing = null;
+
+const $ = s => document.querySelector(s);
+const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; };
+
+/* Accept whatever form of YouTube link someone pastes — full URL,
+   share link, embed, or a bare ID — and store just the ID. */
+function youtubeId(v) {
+  if (!v) return null;
+  const s = v.trim();
+  if (/^[\w-]{11}$/.test(s)) return s;
+  const m = s.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+  return m ? m[1] : null;
+}
+
+/* ── Error text people can act on ─────────────────── */
+function humanError(e) {
+  const m = (e?.message || String(e)).toLowerCase();
+  if (m.includes("invalid login credentials")) return "האימייל או הסיסמה שגויים.";
+  if (m.includes("email not confirmed"))       return "המייל עדיין לא אומת. אשר את המייל שנשלח אליך.";
+  if (m.includes("row-level security") || m.includes("violates row-level"))
+    return "אין לך הרשאת כתיבה. המשתמש הזה לא רשום כמנהל.";
+  if (m.includes("exceeded the maximum allowed size") || m.includes("payload too large"))
+    return "הקובץ גדול מדי. המגבלה היא 50MB.";
+  if (m.includes("mime type") || m.includes("invalid_mime_type"))
+    return "סוג הקובץ לא נתמך. מותר: WebP, PNG, JPEG, AVIF, MP4, WebM.";
+  if (m.includes("failed to fetch") || m.includes("networkerror"))
+    return "אין חיבור לשרת. בדוק את האינטרנט ונסה שוב.";
+  return e?.message || "משהו נכשל. נסה שוב.";
+}
+function say(target, text, kind) {
+  target.innerHTML = "";
+  if (!text) return;
+  target.append(el("div", "msg msg-" + kind, text));
+}
+function busy(btn, on, label) {
+  btn.disabled = on;
+  btn.innerHTML = on ? '<span class="spin"></span>' + label : label;
+}
+
+/* ══════════ AUTH ══════════ */
+$("#login-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = $("#login-btn");
+  say($("#login-msg"), "", "err");
+  busy(btn, true, "מתחבר…");
+  // Supabase auth is email-based, but Natan wanted to type a plain
+  // username. Anything without an @ gets the internal domain appended,
+  // so "NATAN" and the full address both work.
+  const raw = $("#email").value.trim();
+  const email = raw.includes("@") ? raw : `${raw.toLowerCase()}@admin.local`;
+
+  const { error } = await sb.auth.signInWithPassword({
+    email,
+    password: $("#password").value,
+  });
+  busy(btn, false, "התחבר");
+  if (error) { say($("#login-msg"), humanError(error), "err"); return; }
+  boot();
+});
+
+$("#logout").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  location.reload();
+});
+
+async function boot() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { $("#login-screen").hidden = false; $("#app").hidden = true; return; }
+
+  // Signing in is not the same as being allowed to write. Check the
+  // allowlist up front so the UI never offers actions that will 403.
+  const { data: adminRow } = await sb.from("admins").select("user_id").eq("user_id", user.id).maybeSingle();
+  if (!adminRow) {
+    $("#login-screen").hidden = false; $("#app").hidden = true;
+    say($("#login-msg"),
+      "התחברת בהצלחה, אבל המשתמש הזה לא מוגדר כמנהל ולכן אין לו הרשאות. " +
+      "המזהה שלך: " + user.id, "err");
+    await sb.auth.signOut();
+    return;
+  }
+
+  $("#login-screen").hidden = true;
+  $("#app").hidden = false;
+  $("#who").textContent = user.email;
+  renderTabs();
+  await loadAll();
+}
+
+/* ══════════ DATA ══════════ */
+async function loadAll() {
+  $("#list").innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+  await Promise.all(Object.keys(TYPES).map(async k => {
+    const { data, error } = await sb.from(TYPES[k].table).select("*").order("sort_order").order("created_at");
+    if (error) { say($("#msg"), humanError(error), "err"); rows[k] = []; return; }
+    rows[k] = data || [];
+  }));
+  renderTabs();
+  renderList();
+}
+
+/* ══════════ RENDER ══════════ */
+function renderTabs() {
+  const t = $("#tabs");
+  t.innerHTML = "";
+  for (const [key, cfg] of Object.entries(TYPES)) {
+    const b = el("button", "tab");
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(key === current));
+    b.append(document.createTextNode(cfg.label));
+    b.append(el("span", "count", rows[key] ? String(rows[key].length) : "–"));
+    b.onclick = () => { current = key; renderTabs(); renderList(); };
+    t.append(b);
+  }
+}
+
+function renderList() {
+  const cfg = TYPES[current];
+  const data = rows[current] || [];
+  $("#panel-title").textContent = cfg.label;
+  $("#panel-sub").textContent = cfg.sub;
+  say($("#msg"), "", "ok");
+
+  const list = $("#list");
+  list.innerHTML = "";
+
+  if (!data.length) {
+    const e = el("div", "empty");
+    e.append(el("strong", null, cfg.empty));
+    e.append(el("div", null, 'לחץ על "הוספה" כדי להתחיל.'));
+    list.append(e);
+    return;
+  }
+
+  for (const r of data) {
+    const item = el("div", "item" + (r.is_published ? "" : " dim"));
+
+    const src = cfg.thumb(r);
+    if (src) {
+      const img = el("img", "thumb"); img.src = src; img.alt = ""; img.loading = "lazy";
+      item.append(img);
+    } else {
+      item.append(el("div", "thumb-none", "אין תמונה"));
+    }
+
+    const mid = el("div");
+    mid.append(el("div", "item-t", cfg.title(r) || "—"));
+    const s2 = cfg.sub2 && cfg.sub2(r);
+    if (s2) mid.append(el("span", "item-s", s2));
+    if (!r.is_published) mid.append(el("span", "pill", "מוסתר"));
+    item.append(mid);
+
+    const right = el("div", "item-actions");
+    if (cfg.aside && cfg.aside(r)) right.append(el("span", "item-url", cfg.aside(r)));
+
+    const pub = el("button", "btn btn-ghost btn-sm", r.is_published ? "הסתר" : "פרסם");
+    pub.onclick = () => togglePublish(r, pub);
+    right.append(pub);
+
+    const ed = el("button", "btn btn-ghost btn-sm", "עריכה");
+    ed.onclick = () => openDialog(r);
+    right.append(ed);
+
+    const del = el("button", "btn btn-danger btn-sm", "מחיקה");
+    del.onclick = () => remove(r, del);
+    right.append(del);
+
+    item.append(right);
+    list.append(item);
+  }
+}
+
+async function togglePublish(r, btn) {
+  busy(btn, true, "…");
+  const { error } = await sb.from(TYPES[current].table)
+    .update({ is_published: !r.is_published }).eq("id", r.id);
+  if (error) { say($("#msg"), humanError(error), "err"); busy(btn, false, r.is_published ? "הסתר" : "פרסם"); return; }
+  await loadAll();
+}
+
+async function remove(r, btn) {
+  const name = TYPES[current].title(r) || "הפריט";
+  if (!confirm(`למחוק את "${name}"?\n\nהמחיקה לא ניתנת לביטול.`)) return;
+  busy(btn, true, "מוחק…");
+  const { error } = await sb.from(TYPES[current].table).delete().eq("id", r.id);
+  if (error) { say($("#msg"), humanError(error), "err"); busy(btn, false, "מחיקה"); return; }
+  await loadAll();
+  say($("#msg"), `"${name}" נמחק.`, "ok");
+}
+
+/* ══════════ DIALOG ══════════ */
+function openDialog(row) {
+  const cfg = TYPES[current];
+  editing = row || null;
+  $("#dlg-title").textContent = (row ? "עריכת " : "הוספת ") + cfg.single;
+  const body = $("#dlg-body");
+  body.innerHTML = "";
+
+  for (const f of cfg.fields) {
+    const wrap = el("div", "field");
+    const lab = el("label", null, f.label);
+    lab.htmlFor = "f_" + f.name;
+    if (f.required) lab.append(el("span", "req", " *"));
+    wrap.append(lab);
+
+    if (f.type === "image" || f.type === "video") {
+      wrap.append(buildUpload(f, row ? row[f.name] : null));
+    } else if (f.type === "bool") {
+      const b = el("input");
+      b.type = "checkbox"; b.id = "f_" + f.name;
+      b.dataset.field = f.name; b.dataset.type = "bool";
+      b.checked = !!row?.[f.name];
+      b.className = "check";
+      // Label already rendered above; keep the box beside it.
+      lab.prepend(b);
+      lab.style.display = "flex";
+      lab.style.alignItems = "center";
+      lab.style.gap = "9px";
+    } else if (f.type === "lines") {
+      const ta = el("textarea", "input"); ta.id = "f_" + f.name;
+      ta.dataset.field = f.name; ta.dataset.type = "lines";
+      ta.rows = 6;
+      ta.value = (row?.[f.name] || []).join("\n");
+      wrap.append(ta);
+    } else if (f.type === "textarea") {
+      const ta = el("textarea", "input"); ta.id = "f_" + f.name;
+      ta.value = row?.[f.name] || ""; ta.dataset.field = f.name;
+      wrap.append(ta);
+    } else {
+      const i = el("input", "input"); i.id = "f_" + f.name;
+      i.type = f.type === "url" ? "url" : "text";
+      if (f.ltr) i.dir = "ltr";
+      i.dataset.field = f.name;
+      i.dataset.type = f.type;
+      i.value = f.type === "tags" ? (row?.tags || []).join(", ") : (row?.[f.name] || "");
+      wrap.append(i);
+    }
+    if (f.hint) wrap.append(el("div", "hint", f.hint));
+    body.append(wrap);
+  }
+
+  say($("#dlg-body"), "", "err");
+  $("#dlg").showModal();
+}
+
+function buildUpload(f, existing) {
+  const box = el("div");
+  const drop = el("label", "drop");
+  drop.textContent = "גרור לכאן קובץ, או לחץ לבחירה";
+  const inp = el("input");
+  inp.type = "file";
+  inp.accept = f.type === "video" ? "video/mp4,video/webm" : "image/webp,image/png,image/jpeg,image/avif";
+  drop.append(inp);
+  box.append(drop);
+
+  const prev = el("div", "preview");
+  prev.hidden = !existing;
+  const media = el(f.type === "video" ? "video" : "img");
+  if (existing) media.src = existing;
+  const nm = el("div", "nm", existing ? "הקובץ הנוכחי" : "");
+  prev.append(media, nm);
+  box.append(prev);
+
+  // The URL is what actually gets saved; the file input is just the
+  // way to produce one. Uploading happens on save, not on pick.
+  box.dataset.field = f.name;
+  box.dataset.kind = f.type;
+  box._value = existing || null;
+  box._file = null;
+
+  const pick = file => {
+    if (!file) return;
+    box._file = file;
+    media.src = URL.createObjectURL(file);
+    nm.textContent = file.name + " · " + (file.size / 1048576).toFixed(1) + "MB";
+    prev.hidden = false;
+  };
+  inp.onchange = () => pick(inp.files[0]);
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
+  drop.ondragleave = () => drop.classList.remove("over");
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); pick(e.dataTransfer.files[0]); };
+
+  return box;
+}
+
+$("#dlg-x").onclick = $("#dlg-cancel").onclick = () => $("#dlg").close();
+
+$("#dlg-save").onclick = async () => {
+  const cfg = TYPES[current];
+  const btn = $("#dlg-save");
+  const body = $("#dlg-body");
+  const payload = {};
+
+  // ── Validate before uploading anything ──
+  for (const f of cfg.fields) {
+    if (f.type === "image" || f.type === "video") {
+      const box = body.querySelector(`[data-field="${f.name}"]`);
+      if (f.required && !box._file && !box._value) {
+        say(body, `חסר: ${f.label}. בחר קובץ ונסה שוב.`, "err");
+        body.scrollTop = 0; return;
+      }
+      continue;
+    }
+    if (f.type === "bool") {
+      payload[f.name] = body.querySelector(`[data-field="${f.name}"]`).checked;
+      continue;
+    }
+    if (f.type === "lines") {
+      payload[f.name] = body.querySelector(`[data-field="${f.name}"]`)
+        .value.split("\n").map(s => s.trim()).filter(Boolean);
+      continue;
+    }
+    const inp = body.querySelector(`[data-field="${f.name}"]`);
+    const v = inp.value.trim();
+    if (f.required && !v) {
+      say(body, `חסר: ${f.label}.`, "err");
+      inp.focus(); return;
+    }
+    payload[f.name] = f.type === "tags"
+      ? v.split(",").map(s => s.trim()).filter(Boolean)
+      : f.type === "youtube"
+        ? youtubeId(v)
+        : (v || null);
+
+    if (f.type === "youtube" && v && !payload[f.name]) {
+      say(body, "לא זיהיתי מזהה יוטיוב בקישור הזה. הדבק קישור בצורה youtube.com/watch?v=… או youtu.be/…", "err");
+      inp.focus(); return;
+    }
+  }
+
+  const problem = cfg.validate?.(payload);
+  if (problem) { say(body, problem, "err"); body.scrollTop = 0; return; }
+
+  busy(btn, true, "שומר…");
+  try {
+    // ── Upload any newly picked files ──
+    for (const f of cfg.fields) {
+      if (f.type !== "image" && f.type !== "video") continue;
+      const box = body.querySelector(`[data-field="${f.name}"]`);
+      if (box._file) {
+        payload[f.name] = await upload(box._file);
+      } else {
+        payload[f.name] = box._value;
+      }
+    }
+
+    if (editing) {
+      const { error } = await sb.from(cfg.table).update(payload).eq("id", editing.id);
+      if (error) throw error;
+    } else {
+      payload.sort_order = (rows[current]?.length || 0) + 1;
+      const { error } = await sb.from(cfg.table).insert(payload);
+      if (error) throw error;
+    }
+    $("#dlg").close();
+    await loadAll();
+    say($("#msg"), editing ? "השינויים נשמרו." : "נוסף בהצלחה.", "ok");
+  } catch (e) {
+    say(body, humanError(e), "err");
+    body.scrollTop = 0;
+  } finally {
+    busy(btn, false, "שמירה");
+  }
+};
+
+async function upload(file) {
+  const ext = (file.name.split(".").pop() || "bin").toLowerCase();
+  const path = `${current}/${crypto.randomUUID()}.${ext}`;
+  const { error } = await sb.storage.from(MEDIA_BUCKET)
+    .upload(path, file, { cacheControl: "31536000", upsert: false });
+  if (error) throw error;
+  return sb.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+$("#add-btn").onclick = () => openDialog(null);
+
+boot();
+</script>
+</body>
+</html>
