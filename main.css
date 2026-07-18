@@ -866,8 +866,8 @@ body::after {
   background: currentColor; flex: none;
   transition: transform .35s ease, box-shadow .35s ease;
 }
-.build-step.on { color: var(--accent); }
-.build-step.on::before { transform: scale(1.9); box-shadow: 0 0 0 5px var(--accent-dim); }
+.build-step.on { color: var(--white); }
+.build-step.on::before { background: var(--accent-fill); transform: scale(1.9); box-shadow: 0 0 0 5px var(--accent-dim); }
 
 /* Mock browser */
 .browser {
@@ -976,6 +976,23 @@ body::after {
 .more a:hover { border-bottom-color: var(--accent); gap: 12px; }
 .more.on-paper a { color: var(--paper-eyebrow); }
 .more.on-paper a:hover { border-bottom-color: var(--paper-eyebrow); }
+
+/* ═══════════ PRICING TABLE ON MOBILE ═══════════
+   Wide comparison tables die on phones. Pin the first column (the
+   feature names) so you always know which row you're reading, snap the
+   package columns, and fade the edge so it's obviously scrollable. */
+@media (max-width: 640px) {
+  .tbl-wrap { position: relative; scroll-snap-type: x mandatory; }
+  .tbl-wrap table { min-width: 520px; }
+  .tbl-wrap th:first-child,
+  .tbl-wrap td:first-child,
+  .tbl-wrap tbody th {
+    position: sticky; inset-inline-start: 0; z-index: 2;
+    background: var(--surface);
+    box-shadow: 1px 0 0 var(--border);
+  }
+  .tbl-wrap thead th { scroll-snap-align: start; }
+}
 
 /* ═══════════ MOBILE ACTION BAR ═══════════
    Phone traffic arrives from a paid ad and scrolls with a thumb.

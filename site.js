@@ -68,8 +68,12 @@ if (burger && links) {
 }
 
 /* ── Mobile action bar ───────────────────────────────────
-   Rises once the hero's own CTAs have scrolled away, so the
-   visitor is never looking at two competing asks at once.
+   Two behaviours:
+   · .up   — allowed to show at all, once the hero's own CTAs have
+             scrolled away (no two competing asks on screen at once).
+   · .hide — tucked away while scrolling DOWN, back on scrolling UP,
+             mirroring the top nav so it's out of the way when reading
+             and there the moment you look for it.
    ────────────────────────────────────────────────────── */
 const bar = $("#mobile-bar");
 if (bar) {
@@ -82,6 +86,17 @@ if (bar) {
   } else {
     bar.classList.add("up");
   }
+
+  let last = window.scrollY;
+  addEventListener("scroll", () => {
+    const y = window.scrollY;
+    // Ignore tiny jitters; near the foot, always show (the CTA is right there).
+    if (Math.abs(y - last) > 6) {
+      const nearBottom = innerHeight + y > document.documentElement.scrollHeight - 120;
+      bar.classList.toggle("hide", y > last && !nearBottom);
+      last = y;
+    }
+  }, { passive: true });
 }
 
 /* ── Reveal on scroll ── */

@@ -281,7 +281,9 @@
       <h3 id="dlg-title"></h3>
       <button type="button" class="x" id="dlg-x" aria-label="סגירה">&times;</button>
     </div>
-    <div class="dlg-body" id="dlg-body"></div>
+    <div class="dlg-body" id="dlg-body">
+      <div id="dlg-msg"></div>
+    </div>
     <div class="dlg-foot">
       <button type="button" class="btn" id="dlg-save">שמירה</button>
       <button type="button" class="btn btn-ghost" id="dlg-cancel">ביטול</button>
@@ -614,12 +616,19 @@ async function remove(r, btn) {
 }
 
 /* ══════════ DIALOG ══════════ */
+// Dialog messages go to their own slot so they can't wipe the form —
+// which is exactly what happened when they were written to the body.
+function dlgMsg(text, kind) {
+  const slot = document.getElementById("dlg-msg");
+  if (slot) slot.innerHTML = text ? `<div class="msg msg-${kind}">${text}</div>` : "";
+}
+
 function openDialog(row) {
   const cfg = TYPES[current];
   editing = row || null;
   $("#dlg-title").textContent = (row ? "עריכת " : "הוספת ") + cfg.single;
   const body = $("#dlg-body");
-  body.innerHTML = "";
+  body.innerHTML = '<div id="dlg-msg"></div>';   // keep the msg slot, clear the rest
 
   for (const f of cfg.fields) {
     const wrap = el("div", "field");
@@ -664,7 +673,7 @@ function openDialog(row) {
     body.append(wrap);
   }
 
-  say($("#dlg-body"), "", "err");
+  dlgMsg("", "err");
   $("#dlg").showModal();
 }
 
@@ -721,7 +730,7 @@ $("#dlg-save").onclick = async () => {
     if (f.type === "image" || f.type === "video") {
       const box = body.querySelector(`[data-field="${f.name}"]`);
       if (f.required && !box._file && !box._value) {
-        say(body, `חסר: ${f.label}. בחר קובץ ונסה שוב.`, "err");
+        dlgMsg(`חסר: ${f.label}. בחר קובץ ונסה שוב.`, "err");
         body.scrollTop = 0; return;
       }
       continue;
@@ -738,7 +747,7 @@ $("#dlg-save").onclick = async () => {
     const inp = body.querySelector(`[data-field="${f.name}"]`);
     const v = inp.value.trim();
     if (f.required && !v) {
-      say(body, `חסר: ${f.label}.`, "err");
+      dlgMsg(`חסר: ${f.label}.`, "err");
       inp.focus(); return;
     }
     payload[f.name] = f.type === "tags"
@@ -748,13 +757,13 @@ $("#dlg-save").onclick = async () => {
         : (v || null);
 
     if (f.type === "youtube" && v && !payload[f.name]) {
-      say(body, "לא זיהיתי מזהה יוטיוב בקישור הזה. הדבק קישור בצורה youtube.com/watch?v=… או youtu.be/…", "err");
+      dlgMsg("לא זיהיתי מזהה יוטיוב בקישור הזה. הדבק קישור בצורה youtube.com/watch?v=… או youtu.be/…", "err");
       inp.focus(); return;
     }
   }
 
   const problem = cfg.validate?.(payload);
-  if (problem) { say(body, problem, "err"); body.scrollTop = 0; return; }
+  if (problem) { dlgMsg(problem, "err"); body.scrollTop = 0; return; }
 
   busy(btn, true, "שומר…");
   try {
@@ -781,7 +790,7 @@ $("#dlg-save").onclick = async () => {
     await loadAll();
     say($("#msg"), editing ? "השינויים נשמרו." : "נוסף בהצלחה.", "ok");
   } catch (e) {
-    say(body, humanError(e), "err");
+    dlgMsg(humanError(e), "err");
     body.scrollTop = 0;
   } finally {
     busy(btn, false, "שמירה");

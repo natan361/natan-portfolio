@@ -126,7 +126,7 @@ const EN_CORE = {
 
   "about.name": "Natan Chaim · Jerusalem",
   "about.title": "You talk to me. Not to an account manager.",
-  "about.p1": "I've built 6 websites for businesses and institutions — synagogues, service providers, and small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
+  "about.p1": "I've built 10 websites for businesses and institutions — synagogues, service providers, and small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
   "about.p2": "No team, no queue, nobody in the middle. You talk to me directly, from the quote through to after the site is live.",
 
   "contact.eyebrow": "Get in touch",
