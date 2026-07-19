@@ -496,15 +496,13 @@
         </p>
 
         <div class="contact-direct">
-          <a href="#" id="wa-link" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
+          <!-- WhatsApp keeps its brand green so it's recognised instantly.
+               The call option is gone — Natan asked for WhatsApp + form. -->
+          <a href="#" id="wa-link" class="wa-btn" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
             <span data-i18n="contact.wa">וואטסאפ — הכי מהיר</span>
           </a>
-          <a id="tel-link" href="#">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span id="tel-text">055-680-7812</span>
-          </a>
-          <a href="mailto:ntyyml72@gmail.com">
+          <a href="mailto:ntyyml72@gmail.com" class="mail-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
             ntyyml72@gmail.com
           </a>
@@ -518,20 +516,27 @@
           <input class="input" id="lf-name" name="name" required autocomplete="name" />
         </div>
         <div class="field">
-          <label for="lf-phone"><span data-i18n="contact.phone">טלפון</span> <span class="req">*</span></label>
-          <input class="input" id="lf-phone" name="phone" type="tel" required autocomplete="tel" dir="ltr" />
+          <label for="lf-email"><span data-i18n="contact.email">אימייל</span> <span class="req">*</span></label>
+          <input class="input" id="lf-email" name="email" type="email" required autocomplete="email" dir="ltr" />
         </div>
         <div class="field">
-          <label for="lf-business" data-i18n="contact.biz">סוג העסק</label>
-          <input class="input" id="lf-business" name="business"
-                 placeholder="מסעדה, מספרה, נותן שירות…"
-                 data-i18n-attr="placeholder:contact.bizph" />
+          <label for="lf-subject"><span data-i18n="contact.subject">הנושא</span> <span class="req">*</span></label>
+          <select class="input" id="lf-subject" name="subject" required>
+            <option value="" data-i18n="contact.subj0">בחר נושא…</option>
+            <option data-i18n="contact.subj1">בניית אתר חדש</option>
+            <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
+            <option data-i18n="contact.subj3">אוטומציה</option>
+            <option data-i18n="contact.subj4">הדמיות</option>
+            <option data-i18n="contact.subj5">אחר</option>
+          </select>
         </div>
         <div class="field">
-          <label for="lf-note" data-i18n="contact.note">משהו שכדאי שאדע?</label>
-          <textarea class="input" id="lf-note" name="note"></textarea>
+          <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
+          <textarea class="input" id="lf-note" name="note"
+                    placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
+                    data-i18n-attr="placeholder:contact.noteph"></textarea>
         </div>
-        <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שלח — אחזור אליך תוך 24 שעות</button>
+        <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שליחה — אחזור אליך תוך 24 שעות</button>
         <p class="form-fine" data-i18n="contact.fine">הפרטים שלך נשמרים אצלי בלבד ולא מועברים לאף אחד.</p>
       </form>
     </div>
@@ -539,6 +544,17 @@
 </section>
 
 </main>
+
+<!-- Floating "let's talk" pill, like the reference's Book-a-call button.
+     Natan's own face, so it reads as "talk to a person, not a form".
+     Desktop only — the phone already has the bottom action bar. -->
+<a href="#contact" class="float-cta" id="float-cta" aria-label="בוא נדבר">
+  <img src="assets-opt/natan-avatar.webp" alt="" width="44" height="44" loading="lazy" />
+  <span class="float-cta-txt">
+    <b data-i18n="float.t">בוא נדבר</b>
+    <small data-i18n="float.s">נתן · תגובה תוך 24 שעות</small>
+  </span>
+</a>
 
 <footer id="footer"></footer>
 <div id="mobile-bar"></div>

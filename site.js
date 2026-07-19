@@ -344,32 +344,54 @@ if (form) {
     msg.append(d);
   };
 
+  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
   form.addEventListener("submit", async e => {
     e.preventDefault();
     const name = $("#lf-name").value.trim();
-    const phone = $("#lf-phone").value.trim();
+    const email = $("#lf-email").value.trim();
+    const subject = $("#lf-subject").value.trim();
 
     if (!name) {
       show(t("form.noname") || "צריך שם כדי שאדע איך לפנות אליך.", "err");
       $("#lf-name").focus(); return;
     }
-    if (phone.replace(/\D/g, "").length < 9) {
-      show(t("form.nophone") || "המספר לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
-      $("#lf-phone").focus(); return;
+    if (!emailOk(email)) {
+      show(t("form.noemail") || "האימייל לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
+      $("#lf-email").focus(); return;
+    }
+    if (!subject) {
+      show(t("form.nosubject") || "בחר נושא כדי שאדע במה מדובר.", "err");
+      $("#lf-subject").focus(); return;
     }
 
     show("", "ok");
-    // Capture the label AFTER any language switch, not at load.
-    const label = btn.textContent;
+    const label = btn.textContent;   // after any language switch
     btn.disabled = true;
     btn.textContent = t("form.sending") || "שולח…";
 
-    const { error } = await sb.from("leads").insert({
-      name, phone,
-      business: $("#lf-business").value.trim() || null,
+    const lead = {
+      name, email, subject,
       note: $("#lf-note").value.trim() || null,
       source: location.pathname + location.search,
-    });
+    };
+
+    // 1. Save to the database first — this must succeed for the lead
+    //    to count. Email is a notification on top, never the record.
+    const { error } = await sb.from("leads").insert(lead);
+
+    // 2. Fire the email notification. Best-effort: a failure here does
+    //    NOT fail the submission, because the lead is already saved and
+    //    visible in /admin.
+    if (!error) {
+      try {
+        await fetch(`${SUPABASE_URL}/functions/v1/notify-lead`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
+          body: JSON.stringify(lead),
+        });
+      } catch (_) { /* email is optional; the lead is safe */ }
+    }
 
     btn.disabled = false;
     btn.textContent = label;
@@ -383,4 +405,14 @@ if (form) {
     form.reset();
     show(t("form.ok") || "קיבלתי. אחזור אליך תוך 24 שעות.", "ok");
   });
+}
+
+/* ── Floating CTA: step aside once the form is on screen ── */
+const floatCta = $("#float-cta");
+const contactSec = $("#contact");
+if (floatCta && contactSec) {
+  new IntersectionObserver(
+    ([e]) => floatCta.classList.toggle("at-contact", e.isIntersecting),
+    { threshold: 0.2 }
+  ).observe(contactSec);
 }

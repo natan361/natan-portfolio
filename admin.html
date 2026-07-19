@@ -303,6 +303,16 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
    adding a field later means editing one line, not three.
    ───────────────────────────────────────────────────── */
 const TYPES = {
+  leads: {
+    label: "פניות", single: "פנייה", table: "leads",
+    readonly: true,
+    empty: "עדיין אין פניות מהטופס.",
+    sub: "פניות שהגיעו מטופס יצירת הקשר. חדשות למעלה.",
+    order: q => q.order("created_at", { ascending: false }),
+    title: r => r.name,
+    sub2:  r => [r.subject, r.email].filter(Boolean).join(" · "),
+  },
+
   sites: {
     label: "אתרים",
     single: "אתר",
@@ -518,12 +528,15 @@ async function boot() {
 async function loadAll() {
   $("#list").innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   await Promise.all(Object.keys(TYPES).map(async k => {
-    const { data, error } = await sb.from(TYPES[k].table).select("*").order("sort_order").order("created_at");
+    let q = sb.from(TYPES[k].table).select("*");
+    q = TYPES[k].order ? TYPES[k].order(q) : q.order("sort_order").order("created_at");
+    const { data, error } = await q;
     if (error) { say($("#msg"), humanError(error), "err"); rows[k] = []; return; }
     rows[k] = data || [];
   }));
   renderTabs();
   renderList();
+  syncAddBtn();
 }
 
 /* ══════════ RENDER ══════════ */
@@ -536,7 +549,7 @@ function renderTabs() {
     b.setAttribute("aria-selected", String(key === current));
     b.append(document.createTextNode(cfg.label));
     b.append(el("span", "count", rows[key] ? String(rows[key].length) : "–"));
-    b.onclick = () => { current = key; renderTabs(); renderList(); };
+    b.onclick = () => { current = key; renderTabs(); renderList(); syncAddBtn(); };
     t.append(b);
   }
 }
@@ -560,9 +573,11 @@ function renderList() {
   }
 
   for (const r of data) {
+    if (cfg.readonly) { list.append(leadCard(r)); continue; }
+
     const item = el("div", "item" + (r.is_published ? "" : " dim"));
 
-    const src = cfg.thumb(r);
+    const src = cfg.thumb ? cfg.thumb(r) : null;
     if (src) {
       const img = el("img", "thumb"); img.src = src; img.alt = ""; img.loading = "lazy";
       item.append(img);
@@ -595,6 +610,41 @@ function renderList() {
     item.append(right);
     list.append(item);
   }
+}
+
+function leadCard(r) {
+  const cfg = TYPES[current];
+  const card = el("div", "item" + (r.handled ? " dim" : ""));
+  card.style.gridTemplateColumns = "1fr auto";
+
+  const mid = el("div");
+  const head = el("div", "item-t", r.name || "—");
+  mid.append(head);
+  const meta = [r.subject, r.email].filter(Boolean).join("  ·  ");
+  if (meta) mid.append(el("span", "item-s", meta));
+  if (r.note) { const n = el("div"); n.style.cssText = "margin-top:8px;color:var(--dim);font-size:14px;white-space:pre-wrap"; n.textContent = r.note; mid.append(n); }
+  const when = new Date(r.created_at).toLocaleString("he-IL", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" });
+  const stamp = el("div"); stamp.style.cssText = "margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--faint)";
+  stamp.textContent = when + (r.handled ? " · טופל" : "");
+  mid.append(stamp);
+  card.append(mid);
+
+  const right = el("div", "item-actions");
+  const reply = el("a", "btn btn-ghost btn-sm", "השב במייל");
+  reply.href = "mailto:" + (r.email || ""); right.append(reply);
+  const done = el("button", "btn btn-ghost btn-sm", r.handled ? "החזר לחדש" : "סמן כטופל");
+  done.onclick = async () => {
+    busy(done, true, "…");
+    const { error } = await sb.from("leads").update({ handled: !r.handled }).eq("id", r.id);
+    if (error) { say($("#msg"), humanError(error), "err"); busy(done, false, "…"); return; }
+    await loadAll();
+  };
+  right.append(done);
+  const del = el("button", "btn btn-danger btn-sm", "מחיקה");
+  del.onclick = () => remove(r, del);
+  right.append(del);
+  card.append(right);
+  return card;
 }
 
 async function togglePublish(r, btn) {
@@ -806,6 +856,7 @@ async function upload(file) {
   return sb.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
 }
 
+function syncAddBtn() { $("#add-btn").style.display = TYPES[current].readonly ? "none" : ""; }
 $("#add-btn").onclick = () => openDialog(null);
 
 boot();

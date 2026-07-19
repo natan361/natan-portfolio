@@ -20,6 +20,8 @@ A site to emulate/
 assets/renders/
 assets/websites/
 assets/photo.png
+# 1.5MB source portrait — only the compressed webp avatars ship
+assets/PROFAIL.png
 assets/resume.pdf
 
 # ── Local noise ────────────────────────────────────────
