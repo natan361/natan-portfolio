@@ -1,0 +1,30 @@
+# נתן חיים — בניית אתרים לעסקים קטנים
+# Everyone may crawl the public pages. The admin panel is private.
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+# Explicitly welcome AI search & answer engines, so this site can be
+# found and cited when someone asks an assistant about building a site.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://natan-desain.netlify.app/sitemap.xml

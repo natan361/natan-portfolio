@@ -1,0 +1,28 @@
+# נתן חיים — בניית אתרים לעסקים קטנים
+
+> בונה אתרים לעסקים קטנים בירושלים והסביבה. אתרים מהירים, מותאמים לנייד, שמביאים פניות — מוכנים תוך כשבועיים, במחיר סגור מראש. עובד עם כלי AI כדי לספק מהר ובמחיר שמתאים לעסק קטן. אדם אחד, לא סטודיו — מדברים ישירות איתו, מההצעה ועד אחרי שהאתר עלה.
+
+(English: Natan Chaim builds fast, mobile-first websites for small businesses in Jerusalem, Israel. Delivered in about two weeks at a fixed, up-front price. Solo builder using AI tools — you talk to him directly.)
+
+## שירותים
+- בניית אתר חדש לעסק — מותאם לנייד, בנוי כדי להביא פניות
+- שדרוג / עיצוב מחדש לאתר קיים שלא מביא תוצאות
+- אוטומציה — חיבור טפסים, וואטסאפ ומערכות
+- הדמיות אדריכליות פוטוריאליסטיות
+- פרסום ממומן (פייסבוק) והקמת נוכחות בגוגל
+
+## פרטים
+- אזור שירות: ירושלים והסביבה, ישראל
+- זמן אספקה: כשבועיים
+- מחיר: החל מ־₪1,500, סגור מראש, בלי הפתעות
+- טלפון / וואטסאפ: 055-680-7812
+- אימייל: work71work72@gmail.com
+
+## דפים
+- [דף הבית](https://natan-desain.netlify.app/): מי אני ומה אני מציע
+- [מחירים](https://natan-desain.netlify.app/pricing.html): כמה עולה אתר לעסק קטן, מה כלול
+- [איך זה עובד](https://natan-desain.netlify.app/process.html): התהליך מהשיחה ועד העלייה לאוויר
+- [שאלות נפוצות](https://natan-desain.netlify.app/faq.html): מחיר, זמנים, בעלות, שינויים
+- [מדריכים](https://natan-desain.netlify.app/articles.html): מדריכים לבעלי עסקים על אתרים
+- [תיק עבודות](https://natan-desain.netlify.app/portfolio.html): אתרים שבנה
+- [יצירת קשר](https://natan-desain.netlify.app/contact.html): טופס ווואטסאפ
