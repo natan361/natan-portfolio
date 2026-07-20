@@ -21,7 +21,7 @@ const ICON = {
 // wa.me needs the international form: 055-680-7812 -> 972556807812
 export const PHONE = "972556807812";
 export const PHONE_LOCAL = "055-680-7812";
-export const EMAIL = "ntyyml72@gmail.com";
+export const EMAIL = "work71work72@gmail.com";
 
 const LINKS = [
   { href: "process.html",   key: "nav.process", he: "איך זה עובד" },
@@ -46,7 +46,7 @@ export function mountChrome({ active = "" } = {}) {
         <button class="icon-btn" id="theme-toggle" aria-label="החלפת ערכת צבע" data-i18n-attr="aria-label:nav.theme">${ICON.sun}${ICON.moon}</button>
         <button class="icon-btn lang" id="lang-toggle" aria-label="Switch to English">EN</button>
       </div>
-      <a href="index.html#contact" class="btn nav-cta" data-i18n="nav.cta">בוא נדבר</a>
+      <a href="contact.html" class="btn nav-cta" data-i18n="nav.cta">בוא נדבר</a>
       <button class="nav-burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="nav-links">${ICON.burger}</button>`;
   }
 
@@ -80,8 +80,15 @@ export function mountChrome({ active = "" } = {}) {
       <a class="btn" href="https://wa.me/${PHONE}" target="_blank" rel="noopener">
         ${ICON.wa}<span data-i18n="bar.wa">וואטסאפ</span>
       </a>
-      <a class="btn btn-ghost" href="index.html#contact">
+      <a class="btn btn-ghost" href="contact.html">
         ${ICON.phone}<span data-i18n="bar.call">השאר פרטים</span>
       </a>`;
   }
+
+  // Anonymous visitor analytics — loaded at idle so it never competes
+  // with first paint on a paid-ad mobile visit. Public pages only:
+  // admin.html doesn't mount the shell, so it is never tracked.
+  const startTracking = () => import("./analytics.js").catch(() => {});
+  if ("requestIdleCallback" in window) requestIdleCallback(startTracking, { timeout: 3000 });
+  else setTimeout(startTracking, 1200);
 }

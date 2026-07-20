@@ -42,6 +42,7 @@ export const EN_PAGES = {
   "build.s2": "Content — what the site says",
   "build.s3": "Design — how it feels",
   "build.s4": "Live, on your own domain",
+  "build.cue": "Scroll to reveal",
   "build.cap": "Par Yosef · a real site I built",
 
   "work.hint": "Scroll to move through them",

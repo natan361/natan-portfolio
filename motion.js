@@ -203,6 +203,10 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
       tl.call(() => setStep(i), null, tl.duration());
     };
 
+    // The scroll cue has done its job the instant scrolling starts —
+    // fade it out over the first sliver of the timeline.
+    tl.to(".build-cue", { autoAlpha: 0, duration: 0.12, ease: "power1.out" }, 0);
+
     // 1 · structure — the grid finds itself
     tl.from(".wf", {
       scaleY: 0, opacity: 0, transformOrigin: "top center",

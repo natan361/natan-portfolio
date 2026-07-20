@@ -344,25 +344,33 @@ if (form) {
     msg.append(d);
   };
 
-  const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  // At least 9 digits — enough to reject a stray keystroke without
+  // fighting over international/local formatting.
+  const phoneOk = v => v.replace(/\D/g, "").length >= 9;
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
     const name = $("#lf-name").value.trim();
-    const email = $("#lf-email").value.trim();
+    const phone = $("#lf-phone").value.trim();
     const subject = $("#lf-subject").value.trim();
+    const method = form.querySelector('input[name="method"]:checked')?.value || "whatsapp";
+    const ctime = form.querySelector('input[name="ctime"]:checked')?.value || "";
 
     if (!name) {
       show(t("form.noname") || "צריך שם כדי שאדע איך לפנות אליך.", "err");
       $("#lf-name").focus(); return;
     }
-    if (!emailOk(email)) {
-      show(t("form.noemail") || "האימייל לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
-      $("#lf-email").focus(); return;
+    if (!phoneOk(phone)) {
+      show(t("form.nophone") || "מספר הטלפון לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
+      $("#lf-phone").focus(); return;
     }
     if (!subject) {
       show(t("form.nosubject") || "בחר נושא כדי שאדע במה מדובר.", "err");
       $("#lf-subject").focus(); return;
+    }
+    if (!ctime) {
+      show(t("form.notime") || "בחר מתי נוח לך שאחזור אליך.", "err");
+      return;
     }
 
     show("", "ok");
@@ -371,7 +379,9 @@ if (form) {
     btn.textContent = t("form.sending") || "שולח…";
 
     const lead = {
-      name, email, subject,
+      name, phone, subject,
+      contact_method: method,
+      contact_time: ctime,
       note: $("#lf-note").value.trim() || null,
       source: location.pathname + location.search,
     };

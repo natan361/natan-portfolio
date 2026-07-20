@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-title-key="ctmeta.title">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>בוא נדבר — 15 דקות, בלי עלות | נתן חיים</title>
+<meta name="description" content="שיחה קצרה בלי התחייבות. מבינים מה העסק שלך צריך, ואם זה מתאים — מתחילים. מלא טופס או שלח וואטסאפ." />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+<script>
+  document.documentElement.classList.add("js");
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  .ct-head { padding-block: calc(var(--nav-h) + 56px) 0; text-align: center; }
+  .ct-head h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; }
+  .ct-head .sec-lede { margin-inline: auto; text-align: center; }
+  .ct-avatar {
+    width: 92px; height: 92px; border-radius: 50%; object-fit: cover;
+    border: 3px solid var(--accent-fill); margin: 0 auto 22px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,.35);
+  }
+
+  /* What happens on the call — three plain-language points */
+  .expect { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 46px; }
+  .expect-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 26px 24px;
+  }
+  .expect-i {
+    width: 42px; height: 42px; border-radius: 11px; background: var(--accent-dim);
+    border: 1px solid color-mix(in srgb, var(--accent-fill) 30%, transparent);
+    display: grid; place-items: center; margin-bottom: 16px;
+  }
+  .expect-i svg { width: 21px; height: 21px; fill: none; stroke: var(--white); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .expect-card h3 { font-size: 18px; margin-bottom: 7px; }
+  .expect-card p { color: var(--dim); font-size: 15px; line-height: 1.6; }
+
+  /* The form itself, in a card, with a direct-contact rail beside it */
+  .ct-main { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(28px, 5vw, 56px); align-items: start; margin-top: var(--gap); }
+  .ct-side h2 { font-size: clamp(24px, 3vw, 32px); }
+  .ct-side p { color: var(--dim); margin-top: 12px; max-width: 42ch; }
+  .ct-side .wa-btn { margin-top: 24px; }
+  .ct-side .mail-link { margin-top: 14px; }
+  .ct-why { list-style: none; margin: 26px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .ct-why li { display: flex; gap: 10px; align-items: flex-start; color: var(--dim); font-size: 15.5px; }
+  .ct-why svg { flex: none; margin-top: 3px; color: var(--accent); }
+  .ct-form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: clamp(24px, 3vw, 34px); }
+
+  /* Who I am */
+  .ct-bio {
+    display: grid; grid-template-columns: 240px 1fr; gap: clamp(28px, 5vw, 56px);
+    align-items: center; margin-top: var(--gap);
+    padding-block: clamp(30px, 4vw, 48px);
+    border-block: 1px solid var(--border);
+  }
+  .ct-bio-photo {
+    border-radius: 20px; padding: 5px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--accent-fill) 60%, transparent), transparent 55%);
+  }
+  .ct-bio-photo img { width: 100%; aspect-ratio: 1; border-radius: 16px; object-fit: cover; object-position: center 25%; display: block; }
+  .ct-bio-txt h2 { font-size: clamp(24px, 3.2vw, 34px); }
+  .ct-bio-txt p { color: var(--dim); margin-top: 14px; max-width: 58ch; }
+  .ct-bio-txt .ct-why { margin-top: 22px; }
+
+  /* Call FAQ */
+  .ct-qa { margin-top: var(--gap); }
+  .ct-qa-list { max-width: 760px; margin-top: 30px; }
+  .qa { border-bottom: 1px solid var(--border); }
+  .qa summary {
+    cursor: pointer; padding: 20px 0; font-weight: 700; font-size: 17.5px;
+    list-style: none; display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; min-height: 44px;
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary::after { content: "+"; font-family: var(--mono); font-size: 20px; color: var(--faint); flex: none; transition: transform .22s ease; }
+  .qa[open] summary { color: var(--accent); }
+  .qa[open] summary::after { transform: rotate(45deg); }
+  .qa p { padding-bottom: 22px; color: var(--dim); font-size: 16px; max-width: 68ch; }
+
+  @media (max-width: 820px) {
+    .ct-main { grid-template-columns: 1fr; }
+    .ct-form { order: -1; }
+    .ct-bio { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    .ct-bio-photo { width: 160px; }
+    .ct-bio-txt p, .ct-why { text-align: start; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+
+  <header class="ct-head">
+    <img src="assets-opt/natan-avatar.webp" alt="נתן חיים" class="ct-avatar" width="92" height="92" />
+    <p class="eyebrow" style="justify-content:center" data-i18n="ct.eyebrow">יצירת קשר</p>
+    <h1 data-i18n="ct.h1">בוא נדבר — 15 דקות.</h1>
+    <p class="sec-lede" data-i18n="ct.lede">
+      בלי עלות ובלי התחייבות. אני שואל על העסק, אתה שואל מה שבא לך,
+      ואם זה לא מתאים — אני אגיד לך את זה ישר.
+    </p>
+  </header>
+
+  <!-- What happens — sets expectations, like the reference does -->
+  <section class="expect">
+    <article class="expect-card">
+      <span class="expect-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+      <h3 data-i18n="ct.1t">מבינים מה צריך</h3>
+      <p data-i18n="ct.1p">מה העסק עושה, מי הלקוח שלך, ומה אתה רוצה שיקרה כשמישהו נוחת על האתר.</p>
+    </article>
+    <article class="expect-card">
+      <span class="expect-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <h3 data-i18n="ct.2t">אומר לך את האמת</h3>
+      <p data-i18n="ct.2p">אם אתר לא יעזור לך עכשיו, או שעדיף לך משהו אחר — אני אגיד. גם אם זה אומר שלא נעבוד.</p>
+    </article>
+    <article class="expect-card">
+      <span class="expect-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-6 0v4"/><rect x="4" y="9" width="16" height="12" rx="2"/></svg></span>
+      <h3 data-i18n="ct.3t">בלי לחץ</h3>
+      <p data-i18n="ct.3p">אין מכירה ואין "בוא נסגור עכשיו". אתה יוצא מהשיחה עם תשובה ברורה, ומחליט בזמן שלך.</p>
+    </article>
+  </section>
+
+  <!-- Who I am — the reference's "Hi, I'm Sam" section: puts a face and
+       a person behind the form before you commit to talking. -->
+  <section class="ct-bio">
+    <div class="ct-bio-photo">
+      <img src="assets-opt/natan-avatar.webp" alt="נתן חיים" width="300" height="300" loading="lazy" />
+    </div>
+    <div class="ct-bio-txt">
+      <p class="eyebrow" data-i18n="ct.biolabel">מי אני</p>
+      <h2 data-i18n="ct.bioh">נתן חיים. אדם אחד, לא סטודיו.</h2>
+      <p data-i18n="ct.biop1">
+        בונה אתרים לעסקים קטנים מירושלים. בניתי מעל 10 אתרים — בתי כנסת, נותני שירות,
+        עסקים קטנים. אני עובד עם כלי AI, ולכן אני מספק תוך שבועיים מה שסטודיו מספק בחודשיים,
+        במחיר שמתאים לעסק קטן.
+      </p>
+      <p data-i18n="ct.biop2">
+        כשאתה כותב לי — אתה מדבר איתי. לא עם מנהל לקוחות, לא עם צוות, לא עם מישהו שמעביר הודעות.
+        אני זה שעונה, אני זה שבונה, ואני זה שאתה יכול להתקשר אליו גם אחרי שהאתר עלה.
+      </p>
+      <ul class="ct-why">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why1">אתה מדבר איתי ישירות, לא עם מנהל לקוחות</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why2">מחיר סגור מראש, בלי הפתעות</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why3">האתר בבעלותך המלאה, על הדומיין שלך</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Short FAQ about the call itself — the reference's "Ask Us
+       Anything", scoped to what people wonder before reaching out. -->
+  <section class="ct-qa">
+    <p class="eyebrow" data-i18n="ct.qalabel">שאלות על השיחה</p>
+    <h2 class="sec-title" data-i18n="ct.qah">מה שאנשים שואלים לפני שהם פונים</h2>
+    <div class="ct-qa-list">
+      <details class="qa">
+        <summary><span data-i18n="ct.q1">איך יוצרים איתך קשר?</span></summary>
+        <p data-i18n="ct.a1">הכי מהיר — וואטסאפ, ואני עונה תוך כמה שעות. או שאתה ממלא את הטופס למעלה, ואני חוזר אליך תוך 24 שעות. שתי הדרכים מגיעות ישירות אליי.</p>
+      </details>
+      <details class="qa">
+        <summary><span data-i18n="ct.q2">מה קורה בשיחה?</span></summary>
+        <p data-i18n="ct.a2">אני שואל על העסק — מה אתה עושה, מי הלקוח שלך, ומה אתה רוצה שהאתר יעשה. אתה שואל אותי כל מה שבא לך. בסוף השיחה יש לך תמונה ברורה אם ואיך אני יכול לעזור.</p>
+      </details>
+      <details class="qa">
+        <summary><span data-i18n="ct.q3">כמה זמן זה לוקח?</span></summary>
+        <p data-i18n="ct.a3">בערך רבע שעה, לפעמים פחות. זה מספיק כדי להבין אם זה מתאים — ולא בזבוז זמן של אף אחד אם לא.</p>
+      </details>
+      <details class="qa">
+        <summary><span data-i18n="ct.q4">זה עולה משהו?</span></summary>
+        <p data-i18n="ct.a4">לא, השיחה בחינם לגמרי ובלי התחייבות. גם אם בסוף לא נעבוד יחד — יצאת עם תשובה ברורה.</p>
+      </details>
+      <details class="qa">
+        <summary><span data-i18n="ct.q5">מה קורה אחרי השיחה?</span></summary>
+        <p data-i18n="ct.a5">אם זה מתאים, אתה מקבל ממני הצעת מחיר סגורה בכתב תוך 24 שעות — מה בדיוק ייבנה וכמה זה עולה. בלי הפתעות ובלי לחץ להחליט מיד.</p>
+      </details>
+      <details class="qa">
+        <summary><span data-i18n="ct.q6">צריך להתכונן למשהו?</span></summary>
+        <p data-i18n="ct.a6">לא חייב. אם יש לך אתר קיים, או אתר של מישהו אחר שאהבת — תשלח לי קישור, זה יעזור. אבל גם בלי כלום אפשר להתחיל.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Reach out — comes last, after they know what the call is and who
+       I am. This is the natural close of the funnel. -->
+  <div class="ct-main">
+    <div class="ct-side">
+      <h2 data-i18n="ct.sidet">הכי מהיר — וואטסאפ</h2>
+      <p data-i18n="ct.sidep">כותב לי בוואטסאפ ואני עונה תוך כמה שעות. או מלא את הטופס, ואחזור אליך תוך 24 שעות.</p>
+
+      <a href="#" id="wa-link" class="wa-btn" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
+        <span data-i18n="contact.wa">וואטסאפ — הכי מהיר</span>
+      </a>
+      <a href="mailto:work71work72@gmail.com" class="mail-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+        work71work72@gmail.com
+      </a>
+
+      <ul class="ct-why">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why1">אתה מדבר איתי ישירות, לא עם מנהל לקוחות</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why2">מחיר סגור מראש, בלי הפתעות</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="ct.why3">האתר בבעלותך המלאה, על הדומיין שלך</span></li>
+      </ul>
+    </div>
+
+    <form id="lead-form" class="ct-form" novalidate>
+      <div id="form-msg"></div>
+      <div class="field">
+        <label for="lf-name"><span data-i18n="contact.name">שם</span> <span class="req">*</span></label>
+        <input class="input" id="lf-name" name="name" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="lf-phone"><span data-i18n="contact.phone">טלפון</span> <span class="req">*</span></label>
+        <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" required autocomplete="tel" dir="ltr" placeholder="050-000-0000" />
+      </div>
+      <div class="field">
+        <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span> <span class="req">*</span></label>
+        <div class="pillset" role="radiogroup" aria-label="דרך יצירת קשר">
+          <label class="pill-opt"><input type="radio" name="method" value="whatsapp" checked /><span data-i18n="contact.m_wa">וואטסאפ</span></label>
+          <label class="pill-opt"><input type="radio" name="method" value="call" /><span data-i18n="contact.m_call">שיחת טלפון</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span> <span class="req">*</span></label>
+        <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
+          <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
+          <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
+          <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="lf-subject"><span data-i18n="contact.subject">הנושא</span> <span class="req">*</span></label>
+        <select class="input" id="lf-subject" name="subject" required>
+          <option value="" data-i18n="contact.subj0">בחר נושא…</option>
+          <option data-i18n="contact.subj1">בניית אתר חדש</option>
+          <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
+          <option data-i18n="contact.subj3">אוטומציה</option>
+          <option data-i18n="contact.subj4">הדמיות</option>
+          <option data-i18n="contact.subj5">אחר</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
+        <textarea class="input" id="lf-note" name="note"
+                  placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
+                  data-i18n-attr="placeholder:contact.noteph"></textarea>
+      </div>
+      <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שליחה — אחזור אליך תוך 24 שעות</button>
+      <p class="form-fine" data-i18n="contact.fine">הפרטים שלך נשמרים אצלי בלבד ולא מועברים לאף אחד.</p>
+    </form>
+  </div>
+
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js";
+  mountChrome({ active: "contact.html" });
+</script>
+<script type="module" src="site.js"></script>
+</body>
+</html>

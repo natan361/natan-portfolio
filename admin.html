@@ -228,6 +228,44 @@
     .item-actions { grid-column: 1 / -1; justify-content: flex-end; }
     .item-url { display: none; }
   }
+
+  /* ── Leads: form number + status ── */
+  .lead-no {
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 2px 8px; border-radius: 6px; margin-inline-end: 8px; white-space: nowrap;
+  }
+  .lead-status {
+    font: inherit; font-size: 13px; padding: 8px 12px; min-height: 40px;
+    border-radius: 8px; background: var(--surface-2); color: var(--white);
+    border: 1px solid var(--border-2); cursor: pointer;
+  }
+  .lead-status:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── Analytics dashboard ── */
+  .an-range { display: flex; gap: 8px; margin-bottom: 16px; }
+  .an-range button {
+    font: inherit; font-size: 13px; padding: 7px 16px; border-radius: 999px; cursor: pointer;
+    background: var(--surface); color: var(--dim); border: 1px solid var(--border);
+  }
+  .an-range button.on { background: var(--accent); color: var(--black); border-color: var(--accent); font-weight: 700; }
+  .an-optout { margin-inline-start: auto; }
+  .an-optout.on { background: var(--ok); color: var(--black); border-color: var(--ok); font-weight: 700; }
+  .an-fine { color: var(--faint); font-size: 12px; margin: -6px 0 16px; line-height: 1.5; }
+  .an-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .an-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; text-align: center; }
+  .an-stat-v { font-family: var(--display); font-weight: 800; font-size: 28px; color: var(--white); line-height: 1; }
+  .an-stat-l { color: var(--dim); font-size: 13px; margin-top: 6px; }
+  .an-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .an-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; }
+  .an-block h3 { font-size: 14px; margin: 0 0 14px; color: var(--white); }
+  .an-bar { display: grid; grid-template-columns: minmax(70px, 34%) 1fr auto; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .an-bar-l { font-size: 13px; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .an-bar-track { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .an-bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; min-width: 2px; }
+  .an-bar-v { font-family: var(--mono); font-size: 12px; color: var(--white); }
+  .an-none { color: var(--faint); font-size: 13px; }
+  .an-hint { margin-top: 16px; color: var(--faint); font-size: 13px; text-align: center; }
 </style>
 </head>
 <body>
@@ -303,6 +341,11 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
    adding a field later means editing one line, not three.
    ───────────────────────────────────────────────────── */
 const TYPES = {
+  analytics: {
+    label: "תנועה", single: "תנועה", table: "analytics_events",
+    readonly: true, dashboard: true,
+    sub: "מי נכנס לאתר, מאיפה הגיע, כמה זמן שהה, ועל אילו כפתורים לחץ. אנונימי לגמרי — בלי שם, אימייל או IP.",
+  },
   leads: {
     label: "פניות", single: "פנייה", table: "leads",
     readonly: true,
@@ -310,7 +353,7 @@ const TYPES = {
     sub: "פניות שהגיעו מטופס יצירת הקשר. חדשות למעלה.",
     order: q => q.order("created_at", { ascending: false }),
     title: r => r.name,
-    sub2:  r => [r.subject, r.email].filter(Boolean).join(" · "),
+    sub2:  r => [r.phone, r.subject].filter(Boolean).join(" · "),
   },
 
   sites: {
@@ -528,8 +571,16 @@ async function boot() {
 async function loadAll() {
   $("#list").innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   await Promise.all(Object.keys(TYPES).map(async k => {
-    let q = sb.from(TYPES[k].table).select("*");
-    q = TYPES[k].order ? TYPES[k].order(q) : q.order("sort_order").order("created_at");
+    const cfg = TYPES[k];
+    let q = sb.from(cfg.table).select("*");
+    if (cfg.dashboard) {
+      // A bounded window, newest first — the dashboard aggregates the
+      // last 30 days in the browser, which is plenty for this volume.
+      const since = new Date(Date.now() - 30 * 864e5).toISOString();
+      q = q.gte("created_at", since).order("created_at", { ascending: false }).limit(20000);
+    } else {
+      q = cfg.order ? cfg.order(q) : q.order("sort_order").order("created_at");
+    }
     const { data, error } = await q;
     if (error) { say($("#msg"), humanError(error), "err"); rows[k] = []; return; }
     rows[k] = data || [];
@@ -548,7 +599,11 @@ function renderTabs() {
     b.setAttribute("role", "tab");
     b.setAttribute("aria-selected", String(key === current));
     b.append(document.createTextNode(cfg.label));
-    b.append(el("span", "count", rows[key] ? String(rows[key].length) : "–"));
+    const cnt = !rows[key] ? "–"
+      : cfg.dashboard
+        ? String(new Set(rows[key].filter(e => e.type === "pageview").map(e => e.visitor_id)).size)
+        : String(rows[key].length);
+    b.append(el("span", "count", cnt));
     b.onclick = () => { current = key; renderTabs(); renderList(); syncAddBtn(); };
     t.append(b);
   }
@@ -563,6 +618,8 @@ function renderList() {
 
   const list = $("#list");
   list.innerHTML = "";
+
+  if (cfg.dashboard) { renderAnalytics(list); return; }
 
   if (!data.length) {
     const e = el("div", "empty");
@@ -612,39 +669,154 @@ function renderList() {
   }
 }
 
+const LEAD_METHOD = { whatsapp: "וואטסאפ", call: "שיחת טלפון" };
+const LEAD_TIME = { morning: "בוקר", noon: "צהריים", evening: "ערב" };
+const leadIntl = p => { const d = String(p || "").replace(/\D/g, ""); return d.startsWith("972") ? d : d.replace(/^0/, "972"); };
+// Pipeline stages, in order. Third field colours the card's spine so
+// the stage reads at a glance. Mirrors Natan's real flow.
+const LEAD_STATUS = [
+  ["new",       "חדש",        "#E8FF4B"],
+  ["contacted", "יצרתי קשר",   "#6BA8FF"],
+  ["quoted",    "הצעה נשלחה",  "#C99BFF"],
+  ["building",  "בבנייה",      "#FFC24A"],
+  ["done",      "הושלם",       "#6EE7A8"],
+];
+
 function leadCard(r) {
-  const cfg = TYPES[current];
-  const card = el("div", "item" + (r.handled ? " dim" : ""));
+  const st = LEAD_STATUS.find(s => s[0] === r.status) || LEAD_STATUS[0];
+  const card = el("div", "item" + (r.status === "done" ? " dim" : ""));
   card.style.gridTemplateColumns = "1fr auto";
+  card.style.borderInlineStartWidth = "3px";
+  card.style.borderInlineStartColor = st[2];
 
   const mid = el("div");
-  const head = el("div", "item-t", r.name || "—");
+  const head = el("div", "item-t");
+  head.append(el("span", "lead-no", "טופס #" + (r.lead_no ?? "—")));
+  head.append(document.createTextNode(" " + (r.name || "—")));
   mid.append(head);
-  const meta = [r.subject, r.email].filter(Boolean).join("  ·  ");
+
+  const meta = [r.phone, LEAD_METHOD[r.contact_method], LEAD_TIME[r.contact_time] && "נוח: " + LEAD_TIME[r.contact_time], r.subject]
+    .filter(Boolean).join("  ·  ");
   if (meta) mid.append(el("span", "item-s", meta));
   if (r.note) { const n = el("div"); n.style.cssText = "margin-top:8px;color:var(--dim);font-size:14px;white-space:pre-wrap"; n.textContent = r.note; mid.append(n); }
   const when = new Date(r.created_at).toLocaleString("he-IL", { day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit" });
   const stamp = el("div"); stamp.style.cssText = "margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--faint)";
-  stamp.textContent = when + (r.handled ? " · טופל" : "");
+  stamp.textContent = when;
   mid.append(stamp);
   card.append(mid);
 
   const right = el("div", "item-actions");
-  const reply = el("a", "btn btn-ghost btn-sm", "השב במייל");
-  reply.href = "mailto:" + (r.email || ""); right.append(reply);
-  const done = el("button", "btn btn-ghost btn-sm", r.handled ? "החזר לחדש" : "סמן כטופל");
-  done.onclick = async () => {
-    busy(done, true, "…");
-    const { error } = await sb.from("leads").update({ handled: !r.handled }).eq("id", r.id);
-    if (error) { say($("#msg"), humanError(error), "err"); busy(done, false, "…"); return; }
+
+  // Report where the lead stands — this is the pipeline control.
+  const sel = el("select", "lead-status");
+  sel.title = "סטטוס הפנייה";
+  for (const [val, label] of LEAD_STATUS) {
+    const o = el("option", null, label); o.value = val;
+    if (val === (r.status || "new")) o.selected = true;
+    sel.append(o);
+  }
+  sel.onchange = async () => {
+    sel.disabled = true;
+    const { error } = await sb.from("leads").update({ status: sel.value }).eq("id", r.id);
+    if (error) { say($("#msg"), humanError(error), "err"); sel.disabled = false; return; }
     await loadAll();
   };
-  right.append(done);
+  right.append(sel);
+
+  const intl = leadIntl(r.phone);
+  const wa = el("a", "btn btn-ghost btn-sm", "וואטסאפ");
+  wa.href = "https://wa.me/" + intl; wa.target = "_blank"; wa.rel = "noopener"; right.append(wa);
+  const call = el("a", "btn btn-ghost btn-sm", "התקשר");
+  call.href = "tel:+" + intl; right.append(call);
   const del = el("button", "btn btn-danger btn-sm", "מחיקה");
   del.onclick = () => remove(r, del);
   right.append(del);
   card.append(right);
   return card;
+}
+
+/* ══════════ ANALYTICS DASHBOARD ══════════
+   Aggregates the last 30 days of events in the browser. Every value
+   below comes from a PUBLIC-insert table, so it is untrusted — esc()
+   everything that reaches innerHTML. */
+let anRange = 7;
+const AN_SRC = { facebook:"פייסבוק", instagram:"אינסטגרם", google:"גוגל", youtube:"יוטיוב", whatsapp:"וואטסאפ", direct:"כניסה ישירה", other:"אחר" };
+const AN_CLICK = { whatsapp:"וואטסאפ", "form-submit":"שליחת טופס", email:"אימייל", phone:"טלפון", "float-cta":"כפתור מרחף", "nav-cta":"בוא נדבר (תפריט)", "pricing-cta":"כפתור מחירים", "cta-contact":"בוא נדבר", "cta-contact-page":"בוא נדבר", "cta-portfolio":"לעבודות" };
+const AN_PAGE = { "/":"דף הבית", "/contact.html":"יצירת קשר", "/pricing.html":"מחירים", "/portfolio.html":"עבודות", "/process.html":"איך זה עובד", "/faq.html":"שאלות", "/articles.html":"מדריכים" };
+
+const anEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const anTally = arr => { const m = {}; for (const x of arr) m[x] = (m[x]||0)+1; return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
+const anDur = s => s < 60 ? `${s} שנ׳` : `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")} דק׳`;
+
+function renderAnalytics(list) {
+  const all = rows.analytics || [];
+  const since = Date.now() - anRange * 864e5;
+  const ev = all.filter(e => new Date(e.created_at).getTime() >= since);
+
+  const pv     = ev.filter(e => e.type === "pageview");
+  const clicks = ev.filter(e => e.type === "click");
+  const sess   = ev.filter(e => e.type === "session");
+
+  const visitors = new Set(pv.map(e => e.visitor_id)).size;
+  const sessions = new Set(pv.map(e => e.session_id)).size;
+
+  // Time on site: total dwell per session, then average across sessions.
+  const perSession = {};
+  for (const s of sess) perSession[s.session_id] = (perSession[s.session_id]||0) + (Number(s.duration_sec)||0);
+  const durs = Object.values(perSession);
+  const avgSec = durs.length ? Math.round(durs.reduce((a,b)=>a+b,0)/durs.length) : 0;
+
+  const mobilePct = pv.length ? Math.round(pv.filter(e => e.device === "mobile").length / pv.length * 100) : 0;
+
+  const bySource = anTally(pv.map(e => e.source || "other"));
+  const byPage   = anTally(pv.map(e => e.path || "/"));
+  const byClick  = anTally(clicks.map(e => e.label || "אחר"));
+
+  const stat = (v, l) => `<div class="an-stat"><div class="an-stat-v">${anEsc(v)}</div><div class="an-stat-l">${anEsc(l)}</div></div>`;
+  const bars = (title, entries, map) => {
+    const max = entries.length ? entries[0][1] : 0;
+    const body = entries.length
+      ? entries.map(([k,v]) => `<div class="an-bar"><span class="an-bar-l">${anEsc(map?.[k] || k)}</span><span class="an-bar-track"><span class="an-bar-fill" style="width:${max?Math.round(v/max*100):0}%"></span></span><span class="an-bar-v">${v}</span></div>`).join("")
+      : `<div class="an-none">אין נתונים עדיין</div>`;
+    return `<div class="an-block"><h3>${anEsc(title)}</h3>${body}</div>`;
+  };
+
+  const opted = (() => { try { return localStorage.getItem("na_optout") === "1"; } catch { return false; } })();
+
+  list.innerHTML = `
+    <div class="an-range">
+      <button data-r="7"  class="${anRange===7?"on":""}">7 ימים</button>
+      <button data-r="30" class="${anRange===30?"on":""}">30 ימים</button>
+      <button class="an-optout${opted?" on":""}" data-optout>${opted ? "✓ אתה לא נספר — בטל" : "אל תספור את הביקורים שלי"}</button>
+    </div>
+    <div class="an-fine">המספר לא כולל בוטים ותצוגות־קישור. "מבקר" = דפדפן ייחודי — אותו אדם מהנייד ומהמחשב ייספר כשניים.</div>
+    <div class="an-stats">
+      ${stat(visitors, "מבקרים")}
+      ${stat(sessions, "כניסות")}
+      ${stat(pv.length, "צפיות בדפים")}
+      ${stat(anDur(avgSec), "זמן ממוצע באתר")}
+      ${stat(mobilePct + "%", "מהנייד")}
+    </div>
+    <div class="an-grid">
+      ${bars("מאיפה הגיעו", bySource, AN_SRC)}
+      ${bars("על מה לחצו", byClick, AN_CLICK)}
+      ${bars("דפים נצפים", byPage, AN_PAGE)}
+    </div>
+    ${pv.length ? "" : `<div class="an-hint">עדיין לא נאספו נתונים. ברגע שמבקרים ייכנסו לאתר, הם יופיעו כאן.</div>`}`;
+
+  list.querySelectorAll(".an-range button[data-r]").forEach(b =>
+    b.onclick = () => { anRange = Number(b.dataset.r); renderAnalytics(list); });
+
+  // Flag / unflag this browser so Natan's own visits aren't counted.
+  // Same origin as the public site, so the flag is shared with the tracker.
+  const ob = list.querySelector("[data-optout]");
+  if (ob) ob.onclick = () => {
+    try {
+      if (localStorage.getItem("na_optout") === "1") localStorage.removeItem("na_optout");
+      else localStorage.setItem("na_optout", "1");
+    } catch { /* storage blocked — nothing to flag */ }
+    renderAnalytics(list);
+  };
 }
 
 async function togglePublish(r, btn) {

@@ -336,7 +336,32 @@ section { padding-block: var(--gap); }
   line-height: 1.06;
   max-width: 16ch;
 }
-.hero h1 em { font-style: normal; color: var(--accent); }
+/* The highlighted word. Yellow-as-text fails contrast on the light
+   ground (1.3:1), so light gets a yellow highlighter MARKER behind ink
+   text — the same trick .stat-n uses — while dark keeps the pure-yellow
+   word it wears well. Either way the emphasis reads in both themes. */
+.hero h1 em { font-style: normal; color: var(--white); }
+/* A highlighter band, painted as a background gradient. SplitText turns
+   the word into <em><div.word><div.ch>… and the inline em's own
+   background collapses — so the band goes on the atomic .ch boxes, with
+   the bare em kept for the reduced-motion / no-split case. */
+.hero h1 em,
+.hero h1 em .ch {
+  background-image: linear-gradient(
+    to top,
+    transparent 8%, var(--accent-fill) 8%,
+    var(--accent-fill) 40%, transparent 40%);
+}
+/* Dark: the word is yellow itself; a band behind it would be
+   yellow-on-yellow, so drop it and let the text carry the accent. */
+:root[data-theme="dark"] .hero h1 em { color: var(--accent); }
+:root[data-theme="dark"] .hero h1 em,
+:root[data-theme="dark"] .hero h1 em .ch { background-image: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .hero h1 em { color: var(--accent); }
+  :root:not([data-theme]) .hero h1 em,
+  :root:not([data-theme]) .hero h1 em .ch { background-image: none; }
+}
 
 .hero-sub {
   margin-top: 22px; font-size: clamp(17px, 2.1vw, 21px);
@@ -404,10 +429,19 @@ section { padding-block: var(--gap); }
   padding: 26px 4px; border-top: 1px solid var(--border);
 }
 .step:last-child { border-bottom: 1px solid var(--border); }
+/* Light (default): yellow-as-text fails here, so the CHIP carries the
+   accent — a yellow wash + border with an ink number — to match the pop
+   the yellow number gives in dark. */
 .step-n {
-  font-family: var(--mono); font-size: 13px; color: var(--accent);
-  border: 1px solid var(--border-2); border-radius: 8px;
+  font-family: var(--mono); font-size: 13px; color: var(--white);
+  background: var(--accent-dim);
+  border: 1px solid color-mix(in srgb, var(--accent-fill) 55%, transparent);
+  border-radius: 8px;
   width: 40px; height: 40px; display: grid; place-items: center;
+}
+:root[data-theme="dark"] .step-n { color: var(--accent); background: transparent; border-color: var(--border-2); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .step-n { color: var(--accent); background: transparent; border-color: var(--border-2); }
 }
 .step h3 { font-size: 20px; margin-bottom: 6px; }
 .step p { color: var(--dim); font-size: 15.5px; max-width: 56ch; }
@@ -523,10 +557,33 @@ details p {
   min-height: 44px;
 }
 .contact-direct a:hover { color: var(--accent); }
+/* The WhatsApp button keeps white text on its green — the generic
+   .contact-direct a rule above is more specific than .wa-btn, so it
+   would otherwise dim the label to grey and kill the contrast. */
+.contact-direct a.wa-btn { color: #fff; }
+.contact-direct a.wa-btn:hover { color: #fff; }
 
 .field { margin-bottom: 15px; }
 .field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
 .field .req { color: var(--accent); }
+
+/* Radio choices as tappable pills — contact method and time window.
+   Checked pill uses the yellow FILL, so it reads the same in both
+   themes (yellow-as-text would fail on light). */
+.pillset { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill-opt { position: relative; }
+.pill-opt input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
+.pill-opt span {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 18px; min-height: 44px; border-radius: 999px;
+  border: 1px solid var(--border-2); color: var(--dim);
+  font-size: 14.5px; cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+}
+.pill-opt input:checked + span {
+  background: var(--accent-fill); color: var(--accent-ink);
+  border-color: var(--accent-fill); font-weight: 600;
+}
+.pill-opt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .input {
   width: 100%; background: var(--black); color: var(--white);
   border: 1px solid var(--border-2); border-radius: 9px;
@@ -633,14 +690,14 @@ select.input {
 select.input:invalid { color: var(--faint); }
 
 /* ═══════════ FLOATING CTA ═══════════
-   The reference's "Book a call" pill, rebuilt: a real face makes it
-   read as talk-to-a-person, not a chatbot. */
+   The reference's "Book a call" pill, rebuilt: a real face reads as
+   talk-to-a-person, not a chatbot. Avatar / text / forward arrow. */
 .float-cta {
   position: fixed; z-index: 95;
   inset-block-end: 22px; inset-inline-start: 22px;
-  display: inline-flex; align-items: center; gap: 12px;
+  display: inline-flex; align-items: center; gap: 13px;
   background: var(--surface); border: 1px solid var(--border-2);
-  border-radius: 999px; padding: 8px 20px 8px 8px;
+  border-radius: 999px; padding: 7px 10px 7px 7px;
   text-decoration: none; color: var(--white);
   box-shadow: 0 14px 34px -14px rgba(0,0,0,.4);
   transition: transform .3s cubic-bezier(.22,.8,.3,1), box-shadow .3s ease, opacity .3s ease;
@@ -648,19 +705,38 @@ select.input:invalid { color: var(--faint); }
 }
 :root[data-theme="dark"] .float-cta { box-shadow: 0 14px 34px -12px rgba(0,0,0,.7); }
 .float-cta:hover { transform: translateY(-3px); box-shadow: 0 20px 44px -14px rgba(0,0,0,.5); }
-.float-cta img {
-  width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-  border: 2px solid var(--accent-fill);
+
+/* Avatar in its own ring, face centred, with a live dot. */
+.float-cta-av {
+  position: relative; flex: none;
+  width: 48px; height: 48px; border-radius: 50%;
+  padding: 2px; background: var(--accent-fill);
 }
-.float-cta-txt { display: grid; line-height: 1.15; }
-.float-cta-txt b { font-size: 15px; font-weight: 700; }
-.float-cta-txt small { font-size: 11.5px; color: var(--faint); font-family: var(--mono); }
-/* Live dot on the avatar */
-.float-cta::after {
-  content: ""; position: absolute; inset-block-end: 8px; inset-inline-start: 42px;
-  width: 11px; height: 11px; border-radius: 50%;
+.float-cta-av img {
+  width: 100%; height: 100%; border-radius: 50%;
+  object-fit: cover; object-position: center 28%;
+  display: block;
+}
+.float-cta-av::after {
+  content: ""; position: absolute; inset-block-end: 0; inset-inline-end: 0;
+  width: 12px; height: 12px; border-radius: 50%;
   background: var(--ok); border: 2px solid var(--surface);
 }
+.float-cta-txt { display: grid; line-height: 1.2; }
+.float-cta-txt b { font-size: 15px; font-weight: 700; }
+.float-cta-txt small { font-size: 11px; color: var(--faint); font-family: var(--mono); }
+
+/* Forward arrow, in an accent chip. Nudges on hover. */
+.float-cta-arrow {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent-fill); color: var(--accent-ink);
+  display: grid; place-items: center;
+  transition: transform .25s ease;
+}
+[dir="rtl"] .float-cta-arrow svg { transform: scaleX(-1); }
+.float-cta:hover .float-cta-arrow { transform: translateX(-3px); }
+[dir="ltr"] .float-cta:hover .float-cta-arrow { transform: translateX(3px); }
+
 @keyframes floatIn { from { opacity: 0; transform: translateY(20px) scale(.9); } }
 /* Hidden once the contact section is in view — the ask is already there. */
 .float-cta.at-contact { opacity: 0; pointer-events: none; transform: translateY(20px); }
@@ -989,6 +1065,26 @@ body::after {
 .build-real {
   position: absolute; inset: 0; opacity: 0;
   width: 100%; height: 100%; object-fit: cover;
+}
+/* Sits over the empty screen and tells the visitor to scroll. GSAP
+   fades it out as the build animation starts. */
+.build-cue {
+  position: absolute; inset: 0; z-index: 3;
+  display: grid; place-content: center; justify-items: center; gap: 12px;
+  color: rgba(237,236,235,.92); pointer-events: none; text-align: center;
+}
+.build-cue span {
+  font-weight: 700; font-size: 14px; letter-spacing: .01em;
+  background: rgba(0,0,0,.5); border: 1px solid rgba(237,236,235,.16);
+  padding: 8px 18px; border-radius: 999px; backdrop-filter: blur(3px);
+}
+.build-cue-arrow { animation: build-bob 1.5s ease-in-out infinite; }
+@keyframes build-bob {
+  0%, 100% { transform: translateY(-3px); opacity: .55; }
+  50%      { transform: translateY(5px);  opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .build-cue { display: none; }
 }
 .build-cap {
   font-family: var(--mono); font-size: 12px; color: var(--faint);
