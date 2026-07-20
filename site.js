@@ -5,9 +5,9 @@ import { applyLang, currentLang, t } from "./i18n.js";
 const $ = s => document.querySelector(s);
 
 /* ── Theme ───────────────────────────────────────────────
-   Dark is the brand default. An explicit choice is stored and
-   wins over the OS; with nothing stored the OS decides via
-   prefers-color-scheme in main.css.
+   Light is the default, always — the site does not follow the OS
+   setting. Dark is opt-in via the toggle, and once chosen it is
+   stored and persists.
    ────────────────────────────────────────────────────── */
 const THEME_KEY = "natan-theme";
 const themeBtn = $("#theme-toggle");
@@ -21,10 +21,8 @@ if (themeBtn) {
   paint();
   themeBtn.addEventListener("click", () => {
     const root = document.documentElement;
-    // Light is the default now, so an unset theme means light unless
-    // the OS says otherwise.
-    const now = root.dataset.theme
-      || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Light is the default; an unset theme is light, never the OS value.
+    const now = root.dataset.theme || "light";
     const next = now === "dark" ? "light" : "dark";
     root.dataset.theme = next;
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}

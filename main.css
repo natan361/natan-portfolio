@@ -71,22 +71,8 @@
   --border-2: rgba(22,22,26,0.22);
 }
 
-/* Light is the default. Someone whose system is set to dark, and who
-   hasn't chosen here, gets dark — respecting the OS without making it
-   the brand's opening statement. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --black: #0B0B0B; --surface: #131316; --surface-2: #1B1B1F;
-    --white: #EDECEB; --dim: #9C9C93; --faint: #84847B;
-    --accent: #E8FF4B; --accent-fill: #E8FF4B;
-    --accent-dim: rgba(232,255,75,0.10); --accent-ink: #0B0B0B;
-    --paper: #F4F3EF; --paper-ink: #16161A; --paper-dim: #5A5A52;
-    --paper-line: rgba(22,22,26,0.14); --paper-eyebrow: #647500; --price-card: #FFFFFF;
-    --danger: #FF6B4A; --ok: #4FBF85;
-    --border: rgba(237,236,235,0.10); --border-2: rgba(237,236,235,0.20);
-    --nav-bg: rgba(11,11,11,.82);
-  }
-}
+/* Light is the default, always. The site does NOT follow the OS dark
+   setting — dark is opt-in only, via the toggle (data-theme="dark"). */
 
 :root {
   /* Latin resolves to Montserrat — literally the reference's face.
@@ -357,11 +343,6 @@ section { padding-block: var(--gap); }
 :root[data-theme="dark"] .hero h1 em { color: var(--accent); }
 :root[data-theme="dark"] .hero h1 em,
 :root[data-theme="dark"] .hero h1 em .ch { background-image: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .hero h1 em { color: var(--accent); }
-  :root:not([data-theme]) .hero h1 em,
-  :root:not([data-theme]) .hero h1 em .ch { background-image: none; }
-}
 
 .hero-sub {
   margin-top: 22px; font-size: clamp(17px, 2.1vw, 21px);
@@ -440,9 +421,6 @@ section { padding-block: var(--gap); }
   width: 40px; height: 40px; display: grid; place-items: center;
 }
 :root[data-theme="dark"] .step-n { color: var(--accent); background: transparent; border-color: var(--border-2); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .step-n { color: var(--accent); background: transparent; border-color: var(--border-2); }
-}
 .step h3 { font-size: 20px; margin-bottom: 6px; }
 .step p { color: var(--dim); font-size: 15.5px; max-width: 56ch; }
 .step-when {
@@ -628,10 +606,6 @@ textarea.input { min-height: 92px; resize: vertical; }
 :root[data-theme="light"] .i-moon { display: block; }
 :root[data-theme="dark"] .i-moon { display: none; }
 :root[data-theme="dark"] .i-sun { display: block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .i-moon { display: none; }
-  :root:not([data-theme]) .i-sun { display: block; }
-}
 
 /* The arrow means "forward". Forward flips with the writing direction. */
 [dir="ltr"] .arr { transform: scaleX(-1); }
@@ -919,7 +893,6 @@ body::after {
   background: var(--accent-fill); opacity: .85; border-radius: 2px;
 }
 :root[data-theme="dark"] .stat-n::after { opacity: .22; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme]) .stat-n::after { opacity: .22; } }
 .stat { text-align: center; isolation: isolate; }
 .stat-l { color: var(--dim); font-size: 14.5px; margin-top: 8px; }
 
