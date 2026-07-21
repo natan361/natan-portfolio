@@ -35,11 +35,16 @@ assets/resume.pdf
 /*.jpeg
 /*.webp
 
-# ── Superseded case screenshots ────────────────────────
-# Per-project captures from an earlier version of the case page. The
-# page now scrolls the full-page shot stored in Supabase instead, so
-# these 3.2MB are no longer referenced by any page.
-assets-opt/cases/
+# ── Case screenshots ───────────────────────────────────
+# These ARE shipped: the sites table stores relative paths like
+# "assets-opt/cases/barmon-a.webp" for projects whose images were not
+# uploaded through the admin panel, so the files have to exist in the
+# deploy or the case page renders empty frames. No page references them
+# in code — only the database does — so grepping the source says
+# "unused" and is wrong.
+# Only the phone-width captures are ignored: nothing reads them since
+# the phone frame falls back to the desktop shot.
+assets-opt/cases/*-mobile.webp
 
 # ── Local noise ────────────────────────────────────────
 desktop.ini
