@@ -8,11 +8,17 @@
    Dark is the brand and stays the default. Light is a real
    second design, not an inversion.
 
+   The brand colour is #C4F03C — a chartreuse lime. It keeps the hue of
+   the original #E8FF4B (~75° vs ~72°, the same yellow-green family) and
+   drops the LUMINANCE instead: 240 max channel against 255, with the
+   red channel pulled from 232 to 196. That is where the glare went. The
+   hue was never the thing to change; the brightness was.
+
    --accent splits in two on purpose:
-     --accent      text-safe  (yellow FAILS on light: 1.3:1)
-     --accent-fill button fill (stays brand yellow in both
-                    themes; the text sitting ON it is black,
-                    so it clears contrast either way)
+     --accent      text-safe  (the lime FAILS on light: ~1.4:1)
+     --accent-fill accent fill (stays brand lime in both themes; the
+                    text sitting ON it is black, so it clears
+                    contrast either way)
    ──────────────────────────────────────────────────── */
 :root[data-theme="dark"] {
   --black:     #0B0B0B;
@@ -22,9 +28,9 @@
   --dim:       #9C9C93;
   --faint:     #84847B;
 
-  --accent:      #E8FF4B;
-  --accent-fill: #E8FF4B;
-  --accent-dim:  rgba(232,255,75,0.10);
+  --accent:      #C4F03C;
+  --accent-fill: #C4F03C;
+  --accent-dim:  rgba(196,240,60,0.10);
   --accent-ink:  #0B0B0B;
 
   /* The contrast surface: where money is discussed. */
@@ -32,7 +38,7 @@
   --paper-ink: #16161A;
   --paper-dim: #5A5A52;
   --paper-line:rgba(22,22,26,0.14);
-  --paper-eyebrow: #E8FF4B;
+  --paper-eyebrow: #C4F03C;
   --price-card: #FFFFFF;
 
   --danger: #FF6B4A;
@@ -51,9 +57,9 @@
   --dim:       #55554D;
   --faint:     #6A6A61;
 
-  --accent:      #1A1A1F;  /* ink. yellow is a FILL, never text on light */
-  --accent-fill: #E8FF4B;  /* brand yellow survives as the fill */
-  --accent-dim:  rgba(232,255,75,0.30);   /* the yellow stays, as a wash */
+  --accent:      #1A1A1F;  /* ink. the lime is a FILL, never text on light */
+  --accent-fill: #C4F03C;  /* brand lime survives as the fill */
+  --accent-dim:  rgba(196,240,60,0.30);   /* the lime stays, as a wash */
   --accent-ink:  #0B0B0B;
 
   /* On a light page the contrast surface goes the other way:
@@ -69,6 +75,8 @@
   --ok:     #16794E;
   --border:   rgba(22,22,26,0.12);
   --border-2: rgba(22,22,26,0.22);
+
+  --nav-bg: rgba(255,255,255,.72);
 }
 
 /* Light is the default, always. The site does NOT follow the OS dark
@@ -129,6 +137,18 @@ button { font-family: inherit; font-size: inherit; cursor: pointer; }
   padding: 10px 18px; border-radius: 8px; font-weight: 700;
 }
 .skip-link:focus { inset-inline-start: 8px; }
+
+/* Visible to screen readers, not to eyes. pricing.html's table caption
+   already asked for this class and nothing defined it, so the caption
+   was rendering as a stray heading above the table. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .wrap { max-width: 1120px; margin: 0 auto; padding-inline: var(--pad); }
 section { padding-block: var(--gap); }
@@ -496,27 +516,51 @@ details p {
 
 /* ═══════════ ABOUT ═══════════ */
 .about {
-  display: grid; grid-template-columns: 210px 1fr; gap: clamp(24px, 4vw, 44px);
+  display: grid; grid-template-columns: 240px 1fr; gap: clamp(24px, 4vw, 44px);
   align-items: center;
 }
+/* No gradient ring. The reference frames a portrait the way a print
+   would — square corners softened, a hairline edge, and a shadow doing
+   the lifting. A coloured halo reads as a 2010s profile-picture effect
+   and fights the photo instead of presenting it. */
 .about-photo-wrap {
-  position: relative; width: 210px; flex: none;
-  border-radius: 20px; padding: 5px;
-  background: linear-gradient(160deg,
-    color-mix(in srgb, var(--accent) 55%, transparent),
-    transparent 55%);
+  position: relative; width: 240px; flex: none;
+  border-radius: 18px;
+  box-shadow: 0 20px 44px -24px rgba(0,0,0,.5);
 }
+/* A PORTRAIT frame (3:4), not a square. The source is a tall head-and-
+   shoulders shot; a square crop lopped the chin off. This shows the
+   whole face and trims only a little of the collar at the bottom. */
 .about-photo {
-  width: 100%; aspect-ratio: 1; border-radius: 16px;
-  object-fit: cover; object-position: top center;
-  border: 1px solid var(--border-2);
-  /* The source photo is underexposed against a dark ground. */
-  filter: brightness(1.18) contrast(1.06) saturate(1.05);
+  display: block;
+  width: 100%; aspect-ratio: 3 / 4; border-radius: 18px;
+  object-fit: cover; object-position: center top;
+  border: 1px solid var(--border);
   background: var(--surface-2);
 }
 .about h2 { font-size: clamp(24px, 3.2vw, 32px); }
 .about p { color: var(--dim); margin-top: 14px; max-width: 58ch; }
 .about-name { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+
+/* The three checkmarked proof points — the reference's "green tick"
+   list. A lime disc with a dark tick centred inside it, drawn as an
+   inline SVG background so it needs no extra markup. */
+.about-checks {
+  list-style: none; margin: 22px 0 0; padding: 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.about-checks li {
+  position: relative; padding-inline-start: 34px;
+  color: var(--white); font-size: 15.5px; line-height: 1.55; font-weight: 500;
+}
+.about-checks li::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: 0;
+  width: 22px; height: 22px; border-radius: 50%;
+  background:
+    no-repeat center / 12px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230B0B0B' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E"),
+    var(--accent-fill);
+}
 
 /* ═══════════ CONTACT ═══════════ */
 .contact-card {
@@ -753,7 +797,7 @@ select.input:invalid { color: var(--faint); }
    proves capability at the same time.
    ═══════════════════════════════════════════════════════ */
 /* `.paper` is a TOKEN SCOPE, not a background swap.
-   Flipping only the background left --accent at #E8FF4B on a
+   Flipping only the background left --accent at #C4F03C on a
    cream ground: 1.3:1, invisible. Redefining the tokens means
    anything dropped in here is correct by construction instead
    of needing its own patch selector. */
@@ -1018,7 +1062,7 @@ body::after {
 .wf {
   border-radius: 5px;
   /* grey skeleton -> real colour, driven by one scrubbed variable */
-  background: color-mix(in srgb, rgba(232,255,75,.14) calc(var(--wf-fill) * 100%), var(--screen-2));
+  background: color-mix(in srgb, rgba(196,240,60,.14) calc(var(--wf-fill) * 100%), var(--screen-2));
   border: 1px solid rgba(237,236,235,.10);
   will-change: transform;
 }
@@ -1033,7 +1077,7 @@ body::after {
 .wf-line.w1 { width: 72%; } .wf-line.w2 { width: 46%; } .wf-line.w3 { width: 58%; }
 .wf-accent {
   opacity: 0; height: 20px; width: 74px; border-radius: 999px;
-  background: #E8FF4B; margin-top: 6px;
+  background: #C4F03C; margin-top: 6px;
 }
 .build-real {
   position: absolute; inset: 0; opacity: 0;
@@ -1118,7 +1162,20 @@ body::after {
    package columns, and fade the edge so it's obviously scrollable. */
 @media (max-width: 640px) {
   .tbl-wrap { position: relative; scroll-snap-type: x mandatory; }
-  .tbl-wrap table { min-width: 520px; }
+
+  /* Scaled down as a SET. Dropping min-width alone just trades sideways
+     scroll for very tall rows, because the same text rewraps into a
+     narrower column — the padding and type have to come down with it.
+     These selectors are .tbl-wrap-prefixed to outrank the bare
+     element rules in pricing.html's own <style> block. */
+  .tbl-wrap table { min-width: 430px; font-size: 13px; }
+  .tbl-wrap th,
+  .tbl-wrap td { padding: 9px 10px; }
+  .tbl-wrap thead th { font-size: 13.5px; scroll-snap-align: start; }
+  .tbl-wrap thead th:first-child { width: 28%; }
+  .tbl-wrap tbody th { font-size: 12.5px; }
+  .tbl-wrap td .note { font-size: 11px; }
+
   .tbl-wrap th:first-child,
   .tbl-wrap td:first-child,
   .tbl-wrap tbody th {
@@ -1126,15 +1183,52 @@ body::after {
     background: var(--surface);
     box-shadow: 1px 0 0 var(--border);
   }
-  .tbl-wrap thead th { scroll-snap-align: start; }
 }
 
-/* ═══════════ MOBILE ACTION BAR ═══════════
-   Phone traffic arrives from a paid ad and scrolls with a thumb.
-   The contact form is at the bottom of a long page; this puts the
-   two things that actually start a conversation permanently within
-   thumb reach. Desktop never sees it. */
-.mobile-bar { display: none; }
+/* ═══════════ MOBILE NAV BAR ═══════════
+   Phone traffic arrives from a paid ad and browses with a thumb — it
+   shouldn't need to open a hamburger drawer to reach the portfolio or
+   pricing. Icons, not a hidden list. WhatsApp stays the one visually
+   distinct item, since it's the fastest path to a real conversation.
+   Desktop never sees it.
+
+   Shares its show/hide state with the JS in site.js: `.up` is added
+   once the hero (or page head) has scrolled past — so it doesn't
+   compete with the hero's own CTA — and `.hide` while scrolling DOWN,
+   mirroring the top nav. */
+.mobile-bar {
+  display: none;
+  position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 90;
+  align-items: stretch;
+  /* Solid, not glass — a tab bar reads whatever colour section happens
+     to be scrolled underneath it if it's translucent (a lime panel one
+     scroll position, a dark one the next), which washed the icons out
+     inconsistently. A bottom bar is opaque in every native app for
+     exactly this reason. */
+  background: var(--surface);
+  border-top: 1px solid var(--border-2);
+  padding-inline: 4px;
+  padding-block-start: 6px;
+  padding-block-end: calc(6px + env(safe-area-inset-bottom));
+  transform: translateY(100%); opacity: 0;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.mobile-bar.up { opacity: 1; transform: translateY(0); }
+.mobile-bar.up.hide { transform: translateY(100%); }
+@media (prefers-reduced-motion: reduce) { .mobile-bar { transition: opacity .2s ease; } }
+
+.mbar-i {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 2px;
+  min-height: 48px; margin: 2px; border-radius: 10px;
+  color: var(--dim); text-decoration: none;
+  font-family: var(--body); font-size: 10.5px; font-weight: 600;
+  transition: color .2s ease, background .2s ease;
+}
+.mbar-i svg { stroke: currentColor; flex: none; }
+.mbar-i.current { color: var(--accent-ink); background: var(--accent-dim); }
+:root[data-theme="dark"] .mbar-i.current { color: var(--accent); }
+.mbar-i.mbar-wa { color: #25D366; }
 
 /* ═══════════════════════════════════════════════════════
    MOBILE — a different design, not a smaller one
@@ -1147,6 +1241,11 @@ body::after {
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 700px) {
   :root { --gap: 54px; --nav-h: 60px; }
+
+  /* Room at the foot of every page so the fixed bar never covers the
+     last thing on it — the footer links, a final CTA. */
+  body { padding-block-end: calc(60px + env(safe-area-inset-bottom)); }
+  .mobile-bar { display: flex; }
 
   /* ── Nav ── */
   .nav { gap: 10px; }
@@ -1243,7 +1342,8 @@ body::after {
   /* ── About: portrait first, then the words ── */
   .about { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 20px; }
   .about p { text-align: start; }
-  .about-photo-wrap { width: 132px; }
+  .about-checks { text-align: start; }
+  .about-photo-wrap { width: 170px; }
   .about h2 { font-size: clamp(21px, 5.8vw, 26px); }
 
   /* ── Contact ── */
@@ -1257,10 +1357,28 @@ body::after {
   .footer { flex-direction: column; align-items: flex-start; gap: 14px; }
   .teaser { flex-direction: column; align-items: stretch; }
   .teaser .btn { width: 100%; }
+
+  /* ── Phone legibility & thumbs ──────────────────────
+     11px eyebrows are fine on a desktop monitor at arm's length and
+     genuinely hard on a phone held in a moving hand — which is where
+     this site's paid traffic actually reads it. */
+  .eyebrow { font-size: 12.5px; letter-spacing: .10em; }
+  .step-n, .step-when, .browser-url { font-size: 12px; }
+
+  /* Footer links were 24px tall — a thumb-sized miss. The padding
+     grows the TAP area without moving the text apart. */
+  .footer-links { gap: 6px 16px; margin-inline-start: -10px; }
+  .footer-links a {
+    display: inline-flex; align-items: center;
+    min-height: 44px; padding-inline: 10px;
+  }
+
+  /* 38px → 44px: the Apple/Android minimum for a comfortable tap. */
+  .icon-btn { min-width: 44px; min-height: 44px; }
 }
 
 /* Very small phones — 320px still has to work. */
 @media (max-width: 360px) {
   .nav-logo span { display: none; }
-  .mobile-bar .btn { font-size: 14px; gap: 6px; }
+  .mbar-i { font-size: 9.5px; }
 }

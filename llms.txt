@@ -1,8 +1,8 @@
 # נתן חיים — בניית אתרים לעסקים קטנים
 
-> בונה אתרים לעסקים קטנים בירושלים והסביבה. אתרים מהירים, מותאמים לנייד, שמביאים פניות — מוכנים תוך כשבועיים, במחיר סגור מראש. עובד עם כלי AI כדי לספק מהר ובמחיר שמתאים לעסק קטן. אדם אחד, לא סטודיו — מדברים ישירות איתו, מההצעה ועד אחרי שהאתר עלה.
+> בונה אתרים לעסקים קטנים בכל הארץ. אתרים מהירים, מותאמים לנייד, שמביאים פניות — מוכנים תוך כשבועיים, במחיר סגור מראש. עובד עם כלי AI כדי לספק מהר ובמחיר שמתאים לעסק קטן. אדם אחד, לא סטודיו — מדברים ישירות איתו, מההצעה ועד אחרי שהאתר עלה.
 
-(English: Natan Chaim builds fast, mobile-first websites for small businesses in Jerusalem, Israel. Delivered in about two weeks at a fixed, up-front price. Solo builder using AI tools — you talk to him directly.)
+(English: Natan Chaim builds fast, mobile-first websites for small businesses across Israel. Delivered in about two weeks at a fixed, up-front price. Solo builder using AI tools — you talk to him directly.)
 
 ## שירותים
 - בניית אתר חדש לעסק — מותאם לנייד, בנוי כדי להביא פניות
@@ -12,7 +12,7 @@
 - פרסום ממומן (פייסבוק) והקמת נוכחות בגוגל
 
 ## פרטים
-- אזור שירות: ירושלים והסביבה, ישראל
+- אזור שירות: כל הארץ (העבודה נעשית מרחוק)
 - זמן אספקה: כשבועיים
 - מחיר: החל מ־₪1,500, סגור מראש, בלי הפתעות
 - טלפון / וואטסאפ: 055-680-7812

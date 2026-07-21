@@ -210,6 +210,23 @@
   .preview { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
   .preview img, .preview video { width: 110px; height: 74px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
   .preview .nm { font-size: 13px; color: var(--dim); overflow-wrap: anywhere; }
+  /* Multi-image field: one row per screenshot, reorderable. */
+  .multi-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+  .multi-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 8px;
+  }
+  .multi-row img { width: 84px; height: 56px; object-fit: cover; border-radius: 5px; flex: none; }
+  .multi-row .nm { flex: 1; font-size: 13px; color: var(--dim); overflow-wrap: anywhere; }
+  .mini {
+    font: inherit; font-size: 14px; line-height: 1; cursor: pointer; flex: none;
+    width: 30px; height: 30px; border-radius: 7px;
+    background: var(--surface-2); color: var(--dim); border: 1px solid var(--border);
+  }
+  .mini:hover:not(:disabled) { color: var(--white); border-color: var(--border-2); }
+  .mini:disabled { opacity: .35; cursor: default; }
+  .mini.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, transparent); }
 
   .spin {
     width: 15px; height: 15px; border: 2px solid rgba(0,0,0,.25);
@@ -251,6 +268,8 @@
   .an-range button.on { background: var(--accent); color: var(--black); border-color: var(--accent); font-weight: 700; }
   .an-optout { margin-inline-start: auto; }
   .an-optout.on { background: var(--ok); color: var(--black); border-color: var(--ok); font-weight: 700; }
+  .an-reset { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
+  .an-reset:hover { background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
   .an-fine { color: var(--faint); font-size: 12px; margin: -6px 0 16px; line-height: 1.5; }
   .an-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .an-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; text-align: center; }
@@ -376,15 +395,34 @@ const TYPES = {
         hint: "מופרדות בפסיק. לדוגמה: עברית, חנות, נדל\"ן" },
       { name: "screenshot_url", label: "צילום מסך",   type: "image" },
 
-      // The story is what turns a screenshot into proof. Empty by
-      // default: these are claims about a real client's business,
-      // so they come from Natan or they don't exist.
-      { name: "challenge_he", label: "הסיפור · מה הם באו איתו?", type: "textarea",
-        hint: "הבעיה בלשון שלהם. \"אין לנו אתר בכלל\" · \"אנשים לא מוצאים אותנו\". 2–3 שורות." },
-      { name: "decision_he",  label: "הסיפור · איזו החלטה קיבלת, ולמה?", type: "textarea",
-        hint: "משהו שלא היה מובן מאליו. זה החלק שמוכיח שאתה חושב ולא רק מבצע." },
-      { name: "outcome_he",   label: "הסיפור · מה השתנה אחרי?", type: "textarea",
-        hint: "רק אם זה אמיתי ומדיד. אם אין מספר — עדיף להשאיר ריק מאשר לנסח משהו מעורפל." },
+      // ── Case page ──────────────────────────────────────
+      // The card now links INWARD, to case.html, instead of out to the
+      // client's site. Without a slug the card falls back to the old
+      // outbound link, so this field is what switches a project over.
+      { name: "slug", label: "מזהה לכתובת", type: "text", ltr: true,
+        hint: "אותיות אנגליות ומקפים בלבד — למשל eli-mover. זו הכתובת של עמוד הפרויקט. בלי זה הכרטיס יקפוץ החוצה לאתר של הלקוח במקום לעמוד שלך." },
+      { name: "fullshot_url", label: "צילום גלילה מלא · מחשב", type: "image",
+        hint: "צילום ארוך של כל עמוד הבית מלמעלה עד למטה, ברוחב מחשב. זה מה שנגלל בתוך מסגרת המחשב במקטע \"ככה זה נראה\"." },
+      { name: "fullshot_mobile_url", label: "צילום גלילה מלא · נייד", type: "image",
+        hint: "אותו עמוד, אבל מצולם ברוחב טלפון — ככה שרואים את התצוגה האמיתית בנייד. נגלל בתוך מסגרת הטלפון. אם תשאיר ריק, הטלפון יציג את צילום המחשב מוקטן." },
+      { name: "sector_he", label: "תחום", type: "text",
+        hint: "התחום של הלקוח: הובלות, מוסד, אירוח. מופיע מעל הכותרת בעמוד הפרויקט." },
+      { name: "duration_he", label: "כמה זמן לקח", type: "text",
+        hint: "בשפה חופשית: \"שבועיים\". זה עונה על השאלה שכל לקוח שואל לפני שהוא שואל על מחיר." },
+
+      // ── The three sections of the case page, in page order ──
+      // Labels match the headings the visitor actually sees, so it is
+      // obvious which box fills which part of the page.
+      { name: "challenge_he", label: "1 · סקירת הפרויקט", type: "textarea",
+        hint: "מה האתר הזה, למי הוא נועד, ומה יש בו. זה הטקסט מתחת לכותרת \"סקירת הפרויקט\". שורה ריקה = פסקה חדשה." },
+      { name: "gallery_urls", label: "תמונות מסך לסקירה", type: "images",
+        hint: "תמונות מסך מתוך האתר שמופיעות מתחת לסקירה — למשל עמוד הבית ועוד עמוד. אפשר לצרף כמה, לשנות סדר עם ↑, ולהסיר עם ✕." },
+      { name: "decision_he",  label: "2 · הגישה", type: "textarea",
+        hint: "איך ניגשת לבנייה ולמה. זה הטקסט מתחת לכותרת \"הגישה\"." },
+      { name: "outcome_he",   label: "2 · הגישה — פסקה נוספת (רשות)", type: "textarea",
+        hint: "ממשיכה מתחת ל\"הגישה\". רק אם יש מה להוסיף — אחרת השאר ריק." },
+      { name: "steps_he", label: "3 · איך זה נבנה", type: "lines",
+        hint: "שלב אחד בכל שורה, בפורמט: כותרת | תיאור. לדוגמה:\nשיחה ואפיון | רבע שעה להבין את העסק, ואז שאלון שממפה את התוכן.\nאם תשאיר ריק — יוצגו שלבי ברירת המחדל." },
     ],
   },
   renders: {
@@ -788,6 +826,7 @@ function renderAnalytics(list) {
       <button data-r="7"  class="${anRange===7?"on":""}">7 ימים</button>
       <button data-r="30" class="${anRange===30?"on":""}">30 ימים</button>
       <button class="an-optout${opted?" on":""}" data-optout>${opted ? "✓ אתה לא נספר — בטל" : "אל תספור את הביקורים שלי"}</button>
+      ${all.length ? `<button class="an-reset" data-reset>אפס נתוני בדיקה (${all.length})</button>` : ""}
     </div>
     <div class="an-fine">המספר לא כולל בוטים ותצוגות־קישור. "מבקר" = דפדפן ייחודי — אותו אדם מהנייד ומהמחשב ייספר כשניים.</div>
     <div class="an-stats">
@@ -816,6 +855,21 @@ function renderAnalytics(list) {
       else localStorage.setItem("na_optout", "1");
     } catch { /* storage blocked — nothing to flag */ }
     renderAnalytics(list);
+  };
+
+  // Wipe every event so the count restarts from a real baseline. This is
+  // for clearing pre-launch test traffic — once the site is live and the
+  // tracker only records the production domain, real numbers accumulate
+  // on their own. Runs under the admin's authenticated session.
+  const rb = list.querySelector("[data-reset]");
+  if (rb) rb.onclick = async () => {
+    if (!confirm(`למחוק את כל ${all.length} רשומות התנועה ולהתחיל לספור מאפס?\n\nזה מוחק את נתוני הבדיקה שנאספו לפני העלייה לאוויר. לא ניתן לביטול.`)) return;
+    busy(rb, true, "מוחק…");
+    // A filter is required; created_at >= epoch matches every row.
+    const { error } = await sb.from("analytics_events").delete().gte("created_at", "1970-01-01T00:00:00Z");
+    if (error) { say($("#msg"), humanError(error), "err"); busy(rb, false, "אפס נתוני בדיקה"); return; }
+    await loadAll();
+    say($("#msg"), "נתוני התנועה אופסו. מכאן נספרים רק מבקרים אמיתיים מהאתר החי.", "ok");
   };
 }
 
@@ -861,6 +915,8 @@ function openDialog(row) {
 
     if (f.type === "image" || f.type === "video") {
       wrap.append(buildUpload(f, row ? row[f.name] : null));
+    } else if (f.type === "images") {
+      wrap.append(buildMultiUpload(f, row ? row[f.name] : null));
     } else if (f.type === "bool") {
       const b = el("input");
       b.type = "checkbox"; b.id = "f_" + f.name;
@@ -939,6 +995,62 @@ function buildUpload(f, existing) {
   return box;
 }
 
+/* Several images in one field, kept in order — the case page shows
+   them as the project's screenshots. Each row is either an already
+   saved URL or a newly picked file; save resolves both into one array,
+   so re-editing a project never re-uploads what is already there. */
+function buildMultiUpload(f, existing) {
+  const box = el("div");
+  box.dataset.field = f.name;
+  box.dataset.kind = "images";
+
+  const listEl = el("div", "multi-list");
+  box.append(listEl);
+
+  const drop = el("label", "drop");
+  drop.textContent = "גרור לכאן תמונות, או לחץ לבחירה";
+  const inp = el("input");
+  inp.type = "file";
+  inp.multiple = true;
+  inp.accept = "image/webp,image/png,image/jpeg,image/avif";
+  drop.append(inp);
+  box.append(drop);
+
+  // items: { url } for saved images, { file } for freshly picked ones.
+  const items = (Array.isArray(existing) ? existing.filter(Boolean) : []).map(url => ({ url }));
+  box._items = items;
+
+  const draw = () => {
+    listEl.innerHTML = "";
+    items.forEach((it, i) => {
+      const rowEl = el("div", "multi-row");
+      const img = el("img");
+      img.src = it.url || URL.createObjectURL(it.file);
+      const nm = el("div", "nm", it.url ? "תמונה שמורה" : it.file.name);
+      const up = el("button", "mini"); up.type = "button"; up.textContent = "↑";
+      up.title = "העבר למעלה"; up.disabled = i === 0;
+      up.onclick = () => { [items[i - 1], items[i]] = [items[i], items[i - 1]]; draw(); };
+      const rm = el("button", "mini danger"); rm.type = "button"; rm.textContent = "✕";
+      rm.title = "הסר";
+      rm.onclick = () => { items.splice(i, 1); draw(); };
+      rowEl.append(img, nm, up, rm);
+      listEl.append(rowEl);
+    });
+  };
+  draw();
+
+  const add = files => {
+    for (const file of files) if (file) items.push({ file });
+    draw();
+  };
+  inp.onchange = () => { add([...inp.files]); inp.value = ""; };
+  drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
+  drop.ondragleave = () => drop.classList.remove("over");
+  drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); add([...e.dataTransfer.files]); };
+
+  return box;
+}
+
 $("#dlg-x").onclick = $("#dlg-cancel").onclick = () => $("#dlg").close();
 
 $("#dlg-save").onclick = async () => {
@@ -957,6 +1069,8 @@ $("#dlg-save").onclick = async () => {
       }
       continue;
     }
+    // Resolved in the upload pass below, once files have URLs.
+    if (f.type === "images") continue;
     if (f.type === "bool") {
       payload[f.name] = body.querySelector(`[data-field="${f.name}"]`).checked;
       continue;
@@ -991,6 +1105,13 @@ $("#dlg-save").onclick = async () => {
   try {
     // ── Upload any newly picked files ──
     for (const f of cfg.fields) {
+      if (f.type === "images") {
+        const box = body.querySelector(`[data-field="${f.name}"]`);
+        const urls = [];
+        for (const it of box._items) urls.push(it.url || await upload(it.file));
+        payload[f.name] = urls.length ? urls : null;
+        continue;
+      }
       if (f.type !== "image" && f.type !== "video") continue;
       const box = body.querySelector(`[data-field="${f.name}"]`);
       if (box._file) {

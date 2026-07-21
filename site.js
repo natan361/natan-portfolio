@@ -269,8 +269,17 @@ if (hzTrack) {
 
   const paint = rows => {
     const en = currentLang() === "en";
-    hzTrack.innerHTML = rows.map(r => `
-      <a class="hz-card" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+    // Point at the case page, not the client's site. Sending a visitor
+    // straight out spends the ad click that brought them here: they leave,
+    // and nothing guarantees they come back. The case page shows the same
+    // site scrolling in a frame and keeps them. Rows with no slug yet fall
+    // back to the old outbound link so nothing breaks mid-migration.
+    hzTrack.innerHTML = rows.map(r => {
+      const internal = !!r.slug;
+      const href = internal ? `case.html?s=${encodeURIComponent(r.slug)}` : r.url;
+      const target = internal ? "" : ` target="_blank" rel="noopener noreferrer"`;
+      return `
+      <a class="hz-card" href="${esc(href)}"${target}>
         <div class="hz-shot">${r.screenshot_url
           ? `<img src="${esc(r.screenshot_url)}" alt="${esc(r.name_he)}" loading="lazy" />`
           : ""}</div>
@@ -278,7 +287,8 @@ if (hzTrack) {
           <div class="hz-name">${esc((en && r.name_en) || r.name_he)}</div>
           ${r.description_he ? `<p class="hz-desc">${esc((en && r.description_en) || r.description_he)}</p>` : ""}
         </div>
-      </a>`).join("");
+      </a>`;
+    }).join("");
     dispatchEvent(new CustomEvent("natan:hz"));
   };
 

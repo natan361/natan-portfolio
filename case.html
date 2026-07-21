@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>פרויקט — נתן חיים</title>
+<meta name="description" content="איך נבנה הפרויקט: מה הלקוח ביקש, מה הוחלט, ומה יצא מזה." />
+<!-- The row is fetched client-side, so there is nothing here for a crawler to
+     index per-project. noindex keeps thin duplicate shells out of Google;
+     portfolio.html stays the indexable entry point. -->
+<meta name="robots" content="noindex, follow" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="נתן חיים" />
+<meta property="og:locale" content="he_IL" />
+<meta property="og:image" content="https://natan-desain.netlify.app/assets-opt/og-cover.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="assets/logo.png" />
+<meta name="theme-color" content="#F5F4F0" id="theme-color" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css?v=3" />
+<script>
+  try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
+</script>
+<style>
+  /* ═══════════════════════════════════════════════════════
+     CASE STUDY
+
+     Direction, set BEFORE the markup this time. The first pass
+     of this page failed because it was assembled rather than
+     designed: elements were placed in a column and whatever
+     data was missing left a hole.
+
+     Three rules carry the whole layout:
+
+     1. OPEN ON THE WORK. A wide image is the first thing, at
+        full column width. Nobody arrives here to read a
+        heading — they came to see whether the site is any good.
+     2. ASYMMETRY. Title and prose sit side by side rather than
+        stacked, so the eye has a short line to read and the
+        page has a spine instead of a centre.
+     3. PANELS, NOT GAPS. Sections change GROUND to separate
+        themselves. Empty space between identical white blocks
+        reads as unfinished; a tinted panel reads as designed.
+     ═══════════════════════════════════════════════════════ */
+
+  /* Body copy was --dim (#55554D on light) and Natan couldn't read it.
+     The first fix (84% mix) was still a visible gray next to the
+     reference's solid near-black prose — Natan flagged it again. This
+     is now the same ink as headings, not a softened version of it. */
+  #case-root { --read: color-mix(in srgb, var(--white) 97%, var(--black)); }
+
+  /* Nav clearance only — the hero carries the top of the page. */
+  .case-top { padding-block: calc(var(--nav-h) + 26px) 0; }
+
+  .crumb {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--faint);
+    text-decoration: none; margin-bottom: 16px; min-height: 40px;
+  }
+  .crumb:hover { color: var(--accent); }
+
+  /* ── 1 · Hero ───────────────────────────────────────
+     A designed, CONTAINED rectangle — not edge-to-edge. Full-bleed
+     read as a raw banner slapped on the page; a large rounded frame
+     with breathing room reads as presented. Big, but composed: the
+     tall capture cropped to its top so the client's hero fills it. */
+  .case-hero {
+    border-radius: var(--r-lg); overflow: hidden;
+    border: 1px solid var(--border-2);
+    background: var(--surface-2);
+    height: clamp(320px, 46vw, 580px);
+    box-shadow: 0 30px 66px -40px rgba(0,0,0,.42);
+  }
+  .case-hero img {
+    width: 100%; height: 100%; display: block;
+    object-fit: cover; object-position: top center;
+  }
+
+  /* ── 2 · Title / prose ──────────────────────────────
+     STACKED, not two columns. The side-by-side split threw the title
+     to one edge and spread the lede across a 650px column on the other
+     — long lines with a gap between them read as "scattered" and were
+     hard to track in RTL. Title, then lede directly beneath it at a
+     comfortable measure: one thing to read, top to bottom. */
+  .case-intro {
+    margin-top: clamp(22px, 3.5vw, 40px);
+  }
+  .case-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--body); font-size: 13px; font-weight: 600;
+    color: var(--white);
+    border: 1px solid var(--border-2); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 16px;
+  }
+  .case-pill::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-fill);
+  }
+  .case-h1 { font-size: clamp(32px, 5.4vw, 56px); line-height: 1.04; }
+  /* Constrained measure = readable. ~52 Hebrew chars per line is the
+     comfortable band; the old full-column width ran well past it. */
+  .case-lede {
+    color: var(--read); font-weight: 500; font-size: clamp(17px, 1.9vw, 19px);
+    line-height: 1.72; max-width: 54ch; margin-top: 16px;
+  }
+
+  /* ── 3 · Facts ──────────────────────────────────────
+     No inner dividers — the reference sets these as open columns
+     with room to breathe, not a ruled spec sheet. Just a hairline
+     top to separate the block from the lede above. */
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 22px; margin-top: clamp(34px, 5.5vw, 56px);
+    padding-top: clamp(22px, 3vw, 32px);
+    border-top: 1px solid var(--border);
+  }
+  .facts > div { min-width: 0; }
+  .facts > div:first-child { padding-inline-start: 0; }
+  /* Normal font, not mono. Space Mono read as "robotic / computery"
+     here — the reference labels these in plain type. */
+  .facts dt {
+    font-family: var(--body); font-size: 13.5px; font-weight: 400;
+    color: var(--faint); margin-bottom: 6px;
+  }
+  .facts dd { margin: 0; font-size: 17px; font-weight: 700; }
+  .facts .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .facts .tags span {
+    font-size: 12.5px; font-weight: 400; color: var(--dim);
+    border: 1px solid var(--border-2); border-radius: 999px; padding: 3px 10px;
+  }
+
+  /* ── Section furniture ──────────────────────────────── */
+  /* The old clamp(56–96px) read as "unfinished" when the hero was
+     small and the nav was a dark smear — empty space only reads as
+     designed once the elements around it are confident. Now that
+     the hero carries real weight and the panels are on-brand, a
+     wider gap reads as pacing rather than a hole. */
+  .case-sec { margin-top: clamp(48px, 7vw, 88px); }
+  .case-sec > h2 { font-size: clamp(23px, 3.4vw, 34px); margin-bottom: 14px; }
+  .case-sec > p  { color: var(--read); font-weight: 500; font-size: 17.5px; line-height: 1.8; max-width: 68ch; white-space: pre-line; }
+  .case-sec > p + p { margin-top: 16px; }
+
+  /* ── Two pages, each on a backing panel ─────────────
+     The reference shows two device mockups side by side, each sitting
+     on its OWN colour panel (they use black / yellow) so the screens
+     lift off the page with depth. A flat browser box on white reads as
+     a document; a window floating on a tinted stage reads as designed.
+
+     Two DIFFERENT pages of the site, so the overview proves a real
+     multi-page build rather than one screenshot repeated. */
+  /* auto-fit so three or four attached screenshots wrap instead of
+     squeezing into a fixed two-column track. */
+  .pages {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(16px, 2.6vw, 28px); margin-top: clamp(30px, 4.5vw, 50px);
+  }
+  .stage {
+    border-radius: var(--r-lg);
+    padding: clamp(24px, 3.2vw, 44px) clamp(20px, 2.8vw, 38px);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  /* Both grounds near-black — Natan asked for one consistent dark
+     stage instead of one dark / one lime. */
+  .stage.s0, .stage.s1 { background: #14140F; }
+  .pageframe {
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,.14); background: #fff;
+    box-shadow: 0 22px 48px -22px rgba(0,0,0,.55);
+  }
+  .pageframe .bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 12px; background: #e8e8e4; border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+  .pageframe .bar span { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.18); flex: none; }
+  .pageframe .shot { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #f2f2ee; }
+  .pageframe .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .stage figcaption {
+    font-family: var(--body); font-size: 13px; font-weight: 600; text-align: center;
+  }
+  .stage.s0 figcaption, .stage.s1 figcaption { color: rgba(255,255,255,.72); }
+
+  /* ── 4 · The preview panel ──────────────────────────
+     Full-bleed tint. Breaking out of .wrap is what makes this
+     read as a different room rather than another paragraph. */
+  .panel {
+    margin-top: clamp(38px, 5vw, 60px);
+    padding-block: clamp(34px, 4.5vw, 60px);
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+    /* escape the centred column, keep the inner content aligned */
+    margin-inline: calc(50% - 50vw); padding-inline: var(--pad);
+  }
+  .panel-in { max-width: 1120px; margin: 0 auto; }
+  .panel-head { text-align: center; margin-bottom: 30px; }
+  .panel-head h2 { font-size: clamp(23px, 3.4vw, 34px); }
+  .panel-head p { color: var(--read); margin-top: 10px; font-size: 16.5px; }
+
+  /* Two devices, both live, both real photos — not CSS-drawn boxes.
+     A visitor who only checks on their phone wants to see it AS a
+     phone. Both scroll independently, natively, no JS moving
+     anything; the screenshot sits absolutely-positioned over the
+     mockup photo's own screen area, measured once in pixels off the
+     source image and expressed as % so it stays aligned at any size. */
+  .devices {
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(22px, 4vw, 64px); flex-wrap: wrap;
+  }
+  .device-laptop { flex: 1 1 460px; max-width: 640px; }
+  .device-phone  { flex: 0 0 auto; width: clamp(170px, 17vw, 230px); }
+
+  .mockup { position: relative; }
+  .mockup > .shell {
+    width: 100%; display: block; pointer-events: none; user-select: none;
+  }
+  .device-phone .screen-wrap {
+    position: absolute; overflow: hidden;
+    inset: 7.5% 14.17% 7.5% 15.83%;
+    border-radius: 15% / 6.5%;
+  }
+  .device-laptop .screen-wrap {
+    position: absolute; overflow: hidden;
+    inset: 8.15% 12.96% 28.33% 14.94%;
+  }
+
+  .screen {
+    height: 100%;
+    overflow-y: auto; overflow-x: hidden;
+    background: #fff; -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  .screen img { width: 100%; height: auto; display: block; }
+  /* A visible, chunky scrollbar so it reads as "scroll me". */
+  .screen::-webkit-scrollbar { width: 10px; }
+  .screen::-webkit-scrollbar-track { background: #ececec; }
+  .screen::-webkit-scrollbar-thumb { background: #bcbcbc; border-radius: 8px; border: 2px solid #ececec; }
+  .screen:hover::-webkit-scrollbar-thumb { background: #9a9a9a; }
+
+  /* A nested scroll container is not an obvious affordance — most
+     visitors have never had to scroll INSIDE a box before. The hint
+     sits outside .screen (a sibling, not a child) so it stays put
+     while the screen's own content scrolls under it, and disappears
+     the moment someone actually scrolls once. */
+  .scroll-hint {
+    position: absolute; inset-inline: 0; bottom: 8%;
+    width: fit-content; max-width: 90%; margin-inline: auto;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--body); font-size: 11.5px; font-weight: 600; color: #fff;
+    background: rgba(11,11,11,.76); backdrop-filter: blur(6px);
+    padding: 7px 13px; border-radius: 999px;
+    pointer-events: none; opacity: 1;
+    transition: opacity .35s ease;
+    animation: hint-bob 1.6s ease-in-out infinite;
+  }
+  .device-phone .scroll-hint span { display: none; }  /* too narrow for the label — the bouncing arrow alone reads fine */
+  .screen-wrap.scrolled .scroll-hint { opacity: 0; }
+  @keyframes hint-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+  @media (prefers-reduced-motion: reduce) { .scroll-hint { animation: none; } }
+  .preview-note {
+    margin-top: 16px; font-size: 13.5px; color: var(--faint); text-align: center;
+  }
+
+  /* ── 5 · Process cards ──────────────────────────────
+     The oversized number is the device that makes three plain
+     text blocks read as a sequence instead of a list. */
+  .cs-steps {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: clamp(14px, 2vw, 20px); margin-top: 34px;
+  }
+  .cs-step {
+    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 26px 24px 24px;
+  }
+  .cs-step-num {
+    position: absolute; inset-block-start: -14px; inset-inline-end: 6px;
+    font-family: var(--display); font-weight: 800; font-size: 92px;
+    line-height: 1; color: var(--white); opacity: .05; pointer-events: none;
+    user-select: none;
+  }
+  .cs-step-i { width: 30px; height: 30px; margin-bottom: 18px; }
+  .cs-step-i svg { width: 100%; height: 100%; fill: none; stroke: var(--white); stroke-width: 1.15; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+  .cs-step h3 { font-size: 19px; margin-bottom: 9px; position: relative; }
+  .cs-step p { color: var(--read); font-weight: 500; font-size: 15.5px; line-height: 1.72; position: relative; white-space: pre-line; }
+
+  /* ── 6 · Related ────────────────────────────────────
+     A case study that ends is a case study the visitor leaves.
+     This is the same job the rail does on the home page. */
+  .rel-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: clamp(14px, 2vw, 20px); margin-top: 30px;
+  }
+  .rel {
+    display: block; text-decoration: none; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    transition: border-color .22s ease, transform .22s ease;
+  }
+  .rel:hover { border-color: var(--accent-fill); transform: translateY(-3px); }
+  .rel-shot { aspect-ratio: 16 / 11; background: var(--surface-2); overflow: hidden; }
+  .rel-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  .rel-body { padding: 16px 18px 18px; }
+  .rel-tag {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--faint); display: block; margin-bottom: 6px;
+  }
+  .rel-name { font-size: 16.5px; font-weight: 700; }
+
+  /* ── Live link ──────────────────────────────────────
+     Bottom of the page, new tab: by the time it appears the
+     visitor has seen everything, and the tab keeps this page
+     alive behind it. */
+  .live {
+    margin-top: clamp(46px, 6vw, 66px); padding: 26px;
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .live b { display: block; font-size: 17.5px; margin-bottom: 4px; }
+  .live p { color: var(--read); font-size: 15.5px; }
+
+  /* ── Pager ──────────────────────────────────────────── */
+  .pager {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-top: clamp(40px, 5vw, 56px);
+    border-top: 1px solid var(--border); padding-top: 26px;
+  }
+  .pager a {
+    text-decoration: none; padding: 18px 20px;
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    background: var(--surface);
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .pager a:hover { border-color: var(--accent-fill); transform: translateY(-2px); }
+  .pager .k { font-family: var(--body); font-size: 13px; color: var(--faint); display: block; margin-bottom: 6px; }
+  .pager b { font-size: 17px; }
+  .pager .next { text-align: end; }
+
+  .case-cta { text-align: center; padding-block: clamp(56px, 8vw, 96px) 0; }
+  .case-cta h2 { font-size: clamp(26px, 4vw, 40px); }
+  .case-cta p { color: var(--read); margin-block: 12px 26px; }
+
+
+  .case-loading, .case-error { padding-block: 90px; text-align: center; color: var(--dim); }
+
+  @media (max-width: 820px) {
+    .case-intro { grid-template-columns: 1fr; gap: 18px; }
+    .facts > div { border-inline-start: 0; padding-inline: 0; padding-block: 16px; border-top: 1px solid var(--border); }
+    .facts > div:first-child { border-top: 0; }
+  }
+  @media (max-width: 640px) {
+    /* height:auto overrides the base clamp() so the ratio derives
+       height FROM width instead of the reverse — with both an explicit
+       height and an aspect-ratio set, width was being computed from
+       the ratio and blowing past the container (427px in a 350px
+       column), pushing the whole page into horizontal scroll. */
+    .case-hero { aspect-ratio: 4 / 3; height: auto; width: 100%; }
+    .preview-port { aspect-ratio: 3 / 4; }   /* a phone wants height */
+    .pages { grid-template-columns: 1fr; }
+    .pager { grid-template-columns: 1fr; }
+    .pager .next { text-align: start; }
+    .live { flex-direction: column; align-items: stretch; }
+    .live .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip">דלג לתוכן הראשי</a>
+<nav class="nav" id="nav" aria-label="ניווט ראשי" data-i18n-attr="aria-label:nav.main"></nav>
+
+<main id="main" class="wrap">
+  <div id="case-root">
+    <p class="case-loading">טוען את הפרויקט…</p>
+  </div>
+</main>
+
+<footer id="footer"></footer>
+<div id="mobile-bar"></div>
+
+<script type="module">
+  import { mountChrome } from "./_shell.js?v=3";
+  mountChrome({ active: "portfolio.html" });
+</script>
+<script type="module" src="case.js?v=3"></script>
+<script type="module" src="site.js?v=3"></script>
+</body>
+</html>

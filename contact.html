@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="main.css?v=3" />
 <script>
   document.documentElement.classList.add("js");
   try { var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s; } catch (e) {}
@@ -149,7 +149,7 @@
       <p class="eyebrow" data-i18n="ct.biolabel">מי אני</p>
       <h2 data-i18n="ct.bioh">נתן חיים. אדם אחד, לא סטודיו.</h2>
       <p data-i18n="ct.biop1">
-        בונה אתרים לעסקים קטנים מירושלים. בניתי מעל 10 אתרים — בתי כנסת, נותני שירות,
+        בונה אתרים לעסקים קטנים בכל הארץ. בניתי מעל 10 אתרים — בתי כנסת, נותני שירות,
         עסקים קטנים. אני עובד עם כלי AI, ולכן אני מספק תוך שבועיים מה שסטודיו מספק בחודשיים,
         במחיר שמתאים לעסק קטן.
       </p>
@@ -274,9 +274,9 @@
 <div id="mobile-bar"></div>
 
 <script type="module">
-  import { mountChrome } from "./_shell.js";
+  import { mountChrome } from "./_shell.js?v=3";
   mountChrome({ active: "contact.html" });
 </script>
-<script type="module" src="site.js"></script>
+<script type="module" src="site.js?v=3"></script>
 </body>
 </html>

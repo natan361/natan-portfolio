@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="main.css" />
+<link rel="stylesheet" href="main.css?v=3" />
 <script>
   try {
     var s = localStorage.getItem("natan-theme");
@@ -269,8 +269,11 @@ const story = r => {
 };
 
 const RENDER = {
+  // Cards lead INWARD to the case page rather than out to the client's
+  // site — the visitor sees the work scrolling in a frame and stays here.
+  // No slug yet (a brand-new row) still gets the old outbound link.
   sites: rows => rows.map(r => `
-    <a class="site" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+    <a class="site" href="${r.slug ? `case.html?s=${encodeURIComponent(r.slug)}` : esc(r.url)}"${r.slug ? "" : ` target="_blank" rel="noopener noreferrer"`}>
       <div class="site-shot">${r.screenshot_url
         ? `<img src="${esc(r.screenshot_url)}" alt="${esc(r.name_he)}" loading="lazy" />`
         : `<div class="site-shot-none">${esc(t("pf.noshot") || "אין צילום מסך")}</div>`}</div>
@@ -362,9 +365,9 @@ show("sites");
 Promise.all(["renders", "videos"].map(k => load(k).catch(() => {})));
 </script>
 <script type="module">
-  import { mountChrome } from "./_shell.js";
+  import { mountChrome } from "./_shell.js?v=3";
   mountChrome({ active: "portfolio.html" });
 </script>
-<script type="module" src="site.js"></script>
+<script type="module" src="site.js?v=3"></script>
 </body>
 </html>

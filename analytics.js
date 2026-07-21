@@ -30,12 +30,32 @@ const rid = () =>
   (crypto?.randomUUID ? crypto.randomUUID()
     : Date.now().toString(36) + Math.random().toString(36).slice(2));
 
+// ── Only the LIVE site counts ────────────────────────────
+// The single biggest source of fake "visitors" was development: every
+// localhost load and every automated-browser screenshot POSTed a real
+// event to the same table. If this isn't the production site, we send
+// nothing at all — no host but the live domain reaches the database.
+const isProdHost = () => {
+  try {
+    if (location.protocol === "file:") return false;
+    const h = location.hostname;
+    if (h === "localhost" || h === "127.0.0.1" || h === "0.0.0.0" || h === "::1") return false;
+    if (/\.local$/.test(h)) return false;               // *.local dev hosts
+    if (/^\d+\.\d+\.\d+\.\d+$/.test(h)) return false;    // raw LAN IP
+    if (/--.+\.netlify\.app$/.test(h)) return false;     // netlify preview / branch deploys
+    return true;
+  } catch { return false; }
+};
+
 // ── Who we DON'T count ───────────────────────────────────
 // Bots, uptime checkers and the link-preview crawlers that fetch a URL
 // when it's shared (Facebook, WhatsApp, Telegram…) each look like a
-// "visitor" and inflate the number. Headless browsers cover automated
-// testing. And na_optout lets Natan silence his own browser.
+// "visitor" and inflate the number. navigator.webdriver catches
+// automated browsers (Playwright/Selenium) even when they spoof a real
+// user-agent. And na_optout lets Natan silence his own browser.
 const skip = () => {
+  if (!isProdHost()) return true;
+  if (navigator.webdriver) return true;
   const ua = navigator.userAgent || "";
   if (/bot|crawl|spider|slurp|facebookexternalhit|meta-externalagent|telegrambot|whatsapp|pinterest|embedly|preview|headless|lighthouse|gtmetrix|pingdom|uptimerobot|ahrefsbot|semrush/i.test(ua)) return true;
   try { if (localStorage.getItem("na_optout") === "1") return true; } catch { /* storage blocked */ }

@@ -11,8 +11,8 @@ import { EN_PAGES } from "./i18n-pages.js";
 import { EN_ARTICLES } from "./i18n-articles.js";
 
 const EN_CORE = {
-  "meta.title": "Natan Chaim — Websites for small businesses | Jerusalem",
-  "meta.desc": "Websites for small businesses in Jerusalem. Fast, mobile-first, built to bring enquiries — ready in two weeks at a price agreed up front.",
+  "meta.title": "Natan Chaim — Websites for small businesses",
+  "meta.desc": "Websites for small businesses across Israel. Fast, mobile-first, built to bring enquiries — ready in two weeks at a price agreed up front.",
 
   "nav.process": "How it works",
   "nav.pricing": "Pricing",
@@ -27,7 +27,7 @@ const EN_CORE = {
 
   "skip": "Skip to main content",
 
-  "hero.status": "Available for new projects · Jerusalem area",
+  "hero.status": "Available for new projects · Working with businesses nationwide",
   "hero.h1": "Your website should be bringing you <em>customers</em>.",
   "hero.sub": "I build websites for small businesses. Fast, mobile-first, and built to bring enquiries — ready in two weeks, at a price agreed up front.",
   "hero.cta": "Let's talk — 15 minutes",
@@ -124,10 +124,13 @@ const EN_CORE = {
   "test.eyebrow": "Clients",
   "test.title": "What clients say",
 
-  "about.name": "Natan Chaim · Jerusalem",
-  "about.title": "You talk to me. Not to an account manager.",
-  "about.p1": "I've built 10 websites for businesses and institutions — synagogues, service providers, and small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
-  "about.p2": "No team, no queue, nobody in the middle. You talk to me directly, from the quote through to after the site is live.",
+  "about.name": "Natan Chaim",
+  "about.title": "Natan Chaim. One person, not a studio.",
+  "about.p1": "I build websites for small businesses across Israel. I've built 10 sites — synagogues, service providers, and small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
+  "about.p2": "When you write to me, you're talking to me — not an account manager, not a team, not someone relaying messages. I'm the one who answers, the one who builds, and the one you can call even after the site is live.",
+  "about.c1": "You talk to me directly, not an account manager",
+  "about.c2": "A price fixed upfront, no surprises",
+  "about.c3": "The site is fully yours, on your own domain",
 
   "contact.eyebrow": "Get in touch",
   "contact.title": "Let's find out if it's a fit",
@@ -138,7 +141,7 @@ const EN_CORE = {
   "ct.eyebrow": "Get in touch",
   "ct.biolabel": "About me",
   "ct.bioh": "Natan Chaim. One person, not a studio.",
-  "ct.biop1": "I build websites for small businesses, from Jerusalem. I've built over 10 sites — synagogues, service providers, small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
+  "ct.biop1": "I build websites for small businesses across Israel. I've built over 10 sites — synagogues, service providers, small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
   "ct.biop2": "When you message me, you talk to me. Not an account manager, not a team, not someone relaying messages. I'm the one who answers, the one who builds, and the one you can call even after the site is live.",
   "ct.qalabel": "About the call",
   "ct.qah": "What people ask before they reach out",
@@ -203,7 +206,7 @@ const EN_CORE = {
   "form.failed": "Sending failed. Send me a WhatsApp instead and I'll get back to you right away.",
   "form.ok": "Got it. I'll get back to you within 24 hours.",
 
-  "foot.rights": "© 2026 Natan Chaim · Jerusalem",
+  "foot.rights": "© 2026 Natan Chaim",
   "foot.portfolio": "Portfolio",
   "foot.pricing": "Pricing",
   "foot.a11y": "Accessibility statement",

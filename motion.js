@@ -172,7 +172,14 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
     const to = parseFloat(el.dataset.to);
     if (Number.isNaN(to)) return;
     const suffix = el.dataset.suffix || "";
-    const obj = { v: 0 };
+    // Some stats can't count up from zero without lying on the way:
+    // "100% ownership" passing through 41% momentarily reads as "you
+    // own 41% of your site". data-from lets that one start near its
+    // target so every frame states something true.
+    const from = parseFloat(el.dataset.from);
+    const start = Number.isNaN(from) ? 0 : from;
+    const obj = { v: start };
+    el.textContent = Math.round(start) + suffix;
     gsap.to(obj, {
       v: to, duration: 1.6, ease: "power2.out",
       scrollTrigger: { trigger: el, start: "top 88%", once: true },
