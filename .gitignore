@@ -24,6 +24,23 @@ assets/photo.png
 assets/PROFAIL.png
 assets/resume.pdf
 
+# ── Working screenshots dropped in the project root ────
+# Raw full-page captures of client sites and AI-generated mockup source
+# images, saved here while building. ~50MB, and none of it is linked
+# from a page: what ships is the compressed copy under assets-opt/.
+# Scoped to the root with a leading slash so the real artwork in
+# assets/ and assets-opt/ is never caught by this.
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
+
+# ── Superseded case screenshots ────────────────────────
+# Per-project captures from an earlier version of the case page. The
+# page now scrolls the full-page shot stored in Supabase instead, so
+# these 3.2MB are no longer referenced by any page.
+assets-opt/cases/
+
 # ── Local noise ────────────────────────────────────────
 desktop.ini
 Thumbs.db
