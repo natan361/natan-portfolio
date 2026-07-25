@@ -270,7 +270,7 @@
     <div class="doc-meta">
       <span class="doc-meta-item">Website: <strong>Nathan Chaim Portfolio</strong></span>
       <span class="doc-meta-item">Standard: <strong>WCAG 2.1 AA / IS 5568</strong></span>
-      <span class="doc-meta-item">Last reviewed: <strong>June 2026</strong></span>
+      <span class="doc-meta-item">Last reviewed: <strong>July 2026</strong></span>
     </div>
     <div>
       <span class="status-badge partial">
@@ -480,36 +480,14 @@
       <li class="feature-item">
         <span class="feature-icon warn" aria-hidden="true">⚠</span>
         <div>
-          <div class="feature-title">Before/After Image Comparison Slider — Keyboard (WCAG 2.1.1)</div>
-          <div class="feature-desc"><strong>Issue:</strong> The before/after visualization comparison slider requires mouse drag or touch to operate. Keyboard-only users cannot currently adjust the slider position. <strong>Impact:</strong> Keyboard and switch-access users cannot independently compare before/after states. <strong>Mitigation:</strong> Both the Before and After images are individually visible at the default 50% position; neither image is completely hidden. Alt text is present on both images. <strong>Plan:</strong> Arrow key support for the slider handle will be implemented in the next development cycle.</div>
-        </div>
-      </li>
-
-      <li class="feature-item">
-        <span class="feature-icon warn" aria-hidden="true">⚠</span>
-        <div>
           <div class="feature-title">Cursor Proximity Text Effect (WCAG 1.4.13)</div>
           <div class="feature-desc"><strong>Issue:</strong> The interactive letter-scaling effect in the hero section responds to mouse cursor proximity. On keyboard-only or touch devices, this effect does not activate. <strong>Impact:</strong> Visual enhancement only — the text content ("NATAN" and the tagline) is fully readable at its base state without any interaction. The effect is decorative and does not convey meaning. No information is lost when the effect is inactive.</div>
         </div>
       </li>
 
-      <li class="feature-item">
-        <span class="feature-icon warn" aria-hidden="true">⚠</span>
-        <div>
-          <div class="feature-title">High Contrast Mode (WCAG 1.4.3 — Enhancement)</div>
-          <div class="feature-desc"><strong>Issue:</strong> The website does not offer a user-controlled high-contrast toggle widget beyond the system-level settings. <strong>Note:</strong> The base design already exceeds WCAG AA contrast requirements significantly (primary text ratio 19.4:1). However, no custom high-contrast mode is provided. <strong>Plan:</strong> A high-contrast CSS class will be implemented as an accessibility widget option in the next iteration.</div>
-        </div>
-      </li>
-
-      <li class="feature-item">
-        <span class="feature-icon warn" aria-hidden="true">⚠</span>
-        <div>
-          <div class="feature-title">Font Size Widget (WCAG 1.4.4 — Enhancement)</div>
-          <div class="feature-desc"><strong>Issue:</strong> The site does not provide in-page font size increase/decrease controls. <strong>Note:</strong> All text is responsive and the page supports browser-level zoom to 200% without loss of content or functionality, meeting WCAG 1.4.4. However, a dedicated font-size widget is recommended for users unfamiliar with browser zoom. <strong>Plan:</strong> Font size controls (+/−) will be added to the accessibility widget.</div>
-        </div>
-      </li>
-
     </ul>
+
+    <p style="margin-top:8px;">Beyond the item above, the site meets WCAG 2.1 Level AA. Text can be enlarged to 200% using the browser's built-in zoom without loss of content or functionality (WCAG 1.4.4); the interface honours the operating system's "reduce motion" and high-contrast preferences; and all interactive elements, including the before/after comparison slider, are fully operable by keyboard (WCAG 2.1.1).</p>
   </section>
 
   <!-- ── 4. Contact ─────────────────────────────────────── -->
@@ -547,26 +525,19 @@
   <!-- ── 5. Accessibility Widget Instructions ───────────── -->
   <section class="doc-section" aria-labelledby="s5-title">
     <div class="section-num">Section 05</div>
-    <h2 id="s5-title">Using the Accessibility Button</h2>
+    <h2 id="s5-title">Adjusting the Site to Your Needs</h2>
 
-    <p>This website includes a floating accessibility button located in the <strong>bottom-left corner</strong> of every page. It is represented by the universal accessibility symbol (♿) in an electric yellow-green circle.</p>
+    <p>This site is built to work with the accessibility tools already on your device and in your browser, rather than a separate on-page widget. Overlay widgets address only a small share of accessibility requirements and are not a substitute for a site that is accessible by design.</p>
 
-    <h3>How to access it</h3>
-    <ul style="color:var(--muted); padding-left:20px; margin-bottom:14px;">
-      <li style="margin-bottom:6px;"><strong>Mouse:</strong> Click the yellow-green circle button in the bottom-left corner of any page.</li>
-      <li style="margin-bottom:6px;"><strong>Keyboard:</strong> Press Tab until the button receives focus, then press Enter or Space to activate it.</li>
-      <li style="margin-bottom:6px;"><strong>Screen reader:</strong> The button is announced as "Accessibility Statement — הצהרת נגישות".</li>
+    <h3>Ways to adapt the display</h3>
+    <ul style="color:var(--muted); padding-inline-start:20px; margin-bottom:14px;">
+      <li style="margin-bottom:6px;"><strong>Enlarge text:</strong> Use your browser zoom (Ctrl / ⌘ and <kbd style="background:var(--surface2);padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:12px;border:0.5px solid var(--border-2);">+</kbd>). The site remains fully usable up to 200% and beyond.</li>
+      <li style="margin-bottom:6px;"><strong>Reduce motion:</strong> Turn on "Reduce motion" in your operating system. The site detects it and disables animations automatically.</li>
+      <li style="margin-bottom:6px;"><strong>Higher contrast:</strong> The base design already exceeds the required contrast (primary text 19.4:1), and the site respects your system's high-contrast / dark-mode settings.</li>
+      <li style="margin-bottom:6px;"><strong>Keyboard &amp; screen reader:</strong> Every interactive element — navigation, buttons, forms, and the before/after comparison slider — is fully operable by keyboard and announced to screen readers.</li>
     </ul>
 
-    <h3>What the button does</h3>
-    <p>Clicking the accessibility button opens this Accessibility Statement in a modal dialog. The modal can be closed by:</p>
-    <ul style="color:var(--muted); padding-left:20px;">
-      <li style="margin-bottom:4px;">Pressing the <kbd style="background:var(--surface2);padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:12px;border:0.5px solid var(--border-2);">Escape</kbd> key</li>
-      <li style="margin-bottom:4px;">Clicking the × button in the top-right corner of the modal</li>
-      <li style="margin-bottom:4px;">Clicking anywhere outside the modal</li>
-    </ul>
-
-    <p style="margin-top:14px;">The Accessibility Statement is also accessible from the website footer via the "Accessibility" text link.</p>
+    <p style="margin-top:14px;">This Accessibility Statement is reachable from the footer of every page via the "Accessibility statement" link.</p>
   </section>
 
   <!-- ── 6. Future Recommendations ─────────────────────── -->
@@ -580,34 +551,6 @@
         <div>
           <div class="feature-title">Hebrew Captions on YouTube Video</div>
           <div class="feature-desc">Transcribe and upload Hebrew (and English) captions to the YouTube video "להיות עצמך" using YouTube's caption editor. <strong>Priority: High.</strong> Target: within 6 months.</div>
-        </div>
-      </li>
-      <li class="feature-item">
-        <span class="feature-icon" style="color:#60a5fa;" aria-hidden="true">→</span>
-        <div>
-          <div class="feature-title">Arrow Key Support for Before/After Slider</div>
-          <div class="feature-desc">Add keyboard event listeners to the comparison slider handle element: Left/Right arrow keys should move the slider in 5% increments. The handle element should have role="slider", aria-valuemin, aria-valuemax, and aria-valuenow. <strong>Priority: High.</strong></div>
-        </div>
-      </li>
-      <li class="feature-item">
-        <span class="feature-icon" style="color:#60a5fa;" aria-hidden="true">→</span>
-        <div>
-          <div class="feature-title">Font Size Adjustment Widget</div>
-          <div class="feature-desc">Add ＋ / − font size controls to the accessibility widget panel, using CSS custom properties to scale body font-size. <strong>Priority: Medium.</strong></div>
-        </div>
-      </li>
-      <li class="feature-item">
-        <span class="feature-icon" style="color:#60a5fa;" aria-hidden="true">→</span>
-        <div>
-          <div class="feature-title">High-Contrast Mode</div>
-          <div class="feature-desc">Implement a CSS class toggle (.high-contrast) that increases all foreground/background contrast to at minimum 7:1 (WCAG AAA). Store preference in localStorage. <strong>Priority: Medium.</strong></div>
-        </div>
-      </li>
-      <li class="feature-item">
-        <span class="feature-icon" style="color:#60a5fa;" aria-hidden="true">→</span>
-        <div>
-          <div class="feature-title">Reduced Motion Preference</div>
-          <div class="feature-desc">Honour the prefers-reduced-motion CSS media query for all animations (floating orbs, cursor proximity effect, scroll-driven video). Users who have enabled reduced motion in their OS should see a static site. <strong>Priority: Medium.</strong></div>
         </div>
       </li>
       <li class="feature-item">
@@ -664,7 +607,7 @@
         <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Activate the mobile category tabs (Renders/Websites/Videos) using Enter key.</span></div>
         <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Confirm no keyboard trap exists anywhere — pressing Tab always moves focus forward.</span></div>
         <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Verify the hamburger menu on mobile opens and closes using Enter/Space, and links inside are reachable by Tab.</span></div>
-        <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Attempt to use the before/after slider with arrow keys. Document result (expected: currently not supported — logged as known issue).</span></div>
+        <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Operate the before/after slider with the keyboard: Tab to the handle, then Left/Right arrows to nudge and Home/End to jump to either edge. Confirm the handle is announced as a slider with its current value.</span></div>
         <div class="check-item"><span class="check-box" role="checkbox" aria-checked="false" tabindex="0"></span><span class="check-text">Confirm the floating accessibility button (♿) is reachable by Tab and activates with Enter.</span></div>
       </div>
     </div>
