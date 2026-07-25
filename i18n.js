@@ -197,7 +197,7 @@ const EN_CORE = {
   "contact.bizph": "Restaurant, barber, service provider…",
   "contact.note": "Anything I should know?",
   "contact.submit": "Send — I'll get back to you within 24 hours",
-  "contact.fine": "Your details stay with me and are never passed on.",
+  "contact.fine": "By submitting this form you agree to the <a href=\"privacy.html\">privacy policy</a>. Your details stay with me and are never passed on.",
 
   "form.noname": "I need a name so I know how to address you.",
   "form.nophone": "That number doesn't look right. Without it I can't get back to you.",
@@ -210,6 +210,7 @@ const EN_CORE = {
   "foot.portfolio": "Portfolio",
   "foot.pricing": "Pricing",
   "foot.a11y": "Accessibility statement",
+  "foot.privacy": "Privacy policy",
   "foot.home": "Home",
 
   "pfmeta.title": "Portfolio — Natan Chaim",

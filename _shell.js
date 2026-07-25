@@ -64,7 +64,9 @@ export function mountChrome({ active = "" } = {}) {
         <a href="portfolio.html" data-i18n="foot.portfolio">תיק עבודות</a>
         <a href="articles.html" data-i18n="nav.art">מדריכים</a>
         <a href="pricing.html" data-i18n="foot.pricing">מחירים</a>
+        <span class="footer-sep" aria-hidden="true"></span>
         <a href="accessibility.html" data-i18n="foot.a11y">הצהרת נגישות</a>
+        <a href="privacy.html" data-i18n="foot.privacy">מדיניות פרטיות</a>
       </div>`;
   }
 

@@ -628,7 +628,9 @@ textarea.input { min-height: 92px; resize: vertical; }
 }
 .footer a { color: var(--faint); text-decoration: none; }
 .footer a:hover { color: var(--white); }
-.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+/* Divider between navigation links and the legal/policy links. */
+.footer-sep { width: 1px; height: 14px; background: var(--border-2); flex-shrink: 0; }
 
 /* ═══════════ NAV TOOLS (theme + language) ═══════════ */
 .nav-tools { display: flex; gap: 5px; align-items: center; }
