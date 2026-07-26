@@ -27,4 +27,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://natan-desain.netlify.app/sitemap.xml
+Sitemap: https://natanchaim.org/sitemap.xml

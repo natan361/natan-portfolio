@@ -19,10 +19,10 @@
 - אימייל: work71work72@gmail.com
 
 ## דפים
-- [דף הבית](https://natan-desain.netlify.app/): מי אני ומה אני מציע
-- [מחירים](https://natan-desain.netlify.app/pricing.html): כמה עולה אתר לעסק קטן, מה כלול
-- [איך זה עובד](https://natan-desain.netlify.app/process.html): התהליך מהשיחה ועד העלייה לאוויר
-- [שאלות נפוצות](https://natan-desain.netlify.app/faq.html): מחיר, זמנים, בעלות, שינויים
-- [מדריכים](https://natan-desain.netlify.app/articles.html): מדריכים לבעלי עסקים על אתרים
-- [תיק עבודות](https://natan-desain.netlify.app/portfolio.html): אתרים שבנה
-- [יצירת קשר](https://natan-desain.netlify.app/contact.html): טופס ווואטסאפ
+- [דף הבית](https://natanchaim.org/): מי אני ומה אני מציע
+- [מחירים](https://natanchaim.org/pricing.html): כמה עולה אתר לעסק קטן, מה כלול
+- [איך זה עובד](https://natanchaim.org/process.html): התהליך מהשיחה ועד העלייה לאוויר
+- [שאלות נפוצות](https://natanchaim.org/faq.html): מחיר, זמנים, בעלות, שינויים
+- [מדריכים](https://natanchaim.org/articles.html): מדריכים לבעלי עסקים על אתרים
+- [תיק עבודות](https://natanchaim.org/portfolio.html): אתרים שבנה
+- [יצירת קשר](https://natanchaim.org/contact.html): טופס ווואטסאפ

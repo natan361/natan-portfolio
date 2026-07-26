@@ -8,6 +8,16 @@
 [build.environment]
   GIT_LFS_ENABLED = "false"
 
+# ── Domain ─────────────────────────────────────────────
+# natanchaim.org is the canonical host. Netlify already redirects its own
+# subdomain to the primary domain, but the old URL is in ad links and in
+# Google's index, so this makes the 301 explicit rather than implied.
+[[redirects]]
+  from = "https://natan-desain.netlify.app/*"
+  to = "https://natanchaim.org/:splat"
+  status = 301
+  force = true
+
 # ── Caching ────────────────────────────────────────────
 # The stylesheet and modules change on every edit, so they must never
 # be served stale — a cached main.css is what made three rounds of real
