@@ -289,6 +289,41 @@
   .an-bar-v { font-family: var(--mono); font-size: 12px; color: var(--white); }
   .an-none { color: var(--faint); font-size: 13px; }
   .an-hint { margin-top: 16px; color: var(--faint); font-size: 13px; text-align: center; }
+
+  /* ── Comparison matrix ──────────────────────────────
+     Laid out like the table on the pricing page, so what you
+     edit here looks like what the visitor ends up seeing. */
+  .mx-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .mx { border-collapse: collapse; width: 100%; min-width: 520px; }
+  .mx th, .mx td { border: 1px solid var(--border); padding: 6px 8px; vertical-align: middle; }
+  .mx thead th { background: var(--surface); color: var(--white); font-size: 13px; text-align: center; white-space: nowrap; }
+  .mx thead th.hot { background: color-mix(in srgb, var(--accent) 18%, var(--surface)); }
+  .mx thead th.dimcol { opacity: .45; }
+  /* Pin the first and last columns so the package columns split what is
+     left evenly. Without this the label column swallows the free space
+     and the ✓ columns end up crushed against each other. */
+  .mx tbody th, .mx thead th:first-child { width: 28%; min-width: 150px; text-align: start; font-weight: 400; }
+  .mx tbody td:last-child, .mx thead th:last-child { width: 112px; }
+  .mx td { text-align: center; }
+  .mx-lbl { width: 100%; background: transparent; border: 0; color: var(--white);
+            font: inherit; font-size: 14px; padding: 4px 2px; border-radius: 6px; }
+  .mx-lbl:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  /* One button per cell, cycling ✓ → — → text. Three states is the whole
+     vocabulary of this table, so a cycle beats a dropdown per cell. */
+  .mx-cell { min-width: 46px; height: 34px; padding: 0 8px; cursor: pointer;
+             background: var(--surface-2); border: 1px solid var(--border);
+             border-radius: 8px; color: var(--dim); font: inherit; font-size: 15px; }
+  .mx-cell.yes { background: color-mix(in srgb, var(--ok) 16%, var(--surface-2)); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+  .mx-cell.no  { color: var(--faint); }
+  .mx-txt { width: 100%; min-width: 88px; background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--white); font: inherit; font-size: 13px; padding: 7px 8px; text-align: center; }
+  .mx-txt:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .mx-row-act { display: flex; gap: 4px; justify-content: flex-end; }
+  .mx-ico { width: 30px; height: 30px; padding: 0; line-height: 1; display: grid; place-items: center; }
+  .mx-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .mx-note { color: var(--faint); font-size: 13px; line-height: 1.6; margin: 0 0 16px; }
+  .mx-saved { color: var(--ok); font-size: 13px; opacity: 0; transition: opacity .2s; }
+  .mx-saved.on { opacity: 1; }
 </style>
 </head>
 <body>
@@ -472,12 +507,24 @@ const TYPES = {
       ? "צריך או קישור יוטיוב או קובץ וידאו. אחרת אין מה לנגן." : null,
   },
 
+  // The comparison table on the pricing page. Its columns ARE the
+  // packages below — leave one package published and the table becomes
+  // a single column by itself, which is the point of it living here.
+  features: {
+    label: "טבלת השוואה",
+    single: "שורה",
+    table: "pricing_features",
+    matrix: true,
+    empty: "אין עדיין שורות בטבלה.",
+    sub: "השורות של טבלת ההשוואה בעמוד המחירים. העמודות הן החבילות — כמה חבילות מפורסמות, כך יהיו עמודות.",
+  },
+
   packages: {
     label: "מחירים",
     single: "חבילה",
     table: "packages",
     empty: "עוד לא הגדרת חבילות.",
-    sub: "החבילות שמופיעות בדף הבית ובעמוד המחירים. שינוי כאן משנה את שניהם.",
+    sub: "החבילות שמופיעות בדף הבית ובטבלת ההשוואה. המחיר ו\"למי זה מתאים\" נערכים כאן בלבד.",
     title: r => r.name_he,
     sub2:  r => r.price_he,
     thumb: () => null,
@@ -520,6 +567,7 @@ const TYPES = {
 
 let current = "sites";
 let rows = {};
+let cells = [];   // package_features — the cells of the comparison matrix
 let editing = null;
 
 const $ = s => document.querySelector(s);
@@ -627,6 +675,12 @@ async function loadAll() {
     if (error) { say($("#msg"), humanError(error), "err"); rows[k] = []; return; }
     rows[k] = data || [];
   }));
+  // The cells of the comparison matrix. Not a TYPES entry of its own —
+  // it has no list view, it only exists inside the features grid.
+  {
+    const { data } = await sb.from("package_features").select("*");
+    cells = data || [];
+  }
   renderTabs();
   renderList();
   syncAddBtn();
@@ -662,6 +716,7 @@ function renderList() {
   list.innerHTML = "";
 
   if (cfg.dashboard) { renderAnalytics(list); return; }
+  if (cfg.matrix)    { renderMatrix(list);    return; }
 
   if (!data.length) {
     const e = el("div", "empty");
@@ -789,6 +844,175 @@ const AN_PAGE = { "/":"דף הבית", "/contact.html":"יצירת קשר", "/pr
 const anEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const anTally = arr => { const m = {}; for (const x of arr) m[x] = (m[x]||0)+1; return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
 const anDur = s => s < 60 ? `${s} שנ׳` : `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")} דק׳`;
+
+/* ══════════ COMPARISON MATRIX ══════════
+   Rows are pricing_features, columns are the packages. Every edit
+   writes on the spot rather than through the modal the other types
+   use — a grid where each cell needs a dialog is unusable, and the
+   whole reason this screen exists is to make repricing quick.        */
+
+const MX_CYCLE = { yes: "no", no: "text", text: "yes" };
+
+function mxCell(pkg, feat) {
+  return cells.find(c => c.package_id === pkg.id && c.feature_id === feat.id);
+}
+
+// Absent cell = "not included", so a new package needs no backfill.
+function mxKind(pkg, feat) { return mxCell(pkg, feat)?.kind || "no"; }
+
+async function mxWrite(pkg, feat, patch) {
+  const row = { package_id: pkg.id, feature_id: feat.id,
+                kind: mxKind(pkg, feat), text_he: mxCell(pkg, feat)?.text_he ?? null, ...patch };
+  const { error } = await sb.from("package_features")
+    .upsert(row, { onConflict: "package_id,feature_id" });
+  if (error) { say($("#msg"), humanError(error), "err"); return false; }
+
+  const i = cells.findIndex(c => c.package_id === pkg.id && c.feature_id === feat.id);
+  if (i >= 0) cells[i] = { ...cells[i], ...row }; else cells.push(row);
+  mxFlashSaved();
+  return true;
+}
+
+let mxSavedTimer;
+function mxFlashSaved() {
+  const n = $("#mx-saved"); if (!n) return;
+  n.classList.add("on");
+  clearTimeout(mxSavedTimer);
+  mxSavedTimer = setTimeout(() => n.classList.remove("on"), 1400);
+}
+
+function renderMatrix(list) {
+  const feats = rows.features || [];
+  const packs = (rows.packages || []).slice()
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+
+  const note = el("p", "mx-note");
+  note.textContent = packs.length
+    ? 'לחיצה על תא מחליפה בין ✓ (כלול) · — (לא כלול) · טקסט חופשי. שורות "מחיר" ו"מתאים ל" נלקחות מהחבילה עצמה ונערכות בלשונית "מחירים".'
+    : 'אין חבילות מפורסמות, אז אין עמודות. הוסף חבילה בלשונית "מחירים" וחזור לכאן.';
+  list.append(note);
+
+  if (!packs.length) return;
+
+  const scroll = el("div", "mx-scroll");
+  const table = el("table", "mx");
+
+  const thead = el("thead");
+  const hr = el("tr");
+  hr.append(el("th", null, ""));
+  for (const p of packs) {
+    const th = el("th", (p.is_featured ? "hot" : "") + (p.is_published ? "" : " dimcol"),
+                 p.name_he + (p.is_published ? "" : " (מוסתר)"));
+    hr.append(th);
+  }
+  hr.append(el("th", null, ""));
+  thead.append(hr);
+  table.append(thead);
+
+  const tb = el("tbody");
+  for (const f of feats) {
+    const tr = el("tr");
+
+    const th = el("th");
+    const lbl = el("input", "mx-lbl");
+    lbl.value = f.label_he || "";
+    lbl.setAttribute("aria-label", "שם השורה");
+    lbl.onblur = async () => {
+      const v = lbl.value.trim();
+      if (!v || v === f.label_he) { lbl.value = f.label_he || ""; return; }
+      const { error } = await sb.from("pricing_features").update({ label_he: v }).eq("id", f.id);
+      if (error) { say($("#msg"), humanError(error), "err"); lbl.value = f.label_he; return; }
+      f.label_he = v; mxFlashSaved();
+    };
+    th.append(lbl);
+    tr.append(th);
+
+    for (const p of packs) {
+      const td = el("td");
+      const kind = mxKind(p, f);
+
+      if (kind === "text") {
+        const inp = el("input", "mx-txt");
+        inp.value = mxCell(p, f)?.text_he || "";
+        inp.placeholder = "טקסט";
+        inp.setAttribute("aria-label", `${f.label_he} · ${p.name_he}`);
+        inp.onblur = () => mxWrite(p, f, { kind: "text", text_he: inp.value.trim() || null });
+        // Empty text would render as a blank cell, which reads as broken —
+        // so clearing it and pressing Escape sends the cell back to "—".
+        inp.onkeydown = e => { if (e.key === "Escape") mxWrite(p, f, { kind: "no", text_he: null }).then(renderList); };
+        td.append(inp);
+      } else {
+        const b = el("button", "mx-cell " + kind, kind === "yes" ? "✓" : "—");
+        b.title = "לחץ להחלפה";
+        b.setAttribute("aria-label", `${f.label_he} · ${p.name_he} · ${kind === "yes" ? "כלול" : "לא כלול"}`);
+        b.onclick = async () => {
+          const next = MX_CYCLE[kind];
+          if (await mxWrite(p, f, { kind: next, text_he: next === "text" ? "" : null })) renderList();
+        };
+        td.append(b);
+      }
+      tr.append(td);
+    }
+
+    const act = el("td");
+    const wrap = el("div", "mx-row-act");
+    const up = el("button", "btn btn-ghost btn-sm mx-ico", "↑");
+    up.title = "העלה שורה";
+    up.onclick = () => mxMove(f, -1);
+    const down = el("button", "btn btn-ghost btn-sm mx-ico", "↓");
+    down.title = "הורד שורה";
+    down.onclick = () => mxMove(f, +1);
+    const del = el("button", "btn btn-ghost btn-sm mx-ico", "✕");
+    del.title = "מחק שורה";
+    del.style.color = "var(--danger)";
+    del.onclick = async () => {
+      if (!confirm(`למחוק את השורה "${f.label_he}" מהטבלה?`)) return;
+      const { error } = await sb.from("pricing_features").delete().eq("id", f.id);
+      if (error) { say($("#msg"), humanError(error), "err"); return; }
+      await loadAll();
+    };
+    wrap.append(up, down, del);
+    act.append(wrap);
+    tr.append(act);
+
+    tb.append(tr);
+  }
+  table.append(tb);
+  scroll.append(table);
+  list.append(scroll);
+
+  const foot = el("div", "mx-foot");
+  const add = el("button", "btn btn-ghost btn-sm", "+ הוספת שורה");
+  add.onclick = async () => {
+    const label = prompt("שם השורה החדשה — למשל: קמפיין פייסבוק");
+    if (!label?.trim()) return;
+    const max = feats.reduce((m, r) => Math.max(m, r.sort_order ?? 0), 0);
+    const { error } = await sb.from("pricing_features")
+      .insert({ label_he: label.trim(), sort_order: max + 1 });
+    if (error) { say($("#msg"), humanError(error), "err"); return; }
+    await loadAll();
+  };
+  const saved = el("span", "mx-saved", "נשמר ✓");
+  saved.id = "mx-saved";
+  foot.append(add, saved);
+  list.append(foot);
+}
+
+// Swapping sort_order with the neighbour keeps the ordering dense,
+// so no reindex pass is ever needed.
+async function mxMove(f, dir) {
+  const feats = (rows.features || []).slice()
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+  const i = feats.findIndex(x => x.id === f.id);
+  const j = i + dir;
+  if (i < 0 || j < 0 || j >= feats.length) return;
+  const a = feats[i], b = feats[j];
+  const { error } = await sb.from("pricing_features")
+    .upsert([{ id: a.id, label_he: a.label_he, sort_order: b.sort_order },
+             { id: b.id, label_he: b.label_he, sort_order: a.sort_order }]);
+  if (error) { say($("#msg"), humanError(error), "err"); return; }
+  await loadAll();
+}
 
 function renderAnalytics(list) {
   const all = rows.analytics || [];
@@ -1153,7 +1377,12 @@ async function upload(file) {
   return sb.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
 }
 
-function syncAddBtn() { $("#add-btn").style.display = TYPES[current].readonly ? "none" : ""; }
+// The matrix carries its own "+ הוספת שורה" under the grid; the global
+// button would open the modal editor, which has no fields for this type.
+function syncAddBtn() {
+  const cfg = TYPES[current];
+  $("#add-btn").style.display = (cfg.readonly || cfg.matrix) ? "none" : "";
+}
 $("#add-btn").onclick = () => openDialog(null);
 
 boot();

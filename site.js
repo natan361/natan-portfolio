@@ -256,6 +256,75 @@ if (priceGrid) {
     });
 }
 
+/* ── Pricing comparison table ────────────────────────────
+   The columns are the published packages, not a fixed three.
+   Natan can run a single flat price and the table becomes one
+   column on its own — the whole reason this moved out of HTML.
+
+   The price and "suits" rows read from the package itself rather
+   than from the matrix, so a price is edited in exactly one place.
+   ────────────────────────────────────────────────────── */
+const cmp = $("#cmp");
+if (cmp) {
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const paint = (packs, feats, cells) => {
+    const en = currentLang() === "en";
+    const pick = (r, k) => (en && r[k + "_en"]) || r[k + "_he"];
+    const hot = p => (p.is_featured ? ' class="col-hot"' : "");
+
+    // A package with no row in the matrix reads as "not included",
+    // so adding a package never requires backfilling every feature.
+    const cellOf = (p, f) => {
+      const c = cells.find(x => x.package_id === p.id && x.feature_id === f.id);
+      if (!c || c.kind === "no") return `<td class="no${p.is_featured ? " col-hot" : ""}">—</td>`;
+      if (c.kind === "yes")      return `<td class="yes${p.is_featured ? " col-hot" : ""}">✓</td>`;
+      return `<td${hot(p)}>${esc((en && c.text_en) || c.text_he || "")}</td>`;
+    };
+
+    cmp.innerHTML = `
+      <table>
+        <caption class="sr-only">${esc(en ? "Package comparison" : "השוואת חבילות")}</caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            ${packs.map(p => `<th scope="col"${hot(p)}>${esc(pick(p, "name"))}</th>`).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">${esc(en ? "Price" : "מחיר")}</th>
+            ${packs.map(p => `<td${hot(p)}><b>${esc(pick(p, "price"))}</b></td>`).join("")}
+          </tr>
+          ${packs.some(p => p.for_he) ? `
+          <tr>
+            <th scope="row">${esc(en ? "Suits" : "מתאים ל")}</th>
+            ${packs.map(p => `<td${hot(p)}>${esc(pick(p, "for") || "")}</td>`).join("")}
+          </tr>` : ""}
+          ${feats.map(f => `
+          <tr>
+            <th scope="row">${esc(pick(f, "label"))}</th>
+            ${packs.map(p => cellOf(p, f)).join("")}
+          </tr>`).join("")}
+        </tbody>
+      </table>`;
+  };
+
+  Promise.all([
+    sb.from("packages").select("*").eq("is_published", true).order("sort_order"),
+    sb.from("pricing_features").select("*").eq("is_published", true).order("sort_order"),
+    sb.from("package_features").select("*"),
+  ]).then(([p, f, c]) => {
+    // An empty table is worse than no table — it reads as a broken page.
+    if (p.error || !p.data?.length) { cmp.remove(); return; }
+    const args = [p.data, f.data || [], c.data || []];
+    paint(...args);
+    addEventListener("natan:lang", () => paint(...args));
+  });
+}
+
 /* ── Work gallery ────────────────────────────────────────
    Rendered from the database so /admin is the only place the
    portfolio is ever edited. Dispatches natan:hz so the motion

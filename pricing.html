@@ -87,80 +87,11 @@
     </p>
   </header>
 
-  <!-- ⚠️ נתן: כל המספרים בעמוד הזה מומצאים. תן לי אמיתיים ואחליף. -->
-  <div class="tbl-wrap">
-    <table>
-      <caption class="sr-only">השוואת חבילות</caption>
-      <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col" data-i18n="price.1t">כרטיס ביקור</th>
-          <th scope="col" class="col-hot" data-i18n="price.2t">אתר תדמית</th>
-          <th scope="col" data-i18n="price.3t">אתר + פרסום</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r0">מחיר</th>
-          <td><b>₪1,500</b><span class="note" data-i18n="pricepage.from">החל מ־</span></td>
-          <td class="col-hot"><b>₪3,500</b><span class="note" data-i18n="pricepage.from">החל מ־</span></td>
-          <td><b data-i18n="price.3tag">בהתאמה אישית</b></td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r1">מתאים ל</th>
-          <td data-i18n="pricepage.r1a">עסק שצריך שימצאו אותו</td>
-          <td class="col-hot" data-i18n="pricepage.r1b">עסק שרוצה שהאתר יביא פניות</td>
-          <td data-i18n="pricepage.r1c">עסק שרוצה גם תנועה</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r2">עמודים</th>
-          <td data-i18n="pricepage.r2a">1</td>
-          <td class="col-hot" data-i18n="pricepage.r2b">לפי הצורך</td>
-          <td data-i18n="pricepage.r2c">לפי הצורך</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r3">מותאם לנייד</th>
-          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r4">וואטסאפ וחיוג</th>
-          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r5">טופס פניות</th>
-          <td class="no">—</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r6">גלריה / המלצות / שאלות</th>
-          <td class="no">—</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r7">ליווי אחרי העלייה</th>
-          <td data-i18n="pricepage.r7a">שבועיים</td>
-          <td class="col-hot" data-i18n="pricepage.r7b">חודש</td>
-          <td data-i18n="pricepage.r7c">כל זמן הקמפיין</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r8">קמפיין פייסבוק</th>
-          <td class="no">—</td><td class="col-hot no">—</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r9">זמן אספקה</th>
-          <td data-i18n="pricepage.r9a">שבוע</td>
-          <td class="col-hot" data-i18n="pricepage.r9b">שבועיים</td>
-          <td data-i18n="pricepage.r9c">שבועיים+</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r10">אחסון שנה ראשונה</th>
-          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-        <tr>
-          <th scope="row" data-i18n="pricepage.r11">הדומיין על שמך</th>
-          <td class="yes">✓</td><td class="col-hot yes">✓</td><td class="yes">✓</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- The comparison table is built from the packages in /admin. Three
+       columns were hardcoded here before, so dropping to a single price
+       meant editing this file. Now the column count follows whatever is
+       published, and site.js fills it in. -->
+  <div class="tbl-wrap" id="cmp"></div>
 
   <section>
     <h2 class="sec-title" data-i18n="pricepage.after">מה עולה כסף אחרי</h2>
