@@ -507,6 +507,134 @@ const TYPES = {
       ? "צריך או קישור יוטיוב או קובץ וידאו. אחרת אין מה לנגן." : null,
   },
 
+  // One row, edited in place rather than through the add/delete list the
+  // other types use. The phone number alone was written into five files.
+  settings: {
+    label: "הגדרות",
+    single: "הגדרות",
+    table: "site_settings",
+    singleton: true,
+    order: q => q,          // one row, and it has no sort_order to order by
+    empty: "ההגדרות לא נטענו.",
+    sub: "פרטי הקשר, הכותרות בראש דף הבית, והטקסט עליך. משנה את כל העמודים בבת אחת.",
+    fields: [
+      { name: "whatsapp", label: "וואטסאפ", type: "text", ltr: true,
+        hint: "בפורמט בינלאומי בלי + ובלי מקפים — למשל 972556807812. זה המספר שנפתח מכל כפתור וואטסאפ באתר, כולל הסרגל התחתון בנייד." },
+      { name: "email", label: "מייל", type: "text", ltr: true,
+        hint: "מחליף את הכתובת המוצגת ואת הקישור, בדף הבית ובעמוד יצירת הקשר." },
+      { name: "phone", label: "טלפון להצגה", type: "text", ltr: true, required: true,
+        hint: "בפורמט מקומי — 055-680-7812. שים לב: הטלפון בהצהרת הנגישות, במדיניות הפרטיות ובנתונים המובנים לגוגל כתוב בקוד ולא כאן — אם תחליף מספר, תגיד לי ואעדכן גם אותם." },
+
+      { name: "hero_badge_he", label: "תג הזמינות", type: "text",
+        hint: 'השורה עם הנקודה הירוקה. כשאתה עמוס — שנה כאן. ריק = התג נעלם.' },
+      { name: "hero_h1_he", label: "הכותרת הראשית", type: "text", required: true,
+        hint: 'מילה בין ** תודגש בירוק — למשל: האתר שלך אמור להביא לך **לקוחות**.' },
+      { name: "hero_sub_he", label: "המשפט מתחת לכותרת", type: "textarea" },
+      { name: "hero_cta_he", label: "הכפתור הראשי", type: "text" },
+      { name: "hero_cta2_he", label: "הכפתור המשני", type: "text" },
+      { name: "hero_note_he", label: "השורה הקטנה מתחת לכפתורים", type: "text" },
+
+      { name: "about_title_he", label: 'הכותרת במקטע "עליי"', type: "text" },
+      { name: "about_he", label: 'הטקסט במקטע "עליי"', type: "textarea",
+        hint: "שורה ריקה = פסקה חדשה. אל תחזור על הכותרת — היא כבר מופיעה מעל." },
+      { name: "about_points_he", label: 'שלוש הנקודות במקטע "עליי"', type: "lines",
+        hint: "נקודה אחת בכל שורה." },
+    ],
+  },
+
+  stats: {
+    label: "מספרים",
+    single: "מספר",
+    table: "stats",
+    empty: "אין מספרים להצגה.",
+    sub: "ארבעת המספרים מתחת לכותרת בדף הבית. שים כאן רק מה שנכון — מספר מנופח נסתר בקלות ושורף אמון.",
+    title: r => r.value_he,
+    sub2:  r => r.label_he,
+    thumb: () => null,
+    fields: [
+      { name: "value_he", label: "המספר", type: "text", required: true,
+        hint: 'איך שזה יופיע בדיוק: "10+" · "14 ימים" · "100%"' },
+      { name: "label_he", label: "מה זה אומר", type: "text", required: true,
+        hint: 'השורה הקטנה מתחת — למשל "אתרים שעלו לאוויר"' },
+    ],
+  },
+
+  services: {
+    label: "שירותים",
+    single: "שירות",
+    table: "services",
+    empty: "עוד לא הגדרת שירותים.",
+    sub: 'המקטע "מה אני עושה" בדף הבית.',
+    title: r => r.title_he,
+    sub2:  r => r.body_he,
+    thumb: () => null,
+    fields: [
+      { name: "title_he", label: "שם השירות", type: "text", required: true },
+      { name: "body_he",  label: "תיאור",     type: "textarea" },
+    ],
+  },
+
+  steps: {
+    label: "התהליך",
+    single: "שלב",
+    table: "process_steps",
+    empty: "עוד לא הגדרת שלבים.",
+    sub: 'ארבעת השלבים במקטע "איך זה עובד". המספור נקבע לפי הסדר כאן.',
+    title: r => r.title_he,
+    sub2:  r => r.body_he,
+    thumb: () => null,
+    aside: r => r.duration_he,
+    fields: [
+      { name: "title_he",    label: "שם השלב", type: "text", required: true },
+      { name: "body_he",     label: "מה קורה בשלב", type: "textarea" },
+      { name: "duration_he", label: "כמה זמן", type: "text",
+        hint: 'התווית בפינה — "15 דקות", "תוך 24 שעות"' },
+    ],
+  },
+
+  faqs: {
+    label: "שאלות ותשובות",
+    single: "שאלה",
+    table: "faqs",
+    empty: "עוד לא הוספת שאלות.",
+    sub: "מופיעות בעמוד השאלות. מה שתסמן כ\"גם בדף הבית\" יופיע גם שם.",
+    title: r => r.question_he,
+    sub2:  r => (r.answer_he || "").slice(0, 90),
+    thumb: () => null,
+    aside: r => (r.on_home ? "גם בדף הבית" : null),
+    fields: [
+      { name: "question_he", label: "השאלה",  type: "text", required: true },
+      { name: "answer_he",   label: "התשובה", type: "textarea", required: true,
+        hint: "שורה ריקה = פסקה חדשה." },
+      { name: "group_he", label: "קבוצה", type: "text",
+        hint: 'הכותרת שמעליה בעמוד השאלות — "כסף", "זמנים", "בעלות ושליטה". שאלות עם אותה קבוצה מקובצות יחד, לפי הסדר כאן.' },
+      { name: "group_slug", label: "מזהה הקבוצה לקישור", type: "text", ltr: true,
+        hint: "אותיות אנגליות בלבד — money, time, own. זה מה שמופיע בתפריט הקיצורים למעלה. אותו מזהה לכל שאלות הקבוצה." },
+      { name: "on_home", label: "להציג גם בדף הבית", type: "bool",
+        hint: "דף הבית מציג רק את המסומנות. שש עד שמונה זה בדרך כלל הנכון." },
+      { name: "home_order", label: "הסדר בדף הבית", type: "text",
+        hint: "מספר. קובע את הסדר בדף הבית בלבד — בעמוד השאלות הסדר נקבע לפי הקבוצות." },
+    ],
+  },
+
+  extras: {
+    label: "עלויות נוספות",
+    single: "עלות",
+    table: "extra_costs",
+    empty: "עוד לא הגדרת עלויות נוספות.",
+    sub: 'המקטע "מה עולה כסף אחרי" בעמוד המחירים. אלה סכומים אמיתיים — עדכן אותם כשהם משתנים.',
+    title: r => r.title_he,
+    sub2:  r => r.body_he,
+    thumb: () => null,
+    aside: r => r.amount_he,
+    fields: [
+      { name: "title_he",  label: "על מה זה", type: "text", required: true },
+      { name: "amount_he", label: "כמה",      type: "text",
+        hint: 'טקסט חופשי: "~₪60 לשנה" · "שנה ראשונה כלולה"' },
+      { name: "body_he",   label: "הסבר",     type: "textarea" },
+    ],
+  },
+
   // The comparison table on the pricing page. Its columns ARE the
   // packages below — leave one package published and the table becomes
   // a single column by itself, which is the point of it living here.
@@ -695,7 +823,8 @@ function renderTabs() {
     b.setAttribute("role", "tab");
     b.setAttribute("aria-selected", String(key === current));
     b.append(document.createTextNode(cfg.label));
-    const cnt = !rows[key] ? "–"
+    const cnt = cfg.singleton ? ""
+      : !rows[key] ? "–"
       : cfg.dashboard
         ? String(new Set(rows[key].filter(e => e.type === "pageview").map(e => e.visitor_id)).size)
         : String(rows[key].length);
@@ -715,8 +844,9 @@ function renderList() {
   const list = $("#list");
   list.innerHTML = "";
 
-  if (cfg.dashboard) { renderAnalytics(list); return; }
-  if (cfg.matrix)    { renderMatrix(list);    return; }
+  if (cfg.dashboard)  { renderAnalytics(list); return; }
+  if (cfg.matrix)     { renderMatrix(list);    return; }
+  if (cfg.singleton)  { renderSettings(list, data[0]); return; }
 
   if (!data.length) {
     const e = el("div", "empty");
@@ -844,6 +974,37 @@ const AN_PAGE = { "/":"דף הבית", "/contact.html":"יצירת קשר", "/pr
 const anEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const anTally = arr => { const m = {}; for (const x of arr) m[x] = (m[x]||0)+1; return Object.entries(m).sort((a,b)=>b[1]-a[1]); };
 const anDur = s => s < 60 ? `${s} שנ׳` : `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")} דק׳`;
+
+/* ══════════ SETTINGS (single row) ══════════
+   Shown as a read-only summary with one edit button rather than a list,
+   because there is nothing to add or delete — only to change.          */
+function renderSettings(list, row) {
+  const cfg = TYPES.settings;
+  if (!row) {
+    const e = el("div", "empty");
+    e.append(el("strong", null, cfg.empty));
+    list.append(e);
+    return;
+  }
+
+  for (const f of cfg.fields) {
+    const v = row[f.name];
+    const item = el("div", "item");
+    item.append(el("div", "thumb-none", f.label));
+    const mid = el("div");
+    const shown = Array.isArray(v) ? v.join(" · ") : (v || "");
+    mid.append(el("div", "item-t", shown ? String(shown).slice(0, 120) : "— ריק —"));
+    if (f.hint) mid.append(el("span", "item-s", f.hint));
+    item.append(mid);
+    list.append(item);
+  }
+
+  const foot = el("div", "mx-foot");
+  const edit = el("button", "btn", "עריכת ההגדרות");
+  edit.onclick = () => openDialog(row);
+  foot.append(edit);
+  list.append(foot);
+}
 
 /* ══════════ COMPARISON MATRIX ══════════
    Rows are pricing_features, columns are the packages. Every edit
@@ -1381,7 +1542,8 @@ async function upload(file) {
 // button would open the modal editor, which has no fields for this type.
 function syncAddBtn() {
   const cfg = TYPES[current];
-  $("#add-btn").style.display = (cfg.readonly || cfg.matrix) ? "none" : "";
+  // Matrix has its own add-row button; settings is one row you only edit.
+  $("#add-btn").style.display = (cfg.readonly || cfg.matrix || cfg.singleton) ? "none" : "";
 }
 $("#add-btn").onclick = () => openDialog(null);
 

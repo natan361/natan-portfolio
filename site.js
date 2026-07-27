@@ -1,6 +1,9 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 import { applyLang, currentLang, t } from "./i18n.js";
+// Overlays the hardcoded copy with whatever is in /admin. Imported here
+// rather than per page so every page picks up the contact details.
+import "./cms.js";
 
 const $ = s => document.querySelector(s);
 

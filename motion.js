@@ -168,9 +168,10 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
   }
 
   /* ── Counters ── */
-  $$(".stat-n").forEach(el => {
+  const countUp = el => {
     const to = parseFloat(el.dataset.to);
-    if (Number.isNaN(to)) return;
+    if (Number.isNaN(to) || el._counting) return;
+    el._counting = true;
     const suffix = el.dataset.suffix || "";
     // Some stats can't count up from zero without lying on the way:
     // "100% ownership" passing through 41% momentarily reads as "you
@@ -185,6 +186,19 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
       scrollTrigger: { trigger: el, start: "top 88%", once: true },
       onUpdate: () => { el.textContent = Math.round(obj.v) + suffix; },
     });
+  };
+  $$(".stat-n").forEach(countUp);
+
+  // cms.js can replace whole sections after this ran, and the new nodes
+  // were never seen by the batch above. Without this the numbers it
+  // wrote would sit at their pre-count value and the new cards would
+  // never be revealed.
+  addEventListener("natan:cms", () => {
+    $$(".stat-n").forEach(countUp);
+    const fresh = $$(".fx").filter(n => gsap.getProperty(n, "opacity") === 1 && !n._seen);
+    $$(".fx").forEach(n => { n._seen = true; });
+    if (fresh.length) gsap.from(fresh, { opacity: 0, y: 24, duration: 0.6, stagger: 0.06 });
+    ScrollTrigger.refresh();
   });
 
   /* ═════════════════════════════════════════════════════
