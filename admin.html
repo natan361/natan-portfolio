@@ -324,6 +324,40 @@
   .mx-note { color: var(--faint); font-size: 13px; line-height: 1.6; margin: 0 0 16px; }
   .mx-saved { color: var(--ok); font-size: 13px; opacity: 0; transition: opacity .2s; }
   .mx-saved.on { opacity: 1; }
+
+  /* ── Colour swatches ────────────────────────────────── */
+  .sw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 8px; }
+  .sw {
+    display: flex; align-items: center; gap: 9px; cursor: pointer;
+    padding: 9px 11px; border-radius: 10px; text-align: start;
+    background: var(--surface-2); border: 1.5px solid var(--border);
+    color: var(--dim); font: inherit; font-size: 13px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .sw:hover { border-color: var(--border-2); color: var(--white); }
+  .sw.on { border-color: var(--accent); color: var(--white); }
+  .sw-dot { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid rgba(255,255,255,.22); }
+  .sw-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Live preview + free picker. The chip is the real button treatment, so
+     "is this readable" is answered by looking, not by trusting a number. */
+  .sw-live {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    margin-top: 12px; padding: 12px 14px;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  }
+  .sw-chip {
+    padding: 9px 18px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    flex: none; transition: background .15s ease, color .15s ease;
+  }
+  .sw-verdict { font-size: 13px; font-family: var(--mono); }
+  .sw-verdict.ok  { color: var(--ok); }
+  .sw-verdict.bad { color: var(--danger); }
+  .sw-wheel {
+    margin-inline-start: auto; inline-size: 46px; block-size: 34px; padding: 2px;
+    background: var(--surface); border: 1px solid var(--border-2);
+    border-radius: 8px; cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -525,6 +559,34 @@ const TYPES = {
       { name: "phone", label: "טלפון להצגה", type: "text", ltr: true, required: true,
         hint: "בפורמט מקומי — 055-680-7812. שים לב: הטלפון בהצהרת הנגישות, במדיניות הפרטיות ובנתונים המובנים לגוגל כתוב בקוד ולא כאן — אם תחליף מספר, תגיד לי ואעדכן גם אותם." },
 
+      // Presets are the shortcut, the wheel below them is the freedom.
+      // Every preset here clears 4.5:1 against the text that lands on it;
+      // the wheel shows that ratio live instead of forbidding anything.
+      { name: "accent_hex", label: "צבע המותג", type: "color",
+        hint: "הצבע הבולט בכל האתר — כפתורים, הדגשות, המספרים. אפשר לבחור מהרשימה או לפתוח את הגלגל ולבחור כל צבע. הטקסט שיושב על הצבע נבחר אוטומטית — שחור או לבן, מה שקריא יותר.",
+        presets: [
+          { name: "ליים",     hex: "#C4F03C" },
+          { name: "ירוק דשא", hex: "#84CC16" },
+          { name: "מנטה",     hex: "#6EE7B7" },
+          { name: "טורקיז",   hex: "#4DE3F0" },
+          { name: "תכלת",     hex: "#7DD3FC" },
+          { name: "כחול",     hex: "#3B82F6" },
+          { name: "לבנדר",    hex: "#C4B5FD" },
+          { name: "סגול",     hex: "#B794F6" },
+          { name: "סגול עמוק",hex: "#7C3AED" },
+          { name: "ורוד",     hex: "#F9A8D4" },
+          { name: "פוקסיה",   hex: "#EC4899" },
+          { name: "אדום",     hex: "#EF4444" },
+          { name: "אלמוג",    hex: "#FF8A73" },
+          { name: "אפרסק",    hex: "#FF9F5A" },
+          { name: "כתום",     hex: "#F97316" },
+          { name: "ענבר",     hex: "#FFC93C" },
+          { name: "חול",      hex: "#E7D8B8" },
+          { name: "אפור",     hex: "#9CA3AF" },
+          { name: "פחם",      hex: "#3F3F46" },
+          { name: "שחור",     hex: "#111111" },
+        ] },
+
       { name: "hero_badge_he", label: "תג הזמינות", type: "text",
         hint: 'השורה עם הנקודה הירוקה. כשאתה עמוס — שנה כאן. ריק = התג נעלם.' },
       { name: "hero_h1_he", label: "הכותרת הראשית", type: "text", required: true,
@@ -699,6 +761,20 @@ let cells = [];   // package_features — the cells of the comparison matrix
 let editing = null;
 
 const $ = s => document.querySelector(s);
+
+/* Colour maths — the same two functions cms.js uses, so what the admin
+   promises and what the site renders can never disagree. */
+const relLum = hex => {
+  const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const [r, g, b] = [1, 3, 5].map(i => f(parseInt(hex.substr(i, 2), 16)));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a, b) => {
+  const [x, y] = [relLum(a), relLum(b)];
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+};
+// Whichever of black/white reads better on this colour.
+const inkOn = hex => contrast(hex, "#0B0B0B") >= contrast(hex, "#FFFFFF") ? "#0B0B0B" : "#FFFFFF";
 const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; };
 
 /* Accept whatever form of YouTube link someone pastes — full URL,
@@ -990,9 +1066,19 @@ function renderSettings(list, row) {
   for (const f of cfg.fields) {
     const v = row[f.name];
     const item = el("div", "item");
-    item.append(el("div", "thumb-none", f.label));
+    if (f.type === "color") {
+      // A hex string tells you nothing at a glance; the colour does.
+      const dot = el("div", "thumb-none");
+      dot.style.cssText = `background:${v};border-color:transparent`;
+      dot.textContent = "";
+      item.append(dot);
+    } else {
+      item.append(el("div", "thumb-none", f.label));
+    }
     const mid = el("div");
-    const shown = Array.isArray(v) ? v.join(" · ") : (v || "");
+    const named = f.type === "color" && f.presets.find(p => p.hex.toLowerCase() === String(v).toLowerCase());
+    const shown = named ? `${named.name} · ${v}`
+                : Array.isArray(v) ? v.join(" · ") : (v || "");
     mid.append(el("div", "item-t", shown ? String(shown).slice(0, 120) : "— ריק —"));
     if (f.hint) mid.append(el("span", "item-s", f.hint));
     item.append(mid);
@@ -1317,6 +1403,55 @@ function openDialog(row) {
       lab.style.display = "flex";
       lab.style.alignItems = "center";
       lab.style.gap = "9px";
+    } else if (f.type === "color") {
+      const hidden = el("input");
+      hidden.type = "hidden"; hidden.id = "f_" + f.name;
+      hidden.dataset.field = f.name; hidden.dataset.type = "color";
+      hidden.value = row?.[f.name] || f.presets[0].hex;
+
+      const grid = el("div", "sw-grid");
+      const live = el("div", "sw-live");
+      const chip = el("span", "sw-chip", "בוא נדבר");
+      const verdict = el("span", "sw-verdict");
+      const wheel = el("input", "sw-wheel");
+      wheel.type = "color";
+      wheel.setAttribute("aria-label", "בחירת צבע חופשית");
+
+      // The free picker can produce anything, so the readability check
+      // moves from build time to here — shown live rather than enforced,
+      // because it is his brand and his call.
+      const paint = () => {
+        const hex = hidden.value;
+        for (const b of grid.children)
+          b.classList.toggle("on", b.dataset.hex.toLowerCase() === hex.toLowerCase());
+        wheel.value = hex;
+        const ink = inkOn(hex);
+        chip.style.background = hex;
+        chip.style.color = ink;
+        const ratio = contrast(hex, ink);
+        const pass = ratio >= 4.5;
+        verdict.textContent = pass
+          ? `${hex} · קריא (${ratio.toFixed(1)}:1)`
+          : `${hex} · קשה לקריאה (${ratio.toFixed(1)}:1 — צריך 4.5)`;
+        verdict.className = "sw-verdict " + (pass ? "ok" : "bad");
+      };
+
+      for (const p of f.presets) {
+        const b = el("button", "sw");
+        b.type = "button"; b.dataset.hex = p.hex;
+        b.title = `${p.name} · ${p.hex}`;
+        b.setAttribute("aria-label", p.name);
+        b.append(Object.assign(el("span", "sw-dot"), { style: `background:${p.hex}` }));
+        b.append(el("span", "sw-name", p.name));
+        b.onclick = () => { hidden.value = p.hex; paint(); };
+        grid.append(b);
+      }
+      wheel.oninput = () => { hidden.value = wheel.value.toUpperCase(); paint(); };
+
+      live.append(chip, verdict, wheel);
+      paint();
+      wrap.append(hidden, grid, live);
+
     } else if (f.type === "lines") {
       const ta = el("textarea", "input"); ta.id = "f_" + f.name;
       ta.dataset.field = f.name; ta.dataset.type = "lines";

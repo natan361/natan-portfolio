@@ -91,10 +91,17 @@ if (bar) {
   let last = window.scrollY;
   addEventListener("scroll", () => {
     const y = window.scrollY;
-    // Ignore tiny jitters; near the foot, always show (the CTA is right there).
+    const nearBottom = innerHeight + y > document.documentElement.scrollHeight - 120;
+
+    // Checked before the jitter guard, not inside it. A scroll to the foot
+    // arrives as a long run of movement that decays to a few pixels at the
+    // end — and those last pixels, the ones that actually reach the
+    // bottom, were being filtered out as jitter. The bar stayed tucked
+    // away exactly where the code meant it to be showing.
+    if (nearBottom) { bar.classList.remove("hide"); last = y; return; }
+
     if (Math.abs(y - last) > 6) {
-      const nearBottom = innerHeight + y > document.documentElement.scrollHeight - 120;
-      bar.classList.toggle("hide", y > last && !nearBottom);
+      bar.classList.toggle("hide", y > last);
       last = y;
     }
   }, { passive: true });

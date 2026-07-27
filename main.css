@@ -364,6 +364,23 @@ section { padding-block: var(--gap); }
 :root[data-theme="dark"] .hero h1 em,
 :root[data-theme="dark"] .hero h1 em .ch { background-image: none; }
 
+/* A dark brand colour breaks both of the treatments above: as a band it
+   covers the bottom of the letters in near-black, and as the word's own
+   colour it disappears into a dark ground. So it becomes a solid block
+   with the word knocked out of it — set by cms.js, which knows whether
+   the chosen colour needs light text. */
+:root[data-accent="dark"] .hero h1 em,
+:root[data-accent="dark"][data-theme="dark"] .hero h1 em {
+  color: var(--accent-ink);
+}
+:root[data-accent="dark"] .hero h1 em,
+:root[data-accent="dark"] .hero h1 em .ch,
+:root[data-accent="dark"][data-theme="dark"] .hero h1 em,
+:root[data-accent="dark"][data-theme="dark"] .hero h1 em .ch {
+  background-image: linear-gradient(var(--accent-fill), var(--accent-fill));
+  padding-inline: .08em;
+}
+
 .hero-sub {
   margin-top: 22px; font-size: clamp(17px, 2.1vw, 21px);
   color: var(--dim); max-width: 46ch; line-height: 1.6;
@@ -720,7 +737,8 @@ select.input:invalid { color: var(--faint); }
   border-radius: 999px; padding: 7px 10px 7px 7px;
   text-decoration: none; color: var(--white);
   box-shadow: 0 14px 34px -14px rgba(0,0,0,.4);
-  transition: transform .3s cubic-bezier(.22,.8,.3,1), box-shadow .3s ease, opacity .3s ease;
+  transition: transform .3s cubic-bezier(.22,.8,.3,1), box-shadow .3s ease, opacity .3s ease,
+              inset-block-end .3s cubic-bezier(.22,.8,.3,1);
   animation: floatIn .5s .8s both cubic-bezier(.22,.8,.3,1);
 }
 :root[data-theme="dark"] .float-cta { box-shadow: 0 14px 34px -12px rgba(0,0,0,.7); }
@@ -761,8 +779,33 @@ select.input:invalid { color: var(--faint); }
 /* Hidden once the contact section is in view — the ask is already there. */
 .float-cta.at-contact { opacity: 0; pointer-events: none; transform: translateY(20px); }
 
-/* The phone has the bottom action bar; it doesn't need the pill too. */
-@media (max-width: 700px) { .float-cta { display: none; } }
+/* On a phone it sits above the action bar rather than being dropped.
+   The bar tucks itself away while you read downward, which left a
+   paid-ad visitor scrolling with no way to make contact on screen —
+   and that is the one thing this pill exists to prevent. Slightly
+   tighter here so it takes a corner, not the width of the screen. */
+@media (max-width: 700px) {
+  .float-cta {
+    /* Sits low while you read. The bar is tucked away then, so the space
+       it would occupy is free and the pill should use it. */
+    inset-block-end: calc(12px + env(safe-area-inset-bottom));
+    inset-inline-start: 12px;
+    gap: 10px; padding: 6px 9px 6px 6px;
+  }
+
+  /* The bar is a preceding sibling of the pill — _shell.js appends the
+     pill to <body> after it — so the pill can follow the bar's own state
+     instead of a second scroll listener guessing at it. Rides up only
+     while the bar is actually on screen. */
+  #mobile-bar.up:not(.hide) ~ .float-cta {
+    inset-block-end: calc(60px + env(safe-area-inset-bottom) + 12px);
+  }
+  .float-cta-av { width: 40px; height: 40px; }
+  .float-cta-av::after { width: 10px; height: 10px; }
+  .float-cta-txt b { font-size: 14px; }
+  .float-cta-txt small { font-size: 10px; }
+  .float-cta-arrow { width: 30px; height: 30px; }
+}
 @media (prefers-reduced-motion: reduce) { .float-cta { animation: none; } }
 
 /* ═══════════ REVEAL ═══════════ */
@@ -1064,7 +1107,7 @@ body::after {
 .wf {
   border-radius: 5px;
   /* grey skeleton -> real colour, driven by one scrubbed variable */
-  background: color-mix(in srgb, rgba(196,240,60,.14) calc(var(--wf-fill) * 100%), var(--screen-2));
+  background: color-mix(in srgb, color-mix(in srgb, var(--accent-fill) 14%, transparent) calc(var(--wf-fill) * 100%), var(--screen-2));
   border: 1px solid rgba(237,236,235,.10);
   will-change: transform;
 }
@@ -1079,7 +1122,7 @@ body::after {
 .wf-line.w1 { width: 72%; } .wf-line.w2 { width: 46%; } .wf-line.w3 { width: 58%; }
 .wf-accent {
   opacity: 0; height: 20px; width: 74px; border-radius: 999px;
-  background: #C4F03C; margin-top: 6px;
+  background: var(--accent-fill); margin-top: 6px;
 }
 .build-real {
   position: absolute; inset: 0; opacity: 0;
@@ -1228,7 +1271,10 @@ body::after {
   transition: color .2s ease, background .2s ease;
 }
 .mbar-i svg { stroke: currentColor; flex: none; }
-.mbar-i.current { color: var(--accent-ink); background: var(--accent-dim); }
+/* --accent, not --accent-ink: the text here sits on the 10-30% wash, not
+   on the solid fill, so it needs the theme's readable accent rather than
+   the ink that pairs with a fully saturated background. */
+.mbar-i.current { color: var(--accent); background: var(--accent-dim); }
 :root[data-theme="dark"] .mbar-i.current { color: var(--accent); }
 .mbar-i.mbar-wa { color: #25D366; }
 

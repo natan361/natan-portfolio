@@ -19,6 +19,7 @@ const ICON = {
   work: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"/></svg>`,
   price: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-1.8-2-3-5-3s-5 1.3-5 3.3 2 2.8 5 3.2 5 1.4 5 3.3-2 3.2-5 3.2-5-1.2-5-3"/></svg>`,
   faq: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.9.5-1.2 1-1.2 1.9"/><circle cx="12" cy="17" r=".25" fill="currentColor"/></svg>`,
+  art: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19V6.5a2 2 0 0 1 2-2H19V19H6.5a2 2 0 0 0-2 2z"/><path d="M8.5 8.5h6.5M8.5 12h4.5"/></svg>`,
 };
 
 // One place. Every page and the mobile bar read from here.
@@ -92,6 +93,9 @@ export function mountChrome({ active = "" } = {}) {
       { href: "portfolio.html", icon: ICON.work,  key: "bar.work",  he: "עבודות" },
       { href: "pricing.html",   icon: ICON.price, key: "bar.price", he: "מחירים" },
       { href: "faq.html",       icon: ICON.faq,   key: "bar.faq",   he: "שאלות" },
+      // Guides were reachable from the top nav but not from here, so on a
+      // phone — where the top nav collapses — they were effectively hidden.
+      { href: "articles.html",  icon: ICON.art,   key: "nav.art",   he: "מדריכים" },
     ];
     bar.innerHTML = `
       ${items.map(it => `

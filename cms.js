@@ -34,9 +34,63 @@ const rich = t => esc(t).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replac
 
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+/* Brand colour ─────────────────────────────────────────────
+   One hex drives the whole accent. It cannot be set as an inline
+   style on :root — that would win in BOTH themes, and light mode
+   deliberately uses ink for --accent while keeping the bright fill.
+   So it is injected as a stylesheet that mirrors main.css's own
+   light/dark split instead of flattening it.
+   ────────────────────────────────────────────────────── */
+// WCAG relative luminance. Exported shape kept tiny because the same
+// three lines are inlined into every page's boot script.
+export function inkOn(hex) {
+  const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  const [r, g, b] = [1, 3, 5].map(i => f(parseInt(hex.substr(i, 2), 16)));
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  // Pick whichever of black/white actually contrasts better, rather than
+  // a fixed threshold — near the crossover neither reaches 4.5:1 and the
+  // honest answer is "the best available", not "black because L > 0.19".
+  return (L + 0.05) / 0.0545 >= 1.05 / (L + 0.05) ? "#0B0B0B" : "#FFFFFF";
+}
+
+function paintAccent(hex) {
+  if (!/^#[0-9a-f]{6}$/i.test(hex || "")) return;
+  const rgb = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16)).join(",");
+  const ink = inkOn(hex);
+  // Lets CSS branch on "this colour needs light text on it" without
+  // re-deriving the luminance in a stylesheet, which it cannot do.
+  document.documentElement.dataset.accent = ink === "#FFFFFF" ? "dark" : "light";
+  let tag = $("#cms-accent");
+  if (!tag) {
+    tag = document.createElement("style");
+    tag.id = "cms-accent";
+    document.head.append(tag);
+  }
+  // The selectors must match main.css exactly. It declares dark under
+  // :root[data-theme="dark"] and light under ":root, :root[data-theme=light]"
+  // — light being the default. A plain :root here loses to the dark block
+  // on specificity and the colour would only take in light mode.
+  tag.textContent = `
+    :root[data-theme="dark"] {
+      --accent: ${hex};
+      --accent-fill: ${hex};
+      --accent-dim: rgba(${rgb},0.10);
+      --accent-ink: ${ink};
+      --paper-eyebrow: ${hex};
+    }
+    :root, :root[data-theme="light"] {
+      /* --accent stays ink here: on a light ground the brand colour is a
+         fill, never text. That rule is main.css's and it is a good one. */
+      --accent-fill: ${hex};
+      --accent-dim: rgba(${rgb},0.30);
+      --accent-ink: ${ink};
+    }`;
+}
+
 /* Settings ─────────────────────────────────────────────── */
 function paintSettings(s) {
   if (!s) return;
+  paintAccent(s.accent_hex);
 
   // Contact points. The shell seeds these from its constants; the
   // database is what makes them changeable without an edit here.
@@ -226,7 +280,14 @@ async function load() {
 }
 
 function paint() {
-  if (!data || currentLang() === "en") return;
+  if (!data) return;
+  // The brand colour is not language-dependent, so it is applied before
+  // the English guard below — otherwise the site would revert to lime
+  // for anyone reading in English.
+  paintAccent(data.settings?.accent_hex);
+  try { localStorage.setItem("natan-accent", data.settings?.accent_hex || ""); } catch { /* private mode */ }
+
+  if (currentLang() === "en") return;
   paintSettings(data.settings);
   paintList(".stats-grid", data.stats);
   paintList(".svc-grid",   data.services);
