@@ -200,6 +200,59 @@
   </div>
 </div>
 
+<!-- ═══════════════ WORK — horizontal gallery ═══════════════
+     Sits here, directly under the hero, because it is the only
+     proof on the page. NN/g's 2018 eyetracking put 65% of viewing
+     time in the top 40% of a page whatever its length, and the
+     site's own analytics showed a median dwell of 11 seconds —
+     so anything a visitor must scroll five screens to reach is,
+     in practice, not on the page at all.
+
+     Vertical scroll drives horizontal movement (ScrollTrigger
+     containerAnimation). Cards render from Supabase, so hiding a
+     project in /admin removes it here with no code change. -->
+<section class="hz" id="work">
+  <div class="wrap hz-head">
+    <p class="eyebrow fx" data-i18n="work.eyebrow">העבודות</p>
+    <h2 class="sec-title fx" data-i18n="work.title">אתרים שבניתי.</h2>
+    <p class="sec-lede fx" data-i18n="work.p">
+      עסקים, מוסדות ונותני שירות. כל אחד מהם חי ועובד עכשיו.
+    </p>
+    <p class="hz-hint fx">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span data-i18n="work.hint">גלול כדי לעבור ביניהם</span>
+    </p>
+  </div>
+
+  <div class="hz-view">
+    <div class="hz-track" id="hz-track">
+      <!-- filled from the database -->
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="more fx"><a href="portfolio.html" data-i18n="work.cta">לתיק העבודות המלא — כולל הדמיות וסרטונים</a></p>
+  </div>
+</section>
+
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════
+     Directly under the gallery on purpose: the visitor sees Eli's
+     site, then Eli's own words about it. A quote paired with the
+     work it refers to is a different claim from a quote floating
+     on its own.
+
+     Renders from the database, and only rows Natan has published.
+     If he ever unpublishes them all the section hides itself again
+     rather than shipping praise nobody said. -->
+<section id="testimonials" hidden>
+  <div class="wrap">
+    <p class="eyebrow fx" data-i18n="test.eyebrow">לקוחות</p>
+    <h2 class="sec-title fx" data-i18n="test.title">מה לקוחות אומרים</h2>
+    <div class="test-grid" id="test-grid"></div>
+  </div>
+</section>
+
 <!-- ═══════════════ THE SIGNATURE ═══════════════
      A website assembles itself as you scroll. This is the one
      thing on the page that proves capability rather than
@@ -319,34 +372,36 @@
   </div>
 </section>
 
-<!-- ═══════════════ WORK — horizontal gallery ═══════════════
-     Vertical scroll drives horizontal movement (ScrollTrigger
-     containerAnimation). Cards render from Supabase, so hiding a
-     project in /admin removes it here with no code change. -->
-<section class="hz" id="work">
-  <div class="wrap hz-head">
-    <p class="eyebrow fx" data-i18n="work.eyebrow">העבודות</p>
-    <h2 class="sec-title fx" data-i18n="work.title">אתרים שבניתי.</h2>
-    <p class="sec-lede fx" data-i18n="work.p">
-      עסקים, מוסדות ונותני שירות. כל אחד מהם חי ועובד עכשיו.
-    </p>
-    <p class="hz-hint fx">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      <span data-i18n="work.hint">גלול כדי לעבור ביניהם</span>
-    </p>
-  </div>
-
-  <div class="hz-view">
-    <div class="hz-track" id="hz-track">
-      <!-- filled from the database -->
-    </div>
-  </div>
-
+<!-- ═══════════════ PRICING ═══════════════
+     Moved up from underneath the FAQ. Price is the one thing Natan is
+     unambiguously better at than the market he competes with, and the
+     site's own analytics had it sitting nine screens down, where six
+     visitors in total ever reached it. -->
+<section class="paper" id="pricing">
   <div class="wrap">
-    <p class="more fx"><a href="portfolio.html" data-i18n="work.cta">לתיק העבודות המלא — כולל הדמיות וסרטונים</a></p>
+    <p class="eyebrow fx" data-i18n="price.eyebrow">מחירים</p>
+    <h2 class="sec-title fx" data-i18n="price.title">כמה זה עולה</h2>
+    <p class="sec-lede fx" data-i18n="price.lede">
+      אני מפרסם טווחים כי אני חושב שמגיע לך לדעת לפני שאתה מרים טלפון.
+      המחיר הסופי נקבע בשיחה, לפי מה שהעסק שלך באמת צריך.
+    </p>
+
+    <div class="price-grid" id="price-grid"></div>
+
+    <!-- Market comparison. Rows come from the database so Natan can
+         edit them in /admin when the market moves, and every row that
+         is not his own carries the published price list it came from —
+         a comparison against unnamed "others" is worth nothing. -->
+    <div class="market" id="market-cmp" hidden></div>
+
+    <p class="price-note" data-i18n="price.note">
+      כל המחירים כוללים אחסון לשנה הראשונה. הדומיין נרשם על שמך — האתר שלך, תמיד.
+    </p>
+    <p class="more on-paper fx">
+      <a href="pricing.html" data-i18n="more.pricing">השוואה מלאה, מה לא כלול, ומה עולה אחרי</a>
+    </p>
   </div>
 </section>
-
 
 <!-- ═══════════════ SERVICES ═══════════════
      Monoline stroke icons, sized and weighted consistently: one
@@ -450,39 +505,6 @@
     <p class="more fx">
       <a href="process.html" data-i18n="more.process">התהליך המלא — מה אני צריך ממך בכל שלב</a>
     </p>
-  </div>
-</section>
-
-<!-- ═══════════════ PRICING ═══════════════ -->
-<section class="paper" id="pricing">
-  <div class="wrap">
-    <p class="eyebrow fx" data-i18n="price.eyebrow">מחירים</p>
-    <h2 class="sec-title fx" data-i18n="price.title">כמה זה עולה</h2>
-    <p class="sec-lede fx" data-i18n="price.lede">
-      אני מפרסם טווחים כי אני חושב שמגיע לך לדעת לפני שאתה מרים טלפון.
-      המחיר הסופי נקבע בשיחה, לפי מה שהעסק שלך באמת צריך.
-    </p>
-
-    <div class="price-grid" id="price-grid"></div>
-
-    <p class="price-note" data-i18n="price.note">
-      כל המחירים כוללים אחסון לשנה הראשונה. הדומיין נרשם על שמך — האתר שלך, תמיד.
-    </p>
-    <p class="more on-paper fx">
-      <a href="pricing.html" data-i18n="more.pricing">השוואה מלאה, מה לא כלול, ומה עולה אחרי</a>
-    </p>
-  </div>
-</section>
-
-<!-- ═══════════════ TESTIMONIALS ═══════════════
-     Renders from the database. Every row is unpublished until Natan
-     replaces the placeholders with real quotes, so this section stays
-     hidden rather than shipping invented praise. -->
-<section id="testimonials" hidden>
-  <div class="wrap">
-    <p class="eyebrow fx" data-i18n="test.eyebrow">לקוחות</p>
-    <h2 class="sec-title fx" data-i18n="test.title">מה לקוחות אומרים</h2>
-    <div class="test-grid" id="test-grid"></div>
   </div>
 </section>
 
@@ -597,37 +619,49 @@
           <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" required autocomplete="tel" dir="ltr" placeholder="050-000-0000" />
         </div>
         <div class="field">
-          <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span> <span class="req">*</span></label>
+          <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span></label>
           <div class="pillset" role="radiogroup" aria-label="דרך יצירת קשר">
             <label class="pill-opt"><input type="radio" name="method" value="whatsapp" checked /><span data-i18n="contact.m_wa">וואטסאפ</span></label>
             <label class="pill-opt"><input type="radio" name="method" value="call" /><span data-i18n="contact.m_call">שיחת טלפון</span></label>
           </div>
         </div>
-        <div class="field">
-          <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span> <span class="req">*</span></label>
-          <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
-            <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
-            <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
-            <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
+
+        <!-- Everything below this line is genuinely optional, so it starts
+             collapsed. A form is judged by how long it LOOKS before it is
+             judged by how long it takes: the three questions in here are
+             ones Natan can ask just as easily in the first WhatsApp
+             message, and none of them should stand between a visitor and
+             sending his phone number. Anyone who wants to say more taps
+             once and says more. -->
+        <details class="field-more">
+          <summary data-i18n="contact.more">רוצה להוסיף פרטים? (לא חובה)</summary>
+
+          <div class="field">
+            <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span></label>
+            <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
+              <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
+              <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
+              <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label for="lf-subject"><span data-i18n="contact.subject">הנושא</span> <span class="req">*</span></label>
-          <select class="input" id="lf-subject" name="subject" required>
-            <option value="" data-i18n="contact.subj0">בחר נושא…</option>
-            <option data-i18n="contact.subj1">בניית אתר חדש</option>
-            <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
-            <option data-i18n="contact.subj3">אוטומציה</option>
-            <option data-i18n="contact.subj4">הדמיות</option>
-            <option data-i18n="contact.subj5">אחר</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
-          <textarea class="input" id="lf-note" name="note"
-                    placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
-                    data-i18n-attr="placeholder:contact.noteph"></textarea>
-        </div>
+          <div class="field">
+            <label for="lf-subject" data-i18n="contact.subject">הנושא</label>
+            <select class="input" id="lf-subject" name="subject">
+              <option value="" data-i18n="contact.subj0">בחר נושא…</option>
+              <option data-i18n="contact.subj1">בניית אתר חדש</option>
+              <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
+              <option data-i18n="contact.subj3">אוטומציה</option>
+              <option data-i18n="contact.subj4">הדמיות</option>
+              <option data-i18n="contact.subj5">אחר</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
+            <textarea class="input" id="lf-note" name="note"
+                      placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
+                      data-i18n-attr="placeholder:contact.noteph"></textarea>
+          </div>
+        </details>
         <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שליחה — אחזור אליך תוך 24 שעות</button>
         <p class="form-fine" data-i18n="contact.fine">הפרטים שלך נשמרים אצלי בלבד ולא מועברים לאף אחד.</p>
       </form>

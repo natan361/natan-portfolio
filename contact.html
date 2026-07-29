@@ -255,37 +255,44 @@
         <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" required autocomplete="tel" dir="ltr" placeholder="050-000-0000" />
       </div>
       <div class="field">
-        <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span> <span class="req">*</span></label>
+        <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span></label>
         <div class="pillset" role="radiogroup" aria-label="דרך יצירת קשר">
           <label class="pill-opt"><input type="radio" name="method" value="whatsapp" checked /><span data-i18n="contact.m_wa">וואטסאפ</span></label>
           <label class="pill-opt"><input type="radio" name="method" value="call" /><span data-i18n="contact.m_call">שיחת טלפון</span></label>
         </div>
       </div>
-      <div class="field">
-        <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span> <span class="req">*</span></label>
-        <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
-          <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
-          <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
-          <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
+      <!-- Optional, and collapsed, for the same reason as on the home
+           page: only a name and a working phone number actually block
+           Natan from getting back to someone. -->
+      <details class="field-more">
+        <summary data-i18n="contact.more">רוצה להוסיף פרטים? (לא חובה)</summary>
+
+        <div class="field">
+          <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span></label>
+          <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
+            <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
+            <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
+            <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label for="lf-subject"><span data-i18n="contact.subject">הנושא</span> <span class="req">*</span></label>
-        <select class="input" id="lf-subject" name="subject" required>
-          <option value="" data-i18n="contact.subj0">בחר נושא…</option>
-          <option data-i18n="contact.subj1">בניית אתר חדש</option>
-          <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
-          <option data-i18n="contact.subj3">אוטומציה</option>
-          <option data-i18n="contact.subj4">הדמיות</option>
-          <option data-i18n="contact.subj5">אחר</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
-        <textarea class="input" id="lf-note" name="note"
-                  placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
-                  data-i18n-attr="placeholder:contact.noteph"></textarea>
-      </div>
+        <div class="field">
+          <label for="lf-subject" data-i18n="contact.subject">הנושא</label>
+          <select class="input" id="lf-subject" name="subject">
+            <option value="" data-i18n="contact.subj0">בחר נושא…</option>
+            <option data-i18n="contact.subj1">בניית אתר חדש</option>
+            <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
+            <option data-i18n="contact.subj3">אוטומציה</option>
+            <option data-i18n="contact.subj4">הדמיות</option>
+            <option data-i18n="contact.subj5">אחר</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
+          <textarea class="input" id="lf-note" name="note"
+                    placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
+                    data-i18n-attr="placeholder:contact.noteph"></textarea>
+        </div>
+      </details>
       <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שליחה — אחזור אליך תוך 24 שעות</button>
       <p class="form-fine" data-i18n-html="contact.fine">בשליחת הטופס אני מאשר/ת את <a href="privacy.html">מדיניות הפרטיות</a>. הפרטים שלך נשמרים אצלי בלבד ולא מועברים לאף אחד.</p>
     </form>

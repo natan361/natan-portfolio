@@ -266,6 +266,48 @@ if (priceGrid) {
     });
 }
 
+/* ── What the rest of the market charges ─────────────────
+   Deliberately a list and not a bar chart. The rows are ranges,
+   and one of them is a MONTHLY fee — putting those on one shared
+   scale would draw a picture that isn't true. The numbers do the
+   work on their own here.
+
+   Every row that isn't Natan's carries the price list it came
+   from, as a real link. A comparison against unnamed competitors
+   is a claim; a comparison a visitor can click is evidence.
+   ────────────────────────────────────────────────────── */
+const market = $("#market-cmp");
+if (market) {
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  sb.from("market_prices").select("*").eq("is_published", true).order("sort_order")
+    .then(({ data, error }) => {
+      if (error || !data?.length) return;   // stays hidden
+
+      const paint = () => {
+        const en = currentLang() === "en";
+        market.innerHTML = `
+          <h3 class="market-t">${esc(en ? "What the same site costs elsewhere" : "כמה עולה אותו אתר במקום אחר")}</h3>
+          <ul class="market-list">
+            ${data.map(r => `
+              <li class="market-row${r.is_mine ? " mine" : ""}">
+                <span class="market-label">${esc(r.label_he)}</span>
+                <span class="market-range">${esc(r.range_he)}</span>
+                ${r.note_he ? (r.source_url
+                  ? `<a class="market-src" href="${esc(r.source_url)}" target="_blank" rel="noopener nofollow">${esc(r.note_he)}</a>`
+                  : `<span class="market-src">${esc(r.note_he)}</span>`) : ""}
+              </li>`).join("")}
+          </ul>`;
+        market.hidden = false;
+      };
+
+      paint();
+      addEventListener("natan:lang", paint);
+    });
+}
+
 /* ── Pricing comparison table ────────────────────────────
    The columns are the published packages, not a fixed three.
    Natan can run a single flat price and the table becomes one
@@ -451,14 +493,12 @@ if (form) {
       show(t("form.nophone") || "מספר הטלפון לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
       $("#lf-phone").focus(); return;
     }
-    if (!subject) {
-      show(t("form.nosubject") || "בחר נושא כדי שאדע במה מדובר.", "err");
-      $("#lf-subject").focus(); return;
-    }
-    if (!ctime) {
-      show(t("form.notime") || "בחר מתי נוח לך שאחזור אליך.", "err");
-      return;
-    }
+    // Subject and preferred time used to block the submit too. They are
+    // now optional: Unbounce's benchmark across 41k landing pages shows
+    // conversion falling off consistently as a form grows past three
+    // fields, and both of these are questions Natan can just as easily
+    // ask in the first WhatsApp message. A name and a reachable phone
+    // number are the only things he genuinely cannot proceed without.
 
     show("", "ok");
     const label = btn.textContent;   // after any language switch
@@ -466,9 +506,10 @@ if (form) {
     btn.textContent = t("form.sending") || "שולח…";
 
     const lead = {
-      name, phone, subject,
+      name, phone,
+      subject: subject || null,
       contact_method: method,
-      contact_time: ctime,
+      contact_time: ctime || null,
       note: $("#lf-note").value.trim() || null,
       source: location.pathname + location.search,
     };

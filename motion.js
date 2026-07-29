@@ -209,11 +209,17 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
      ═════════════════════════════════════════════════════ */
   const build = $("#build");
   if (build) {
+    // The pin distance is scroll the visitor spends without reaching new
+    // content, so a phone gets less of it. 2600px is over three screens
+    // on a 844px-tall viewport — long enough that the section alone was
+    // pushing the rest of the page out of reach on mobile. The animation
+    // plays out identically, just over a shorter scroll.
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: build,
         start: "top top",
-        end: "+=2600",
+        end: () => "+=" + (innerWidth < 861 ? 1200 : 2600),
+        invalidateOnRefresh: true,
         pin: ".build-pin",
         scrub: 0.8,
         anticipatePin: 1,

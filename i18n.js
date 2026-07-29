@@ -196,6 +196,7 @@ const EN_CORE = {
   "contact.biz": "Type of business",
   "contact.bizph": "Restaurant, barber, service provider…",
   "contact.note": "Anything I should know?",
+  "contact.more": "Want to add details? (optional)",
   "contact.submit": "Send — I'll get back to you within 24 hours",
   "contact.fine": "By submitting this form you agree to the <a href=\"privacy.html\">privacy policy</a>. Your details stay with me and are never passed on.",
 

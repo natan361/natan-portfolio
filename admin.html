@@ -697,6 +697,33 @@ const TYPES = {
     ],
   },
 
+  // What everyone else charges. Lives in the database and not in the
+  // page because a competitor's price list changes, and a stale number
+  // here is worse than no comparison at all.
+  market: {
+    label: "השוואת שוק",
+    single: "שורה",
+    table: "market_prices",
+    empty: "עוד לא הוספת שורות להשוואה.",
+    sub: 'הרשימה "כמה עולה אותו אתר במקום אחר" — מופיעה גם בדף הבית וגם בעמוד המחירים. לכל שורה שאינה שלך חייב להיות קישור למחירון שממנו לקחת את הסכום. בלי מקור זו טענה על מתחרים, לא השוואה.',
+    title: r => r.label_he,
+    sub2:  r => r.note_he,
+    thumb: () => null,
+    aside: r => r.range_he,
+    fields: [
+      { name: "label_he",   label: "מי או מה", type: "text", required: true,
+        hint: 'מה מופיע בצד ימין של השורה. לדוגמה: "אתר תדמית — סוכנות".' },
+      { name: "range_he",   label: "הסכום", type: "text", required: true,
+        hint: 'טקסט חופשי, בדיוק כפי שיוצג: "₪6,000–9,000" · "₪500–2,000 לחודש".' },
+      { name: "note_he",    label: "השורה הקטנה מתחת", type: "text",
+        hint: 'בשורות של אחרים — שם המחירון, למשל "מחירון 2026, Digitizer". בשורה שלך — מה כלול במחיר.' },
+      { name: "source_url", label: "קישור למחירון", type: "text", ltr: true,
+        hint: "הכתובת המלאה של העמוד שבו הסכום מפורסם. השורה הקטנה הופכת לקישור אליו. בשורה שלך משאירים ריק." },
+      { name: "is_mine",    label: "זו השורה שלי", type: "bool",
+        hint: "מדגיש את השורה בליים. סמן שורה אחת בלבד — שתי שורות מודגשות מבטלות אחת את השנייה." },
+    ],
+  },
+
   // The comparison table on the pricing page. Its columns ARE the
   // packages below — leave one package published and the table becomes
   // a single column by itself, which is the point of it living here.
