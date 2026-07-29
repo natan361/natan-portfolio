@@ -114,7 +114,17 @@
   main { max-width: 1000px; margin: 0 auto; padding: 24px 20px 100px; }
 
   /* ── Tabs ── */
-  .tabs { display: flex; gap: 8px; margin-bottom: 26px; flex-wrap: wrap; }
+  .tabs { display: flex; flex-direction: column; gap: 14px; margin-bottom: 26px; }
+  .tab-group { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .tab-group-h {
+    flex: none; width: 108px; text-align: start;
+    font-size: 12px; letter-spacing: .04em; color: var(--faint);
+  }
+  .tab-pills { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; min-width: 0; }
+  @media (max-width: 720px) {
+    .tab-group { display: block; }
+    .tab-group-h { width: auto; margin-bottom: 8px; }
+  }
   .tab {
     background: none; border: 1px solid var(--border-2); color: var(--dim);
     padding: 9px 16px; border-radius: 999px; cursor: pointer; min-height: 42px;
@@ -449,7 +459,7 @@ const TYPES = {
   },
 
   sites: {
-    label: "אתרים",
+    label: "אתרים שבניתי",
     single: "אתר",
     table: "sites",
     empty: "עוד לא הוספת אתרים.",
@@ -544,7 +554,7 @@ const TYPES = {
   // One row, edited in place rather than through the add/delete list the
   // other types use. The phone number alone was written into five files.
   settings: {
-    label: "הגדרות",
+    label: "הגדרות ותמונות",
     single: "הגדרות",
     table: "site_settings",
     singleton: true,
@@ -610,7 +620,7 @@ const TYPES = {
   },
 
   stats: {
-    label: "מספרים",
+    label: "המספרים בדף הבית",
     single: "מספר",
     table: "stats",
     empty: "אין מספרים להצגה.",
@@ -642,7 +652,7 @@ const TYPES = {
   },
 
   steps: {
-    label: "התהליך",
+    label: "איך זה עובד",
     single: "שלב",
     table: "process_steps",
     empty: "עוד לא הגדרת שלבים.",
@@ -685,7 +695,7 @@ const TYPES = {
   },
 
   extras: {
-    label: "עלויות נוספות",
+    label: "מה עולה אחרי",
     single: "עלות",
     table: "extra_costs",
     empty: "עוד לא הגדרת עלויות נוספות.",
@@ -706,7 +716,7 @@ const TYPES = {
   // page because a competitor's price list changes, and a stale number
   // here is worse than no comparison at all.
   market: {
-    label: "השוואת שוק",
+    label: "המחיר שלי מול השוק",
     single: "שורה",
     table: "market_prices",
     empty: "עוד לא הוספת שורות להשוואה.",
@@ -733,7 +743,7 @@ const TYPES = {
   // packages below — leave one package published and the table becomes
   // a single column by itself, which is the point of it living here.
   features: {
-    label: "טבלת השוואה",
+    label: "מה כלול בכל חבילה",
     single: "שורה",
     table: "pricing_features",
     matrix: true,
@@ -742,7 +752,7 @@ const TYPES = {
   },
 
   packages: {
-    label: "מחירים",
+    label: "החבילות",
     single: "חבילה",
     table: "packages",
     empty: "עוד לא הגדרת חבילות.",
@@ -923,22 +933,60 @@ async function loadAll() {
 }
 
 /* ══════════ RENDER ══════════ */
+/* Fifteen sections in one flat row of pills meant reading all fifteen to
+   find one, and four of them had near-identical names — "מחירים",
+   "טבלת השוואה", "השוואת שוק" and "עלויות נוספות" are four different
+   screens that all sound like the price list. Grouping them under a
+   heading is what makes the difference legible.
+
+   A section missing from this list is not lost: renderTabs sweeps up
+   whatever is left into a final group, so adding a type to TYPES can
+   never make it vanish from the nav. */
+const GROUPS = [
+  ["מה קורה באתר",   ["analytics", "leads"]],
+  ["העבודות שלי",    ["sites", "testimonials", "renders", "videos"]],
+  ["מה אני מציע",    ["services", "steps", "faqs"]],
+  ["מחירים",         ["packages", "features", "market", "extras"]],
+  ["דף הבית ומיתוג", ["settings", "stats"]],
+];
+
 function renderTabs() {
   const t = $("#tabs");
   t.innerHTML = "";
-  for (const [key, cfg] of Object.entries(TYPES)) {
-    const b = el("button", "tab");
-    b.setAttribute("role", "tab");
-    b.setAttribute("aria-selected", String(key === current));
-    b.append(document.createTextNode(cfg.label));
-    const cnt = cfg.singleton ? ""
-      : !rows[key] ? "–"
-      : cfg.dashboard
-        ? String(new Set(rows[key].filter(e => e.type === "pageview").map(e => e.visitor_id)).size)
-        : String(rows[key].length);
-    b.append(el("span", "count", cnt));
-    b.onclick = () => { current = key; renderTabs(); renderList(); syncAddBtn(); };
-    t.append(b);
+
+  const placed = new Set(GROUPS.flatMap(([, keys]) => keys));
+  const leftovers = Object.keys(TYPES).filter(k => !placed.has(k));
+  const groups = leftovers.length ? [...GROUPS, ["אחר", leftovers]] : GROUPS;
+
+  for (const [heading, keys] of groups) {
+    const present = keys.filter(k => TYPES[k]);
+    if (!present.length) continue;
+
+    const row = el("div", "tab-group");
+    row.append(el("div", "tab-group-h", heading));
+    const pills = el("div", "tab-pills");
+
+    for (const key of present) {
+      const cfg = TYPES[key];
+      const b = el("button", "tab");
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", String(key === current));
+      // The one-liner each section already carries, as a tooltip — so
+      // "מה כלול בכל חבילה" can be identified without opening it.
+      if (cfg.sub) b.title = cfg.sub;
+      b.append(document.createTextNode(cfg.label));
+      const cnt = cfg.singleton ? ""
+        : !rows[key] ? "–"
+        : cfg.dashboard
+          ? String(new Set(rows[key].filter(e => e.type === "pageview").map(e => e.visitor_id)).size)
+          : String(rows[key].length);
+      b.append(el("span", "count", cnt));
+      b.onclick = () => { current = key; renderTabs(); renderList(); syncAddBtn(); };
+      pills.append(b);
+    }
+
+    row.append(pills);
+    t.append(row);
   }
 }
 
@@ -1104,12 +1152,18 @@ function renderSettings(list, row) {
       dot.style.cssText = `background:${v};border-color:transparent`;
       dot.textContent = "";
       item.append(dot);
+    } else if (f.type === "image" && v) {
+      // Same reasoning as the colour swatch: a storage URL is unreadable,
+      // and this row is how Natan checks WHICH photo is currently live.
+      const img = el("img", "thumb"); img.src = v; img.alt = ""; img.loading = "lazy";
+      item.append(img);
     } else {
       item.append(el("div", "thumb-none", f.label));
     }
     const mid = el("div");
     const named = f.type === "color" && f.presets.find(p => p.hex.toLowerCase() === String(v).toLowerCase());
-    const shown = named ? `${named.name} · ${v}`
+    const shown = f.type === "image" ? (v ? f.label : "")
+                : named ? `${named.name} · ${v}`
                 : Array.isArray(v) ? v.join(" · ") : (v || "");
     mid.append(el("div", "item-t", shown ? String(shown).slice(0, 120) : "— ריק —"));
     if (f.hint) mid.append(el("span", "item-s", f.hint));
