@@ -223,6 +223,9 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
         pin: ".build-pin",
         scrub: 0.8,
         anticipatePin: 1,
+        // Lower on the page than the gallery, so it must be measured
+        // AFTER it. See the note on the gallery's own refreshPriority.
+        refreshPriority: 0,
       },
     });
 
@@ -283,6 +286,15 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
         end: () => "+=" + distance(),
         invalidateOnRefresh: true,
         id: "hz",
+        // ScrollTrigger measures pins in refreshPriority order, and a pin
+        // must be measured before anything below it — its spacer changes
+        // where everything after it starts. This one is created LAST,
+        // because the cards only arrive from Supabase after load, but it
+        // now sits ABOVE the build section in the page. Without saying so
+        // explicitly, the build section kept the start position it had
+        // measured before this spacer existed, and pinned itself early —
+        // painting the finished-site frame straight over the testimonial.
+        refreshPriority: 1,
       },
     });
     ScrollTrigger.refresh();
