@@ -601,6 +601,11 @@ const TYPES = {
         hint: "שורה ריקה = פסקה חדשה. אל תחזור על הכותרת — היא כבר מופיעה מעל." },
       { name: "about_points_he", label: 'שלוש הנקודות במקטע "עליי"', type: "lines",
         hint: "נקודה אחת בכל שורה." },
+
+      { name: "portrait_url", label: 'התמונה שלך במקטע "עליי"', type: "image",
+        hint: "תמונה לאורך, בערך 240×320. אם תסיר אותה עם ✕ — חוזרת התמונה שהאתר עלה איתה." },
+      { name: "avatar_url", label: "התמונה שלך בכפתור המרחף", type: "image",
+        hint: "העיגול הקטן בכפתור \"בוא נדבר\" שרודף אחרי הגלילה. ריבועית, פנים גדולות במרכז — היא מוצגת בגודל 46 פיקסל. הסרה מחזירה את הקיימת." },
     ],
   },
 
@@ -1521,7 +1526,24 @@ function buildUpload(f, existing) {
   const media = el(f.type === "video" ? "video" : "img");
   if (existing) media.src = existing;
   const nm = el("div", "nm", existing ? "הקובץ הנוכחי" : "");
-  prev.append(media, nm);
+
+  // Picking a different file was the only way out of this field before,
+  // so a testimonial that came with a photo could never go back to not
+  // having one. Clearing sets _value to null, and the save path already
+  // writes _value when no new file was picked.
+  const rm = el("button", "mini danger", "✕");
+  rm.type = "button";
+  rm.title = "הסר את התמונה";
+  rm.onclick = () => {
+    box._value = null;
+    box._file = null;
+    inp.value = "";
+    media.removeAttribute("src");
+    nm.textContent = "";
+    prev.hidden = true;
+  };
+
+  prev.append(media, nm, rm);
   box.append(prev);
 
   // The URL is what actually gets saved; the file input is just the

@@ -148,6 +148,32 @@ function paintSettings(s) {
   }
 }
 
+/* Natan's two photos. Kept out of paintSettings because that function is
+   skipped in English — reasonably, since everything in it is Hebrew copy.
+   A face is not copy, and the English reader should see the same one.
+
+   Both images ship as real files in the markup, so the page paints them
+   without waiting for this fetch and an upload only swaps the src after.
+   Clearing the field in /admin therefore restores the shipped photo
+   rather than leaving an empty frame. */
+function paintPhotos(s) {
+  if (!s) return;
+
+  // If the uploaded file ever stops resolving — deleted from the bucket,
+  // a bad paste — put the shipped photo back rather than leaving an empty
+  // frame where a face belongs. Captured before the swap, and cleared
+  // after it fires once so a failing fallback can't loop.
+  const swap = (node, url) => {
+    if (!node || !url) return;
+    const original = node.getAttribute("src");
+    node.onerror = () => { node.onerror = null; node.src = original; };
+    node.src = url;
+  };
+
+  swap($(".about-photo"), s.portrait_url);
+  swap($(".float-cta-av img"), s.avatar_url);
+}
+
 /* Lists ────────────────────────────────────────────────── */
 // "10+" -> data-to 10, suffix "+", so motion.js still counts up.
 function statParts(v) {
@@ -286,6 +312,8 @@ function paint() {
   // for anyone reading in English.
   paintAccent(data.settings?.accent_hex);
   try { localStorage.setItem("natan-accent", data.settings?.accent_hex || ""); } catch { /* private mode */ }
+
+  paintPhotos(data.settings);
 
   if (currentLang() === "en") return;
   paintSettings(data.settings);
