@@ -41,8 +41,13 @@ export function mountChrome({ active = "" } = {}) {
   if (nav) {
     nav.innerHTML = `
       <a href="index.html" class="nav-logo">
-        <img src="assets-opt/logo-nav.webp" alt="" width="34" height="34" />
-        <span>נתן חיים</span>
+        <!-- ?v= is not decoration. netlify.toml serves everything under
+             assets-opt/ with max-age=31536000, immutable — a browser that
+             has this file will not ask for it again for a year. Swapping
+             the logo without changing the URL leaves every returning
+             visitor on the old one. Bump this whenever the file changes. -->
+        <img src="assets-opt/logo-nav.webp?v=2" alt="" width="34" height="34" />
+        <span dir="ltr">Natan-עיצוב אתרים</span>
       </a>
       <ul class="nav-links" id="nav-links">
         ${LINKS.map(l => `<li><a href="${l.href}"${l.href === active ? ' aria-current="page"' : ""} data-i18n="${l.key}">${l.he}</a></li>`).join("")}
@@ -59,7 +64,7 @@ export function mountChrome({ active = "" } = {}) {
   if (foot) {
     foot.className = "footer wrap";
     foot.innerHTML = `
-      <span data-i18n="foot.rights">© 2026 נתן חיים</span>
+      <span data-i18n="foot.rights">© 2026 <span dir="ltr">Natan-עיצוב אתרים</span></span>
       <div class="footer-links">
         <a href="index.html" data-i18n="foot.home">דף הבית</a>
         <a href="portfolio.html" data-i18n="foot.portfolio">תיק עבודות</a>

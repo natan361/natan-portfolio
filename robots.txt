@@ -1,4 +1,4 @@
-# נתן חיים — בניית אתרים לעסקים קטנים
+# Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים
 # Everyone may crawl the public pages. The admin panel is private.
 User-agent: *
 Allow: /

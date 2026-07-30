@@ -141,7 +141,7 @@ if (root) {
         }).filter(s => s.t)
       : DEMO.steps;
 
-    document.title = `${name} — נתן חיים`;
+    document.title = `${name} — Natan-עיצוב אתרים`;
 
     const host = (() => { try { return new URL(row.url).host; } catch { return row.url; } })();
 

@@ -11,7 +11,7 @@ import { EN_PAGES } from "./i18n-pages.js";
 import { EN_ARTICLES } from "./i18n-articles.js";
 
 const EN_CORE = {
-  "meta.title": "Natan Chaim — Websites for small businesses",
+  "meta.title": "Natan — Websites for small businesses",
   "meta.desc": "Websites for small businesses across Israel. Fast, mobile-first, built to bring enquiries — ready in two weeks at a price agreed up front.",
 
   "nav.process": "How it works",
@@ -124,8 +124,8 @@ const EN_CORE = {
   "test.eyebrow": "Clients",
   "test.title": "What clients say",
 
-  "about.name": "Natan Chaim",
-  "about.title": "Natan Chaim. One person, not a studio.",
+  "about.name": "Natan",
+  "about.title": "Natan. One person, not a studio.",
   "about.p1": "I build websites for small businesses across Israel. I've built 10 sites — synagogues, service providers, and small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
   "about.p2": "When you write to me, you're talking to me — not an account manager, not a team, not someone relaying messages. I'm the one who answers, the one who builds, and the one you can call even after the site is live.",
   "about.c1": "You talk to me directly, not an account manager",
@@ -136,11 +136,11 @@ const EN_CORE = {
   "contact.title": "Let's find out if it's a fit",
   "contact.p": "A 15-minute call. I ask about the business, you ask whatever you like, and if it isn't a fit I'll say so straight.",
   "contact.wa": "WhatsApp — fastest",
-  "ctmeta.title": "Let's talk — 15 minutes, at no cost | Natan Chaim",
+  "ctmeta.title": "Let's talk — 15 minutes, at no cost | Natan",
   "ctmeta.desc": "A short call, no commitment. We work out what your business needs, and if it's a fit we begin. Fill the form or send a WhatsApp.",
   "ct.eyebrow": "Get in touch",
   "ct.biolabel": "About me",
-  "ct.bioh": "Natan Chaim. One person, not a studio.",
+  "ct.bioh": "Natan. One person, not a studio.",
   "ct.biop1": "I build websites for small businesses across Israel. I've built over 10 sites — synagogues, service providers, small businesses. I work with AI tools, which is why I deliver in two weeks what a studio delivers in two months, at a price that suits a small business.",
   "ct.biop2": "When you message me, you talk to me. Not an account manager, not a team, not someone relaying messages. I'm the one who answers, the one who builds, and the one you can call even after the site is live.",
   "ct.qalabel": "About the call",
@@ -207,14 +207,14 @@ const EN_CORE = {
   "form.failed": "Sending failed. Send me a WhatsApp instead and I'll get back to you right away.",
   "form.ok": "Got it. I'll get back to you within 24 hours.",
 
-  "foot.rights": "© 2026 Natan Chaim",
+  "foot.rights": "© 2026 Natan — Web Design",
   "foot.portfolio": "Portfolio",
   "foot.pricing": "Pricing",
   "foot.a11y": "Accessibility statement",
   "foot.privacy": "Privacy policy",
   "foot.home": "Home",
 
-  "pfmeta.title": "Portfolio — Natan Chaim",
+  "pfmeta.title": "Portfolio — Natan",
   "pfmeta.desc": "Websites I've built for businesses and institutions, architectural renders and video.",
   "pf.eyebrow": "Portfolio",
   "pf.title": "Selected work.",

@@ -48,7 +48,7 @@ export const EN_PAGES = {
   "work.hint": "Scroll to move through them",
 
   // ══ process.html ══
-  "procmeta.title": "How it works — from first call to a live site | Natan Chaim",
+  "procmeta.title": "How it works — from first call to a live site | Natan",
   "procmeta.desc": "The full process of building a website: call, fixed quote, build, launch. What I need from you at each step and how long it takes.",
   "procpage.h1": "From the call to a live site.<br>No surprises in between.",
   "procpage.lede": "This is the whole process, including what I need from you at each stage and what usually causes delays. I publish it because most people who got burned once got burned precisely because nobody told them what was coming.",
@@ -89,7 +89,7 @@ export const EN_PAGES = {
   "procpage.ctap": "The first step is a quarter of an hour, at no cost and no commitment.",
 
   // ══ pricing.html ══
-  "pricemeta.title": "Pricing — what a website for a small business costs | Natan Chaim",
+  "pricemeta.title": "Pricing — what a website for a small business costs | Natan",
   "pricemeta.desc": "Open pricing for a small business website: what each package includes, what it doesn't, payment terms, and the ongoing costs afterwards.",
   "pricepage.h1": "What it costs, and what isn't included.",
   "pricepage.lede": "Most web builders don't publish a price because they want you to call first. I publish, because if your budget doesn't fit, we're both better off knowing now rather than after a quarter of an hour on the phone.",
@@ -139,7 +139,7 @@ export const EN_PAGES = {
   "pricepage.ctap": "A quarter of an hour on the phone, and a written quote within 24 hours.",
 
   // ══ faq.html ══
-  "faqmeta.title": "FAQ — websites for businesses | Natan Chaim",
+  "faqmeta.title": "FAQ — websites for businesses | Natan",
   "faqmeta.desc": "Everything people ask before we start: price, timing, ownership, changes, hosting, AI, and what happens if you don't like it.",
   "faqpage.h1": "Everything people ask me.",
   "faqpage.lede": "Including the questions people are embarrassed to ask. If something's missing, ask me and I'll add it.",

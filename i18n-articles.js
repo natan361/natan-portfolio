@@ -5,7 +5,7 @@
 export const EN_ARTICLES = {
   "nav.art": "Guides",
 
-  "artmeta.title": "Guides — what makes a website actually work | Natan Chaim",
+  "artmeta.title": "Guides — what makes a website actually work | Natan",
   "artmeta.desc": "Guides for business owners: why a visitor leaves in three seconds, what makes a site bring enquiries, what really matters on a phone, and what a website should cost.",
   "art.eyebrow": "Guides",
   "art.h1": "What actually separates a pretty site from one that works.",
