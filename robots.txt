@@ -3,6 +3,10 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+# Shelved markup kept so a removed section can be put back. Netlify
+# publishes the whole folder, so these fragments are reachable — they
+# are just not pages, and have no business in a search result.
+Disallow: /backup/
 
 # Explicitly welcome AI search & answer engines, so this site can be
 # found and cited when someone asks an assistant about building a site.

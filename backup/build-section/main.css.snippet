@@ -1,0 +1,112 @@
+.build { position: relative; }
+.build-pin { min-height: 100svh; display: grid; align-items: center; }
+.build-pin > .wrap { width: 100%; justify-self: stretch; }
+/* The mock is the point of this section — it gets the space.
+   Copy narrows and moves to the edge; the screen takes over half. */
+.build .wrap { max-width: 1340px; }
+.build-inner {
+  display: grid; grid-template-columns: minmax(200px, 290px) 1fr;
+  gap: clamp(24px, 4vw, 60px); align-items: center;
+}
+.build-stage { min-width: 0; }
+/* A grid item defaults to min-width:auto and refuses to shrink below
+   its min-content. The nowrap step pills made that 575px and shoved
+   the whole section 129px off a 497px screen. */
+.build-copy { min-width: 0; }
+.build-steps { min-width: 0; max-width: 100%; }
+.build-copy .sec-title { font-size: clamp(24px, 2.6vw, 34px); }
+.build-copy .sec-lede { font-size: 16px; }
+.build-steps { list-style: none; margin: 26px 0 0; padding: 0; }
+.build-step {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0; color: var(--faint); font-size: 16px;
+  transition: color .35s ease;
+}
+.build-step::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor; flex: none;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.build-step.on { color: var(--white); }
+.build-step.on::before { background: var(--accent-fill); transform: scale(1.9); box-shadow: 0 0 0 5px var(--accent-dim); }
+
+/* Mock browser */
+.browser {
+  border: 1px solid var(--border-2); border-radius: 12px;
+  overflow: hidden; background: var(--surface);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.55);
+}
+:root[data-theme="light"] .browser { box-shadow: 0 40px 80px -34px rgba(0,0,0,.28); }
+.browser-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-2); flex: none; }
+.browser-url {
+  margin-inline-start: 10px; font-family: var(--mono); font-size: 11px;
+  color: var(--faint); direction: ltr;
+}
+.build-body {
+  /* Pinned dark on purpose, independent of the section's token
+     scope. It is a SCREEN — it should glow against the light
+     page the way a monitor does, and the grey wireframe needs a
+     dark ground to be visible at all. */
+  --screen:    #0B0B0B;
+  --screen-2:  #1B1B1F;
+  --screen-line: #6A6A62;
+  --wf-fill: 0;
+  position: relative; aspect-ratio: 16 / 10;
+  padding: 14px; display: flex; flex-direction: column; gap: 10px;
+  background: var(--screen);
+}
+.wf-stack { position: absolute; inset: 14px; display: flex; flex-direction: column; gap: 10px; }
+.wf {
+  border-radius: 5px;
+  /* grey skeleton -> real colour, driven by one scrubbed variable */
+  background: color-mix(in srgb, color-mix(in srgb, var(--accent-fill) 14%, transparent) calc(var(--wf-fill) * 100%), var(--screen-2));
+  border: 1px solid rgba(237,236,235,.10);
+  will-change: transform;
+}
+.wf-nav { height: 9%; }
+.wf-hero { flex: 1; position: relative; display: grid; align-content: center; gap: 8px; padding: 0 12px; }
+.wf-row { display: flex; gap: 10px; height: 26%; }
+.wf-row .wf { flex: 1; }
+.wf-line {
+  height: 7px; border-radius: 4px; background: var(--screen-line);
+  transform: scaleX(0); transform-origin: inline-start;
+}
+.wf-line.w1 { width: 72%; } .wf-line.w2 { width: 46%; } .wf-line.w3 { width: 58%; }
+.wf-accent {
+  opacity: 0; height: 20px; width: 74px; border-radius: 999px;
+  background: var(--accent-fill); margin-top: 6px;
+}
+.build-real {
+  position: absolute; inset: 0; opacity: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* Sits over the empty screen and tells the visitor to scroll. GSAP
+   fades it out as the build animation starts. */
+.build-cue {
+  position: absolute; inset: 0; z-index: 3;
+  display: grid; place-content: center; justify-items: center; gap: 12px;
+  color: rgba(237,236,235,.92); pointer-events: none; text-align: center;
+}
+.build-cue span {
+  font-weight: 700; font-size: 14px; letter-spacing: .01em;
+  background: rgba(0,0,0,.5); border: 1px solid rgba(237,236,235,.16);
+  padding: 8px 18px; border-radius: 999px; backdrop-filter: blur(3px);
+}
+.build-cue-arrow { animation: build-bob 1.5s ease-in-out infinite; }
+@keyframes build-bob {
+  0%, 100% { transform: translateY(-3px); opacity: .55; }
+  50%      { transform: translateY(5px);  opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .build-cue { display: none; }
+}
+.build-cap {
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  margin-top: 14px; text-align: center;
+}
+

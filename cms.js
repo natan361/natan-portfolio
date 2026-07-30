@@ -170,8 +170,15 @@ function paintPhotos(s) {
     node.src = url;
   };
 
-  swap($(".about-photo"), s.portrait_url);
-  swap($(".float-cta-av img"), s.avatar_url);
+  // Two photos, four places. The big one introduces him — "עליי" on the
+  // home page and "מי אני" on the contact page are the same person doing
+  // the same thing, so they are one setting, not two. The small round one
+  // is the face on the floating pill and at the top of the contact page.
+  const portraits = [$(".about-photo"), $(".ct-bio-photo img")];
+  const avatars   = [$(".float-cta-av img"), $(".ct-avatar")];
+
+  for (const n of portraits) swap(n, s.portrait_url);
+  for (const n of avatars)   swap(n, s.avatar_url);
 }
 
 /* Lists ────────────────────────────────────────────────── */

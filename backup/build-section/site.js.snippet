@@ -1,0 +1,33 @@
+   from the database: this was hardcoded to פאר יוסף, and kept
+   showing it — captioned "a real site I built" — after Natan
+   had deleted it. Anything claiming to be real work has to be
+   read from the one place that knows what's still live.
+   ────────────────────────────────────────────────────── */
+const buildReal = $(".build-real");
+if (buildReal) {
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  sb.from("sites").select("name_he,name_en,screenshot_url")
+    .eq("is_published", true).not("screenshot_url", "is", null)
+    .order("sort_order").limit(1)
+    .then(({ data, error }) => {
+      const r = data?.[0];
+      // No live site with a screenshot means no honest payoff —
+      // drop the section rather than end the animation on nothing.
+      if (error || !r) { $("#build")?.remove(); return; }
+      buildReal.src = r.screenshot_url;
+      const cap = $(".build-cap");
+      const paint = () => {
+        const en = currentLang() === "en";
+        buildReal.alt = (en && r.name_en) || r.name_he;
+        if (cap) cap.textContent = ((en && r.name_en) || r.name_he) +
+          (en ? " · a real site I built" : " · אתר אמיתי שבניתי");
+      };
+      paint();
+      addEventListener("natan:lang", paint);
+    });
+}
+
+/* ── Hero stack ──────────────────────────────────────────
+   Real sites, in the hero, from the database — so it can never
+   show work that's been hidden in /admin, and it fills the half
+   of the screen that used to be void.

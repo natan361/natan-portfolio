@@ -51,14 +51,6 @@ const mm = gsap.matchMedia();
 mm.add("(prefers-reduced-motion: reduce)", () => {
   $$(".fx").forEach(n => n.classList.add("in"));
 
-  // The signature section still has to make its point: skip the
-  // build and show the finished site.
-  gsap.set(".build-real", { opacity: 1 });
-  gsap.set(".wf-line", { scaleX: 1 });
-  gsap.set(".wf-accent", { opacity: 1 });
-  $(".build-body")?.style.setProperty("--wf-fill", 1);
-  $$(".build-step").forEach(n => n.classList.add("on"));
-
   // Land on the final value INCLUDING its suffix — a bare "14"
   // where "14 days" belongs is a number with no meaning.
   $$(".stat-n").forEach(n => {
@@ -200,68 +192,6 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
     if (fresh.length) gsap.from(fresh, { opacity: 0, y: 24, duration: 0.6, stagger: 0.06 });
     ScrollTrigger.refresh();
   });
-
-  /* ═════════════════════════════════════════════════════
-     THE SIGNATURE — a website builds itself as you scroll.
-     Not decoration: this is Natan's product, animated. A
-     visitor understands what he does, and that he can do
-     it, before reading a word.
-     ═════════════════════════════════════════════════════ */
-  const build = $("#build");
-  if (build) {
-    // The pin distance is scroll the visitor spends without reaching new
-    // content, so a phone gets less of it. 2600px is over three screens
-    // on a 844px-tall viewport — long enough that the section alone was
-    // pushing the rest of the page out of reach on mobile. The animation
-    // plays out identically, just over a shorter scroll.
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: build,
-        start: "top top",
-        end: () => "+=" + (innerWidth < 861 ? 1200 : 2600),
-        invalidateOnRefresh: true,
-        pin: ".build-pin",
-        scrub: 0.8,
-        anticipatePin: 1,
-        // Lower on the page than the gallery, so it must be measured
-        // AFTER it. See the note on the gallery's own refreshPriority.
-        refreshPriority: 0,
-      },
-    });
-
-    const step = i => {
-      tl.call(() => setStep(i), null, tl.duration());
-    };
-
-    // The scroll cue has done its job the instant scrolling starts —
-    // fade it out over the first sliver of the timeline.
-    tl.to(".build-cue", { autoAlpha: 0, duration: 0.12, ease: "power1.out" }, 0);
-
-    // 1 · structure — the grid finds itself
-    tl.from(".wf", {
-      scaleY: 0, opacity: 0, transformOrigin: "top center",
-      duration: 0.5, stagger: 0.08, ease: "power2.out",
-    });
-    step(0);
-
-    // 2 · type — content lands in the boxes
-    tl.to(".wf-line", { scaleX: 1, duration: 0.4, stagger: 0.05, ease: "power2.out" }, ">-0.1");
-    step(1);
-
-    // 3 · colour — the thing stops being a skeleton
-    tl.to(".build-body", { "--wf-fill": 1, duration: 0.6, ease: "power1.inOut" }, ">-0.05")
-      .to(".wf-accent", { opacity: 1, duration: 0.4 }, "<");
-    step(2);
-
-    // 4 · the real site
-    tl.to(".build-real", { opacity: 1, duration: 0.7, ease: "power2.inOut" }, ">")
-      .to(".wf-stack", { opacity: 0, duration: 0.5 }, "<");
-    step(3);
-
-    function setStep(i) {
-      $$(".build-step").forEach((n, j) => n.classList.toggle("on", j === i));
-    }
-  }
 
   /* ── Work: vertical scroll drives a horizontal gallery ──
      The cards arrive from Supabase after load, so the track has
