@@ -14,6 +14,12 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 import { currentLang } from "./i18n.js";
 
+/* How many hover photos ship in assets-opt (svc-1…svc-N). Services past
+   this get the card without a photo rather than a repeat or a 404. */
+const SVC_PHOTOS = 6;
+/** Stage photos shipped as assets-opt/step-1…step-N. */
+const STEP_PHOTOS = 4;
+
 export const SVC_ICONS = [
   "<svg viewBox=\"0 0 24 24\"><rect x=\"2\" y=\"4\" width=\"14\" height=\"10\" rx=\"2\"/><path d=\"M5 18h8\"/><rect x=\"17\" y=\"9\" width=\"5\" height=\"11\" rx=\"1.5\"/></svg>",
   "<svg viewBox=\"0 0 24 24\"><path d=\"M21 12a9 9 0 1 1-2.6-6.4\"/><polyline points=\"21 3 21 9 15 9\"/></svg>",
@@ -95,8 +101,15 @@ function paintSettings(s) {
   // Contact points. The shell seeds these from its constants; the
   // database is what makes them changeable without an edit here.
   if (s.whatsapp) {
-    for (const a of document.querySelectorAll('a[href*="wa.me/"]')) a.href = `https://wa.me/${s.whatsapp}`;
-    const wa = $("#wa-link"); if (wa) wa.href = `https://wa.me/${s.whatsapp}`;
+    // Swap the NUMBER, keep the ?text= — every CTA on the site opens
+    // WhatsApp with an opening line already typed, and rebuilding the
+    // href from scratch here used to be the thing that would erase it.
+    const renumber = (a) => {
+      const q = a.getAttribute("href")?.split("?")[1];
+      a.href = `https://wa.me/${s.whatsapp}${q ? `?${q}` : ""}`;
+    };
+    for (const a of document.querySelectorAll('a[href*="wa.me/"]')) renumber(a);
+    const wa = $("#wa-link"); if (wa) renumber(wa);
   }
   if (s.phone) {
     const digits = s.phone.replace(/\D/g, "");
@@ -128,8 +141,12 @@ function paintSettings(s) {
     h1.innerHTML = esc(s.hero_h1_he).replace(/\*\*(.+?)\*\*/g, "<em>$1</em>");
   }
   set(".hero-sub", s.hero_sub_he);
-  set('.hero-cta .btn:not(.btn-ghost) span', s.hero_cta_he);
-  set(".hero-cta .btn-ghost", s.hero_cta2_he);
+  // :not(.wa-badge) matters — the badge is a <span> too, and it is the
+  // FIRST child, so the bare selector wrote the label over the logo.
+  set(".hero-cta .btn-wa span:not(.wa-badge)", s.hero_cta_he);
+  // The second hero button is now a plain text link, not a button — the
+  // page asks for one thing. The admin field still drives its wording.
+  set(".hero-alt a", s.hero_cta2_he);
   set(".hero-note", s.hero_note_he);
 
   // About
@@ -204,20 +221,36 @@ const PAINT = {
     return `<div class="stat fx">${n}<div class="stat-l"${k("stat.#", i)}>${esc(r.label_he)}</div></div>`;
   }).join(""),
 
-  ".svc-grid": rows => rows.map((r, i) => `
-    <article class="svc fx glow">
+  /* The hover photo has to be re-attached here. This renderer replaces
+     the whole grid with database rows, so the --card-img written into
+     index.html is thrown away the moment /admin content arrives — the
+     cards would silently lose their photos in production while looking
+     perfect locally. The Nth card gets the Nth photo, and a seventh
+     service Natan adds later simply has none rather than repeating one. */
+  ".svc-grid": rows => rows.map((r, i) => {
+    const cls = `svc fx glow${i < SVC_PHOTOS ? " photo-card" : ""}`;
+    const style = i < SVC_PHOTOS
+      ? ` style="--card-img:url('assets-opt/svc-${i + 1}.webp')"` : "";
+    return `
+    <article class="${cls}"${style}>
       <span class="svc-i" aria-hidden="true">${SVC_ICONS[i % SVC_ICONS.length]}</span>
       <h3${k("svc.#t", i)}>${esc(r.title_he)}</h3>
       <p${k("svc.#p", i)}>${rich(r.body_he)}</p>
-    </article>`).join(""),
+    </article>`;
+  }).join(""),
 
+  /* Same trap as .svc-grid: this replaces the whole section, so the
+     stage photograph has to be re-attached here or the markup in
+     index.html is discarded the moment /admin content lands. A fifth
+     stage Natan adds gets the card without a photo rather than a 404. */
   ".steps": rows => rows.map((r, i) => `
     <div class="step fx">
-      <div class="step-n">${String(i + 1).padStart(2, "0")}</div>
-      <div>
-        <h3${k("proc.#t", i)}>${esc(r.title_he)}</h3>
-        <p${k("proc.#p", i)}>${rich(r.body_he)}</p>
-      </div>
+      ${i < STEP_PHOTOS ? `<div class="step-media">
+        <img src="assets-opt/step-${i + 1}.webp" alt="" width="460" height="317" loading="lazy" decoding="async" />
+      </div>` : ""}
+      <div class="step-rail"><div class="step-n">${String(i + 1).padStart(2, "0")}</div></div>
+      <h3${k("proc.#t", i)}>${esc(r.title_he)}</h3>
+      <p${k("proc.#p", i)}>${rich(r.body_he)}</p>
       ${r.duration_he ? `<div class="step-when"${k("proc.#w", i)}>${esc(r.duration_he)}</div>` : ""}
     </div>`).join(""),
 
@@ -332,6 +365,10 @@ function paint() {
   paintList(".after-grid", data.extras);
   // motion.js drives the count-up and the reveal on elements it saw at
   // load, so anything replaced here has to be handed back to it.
+  // A flag as well as the event: anything that has to wait for the
+  // database copy may well subscribe AFTER this has already fired, and
+  // an event nobody was listening for is an event that never happened.
+  window.__natanCms = true;
   dispatchEvent(new CustomEvent("natan:cms"));
 }
 

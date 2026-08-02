@@ -1,6 +1,9 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 import { applyLang, currentLang, t } from "./i18n.js";
+// Cards rendered from the database need their WhatsApp links wired after
+// the fact — mountChrome() has already run by the time they exist.
+import { wireWhatsApp } from "./_shell.js?v=5";
 // Overlays the hardcoded copy with whatever is in /admin. Imported here
 // rather than per page so every page picks up the contact details.
 import "./cms.js";
@@ -68,44 +71,9 @@ if (burger && links) {
   addEventListener("resize", () => { if (innerWidth > 700) setOpen(false); });
 }
 
-/* ── Mobile action bar ───────────────────────────────────
-   Two behaviours:
-   · .up   — allowed to show at all, once the hero's own CTAs have
-             scrolled away (no two competing asks on screen at once).
-   · .hide — tucked away while scrolling DOWN, back on scrolling UP,
-             mirroring the top nav so it's out of the way when reading
-             and there the moment you look for it.
-   ────────────────────────────────────────────────────── */
-const bar = $("#mobile-bar");
-if (bar) {
-  const anchor = $(".hero") || $(".page-head");
-  if (anchor) {
-    new IntersectionObserver(
-      ([e]) => bar.classList.toggle("up", !e.isIntersecting),
-      { threshold: 0 }
-    ).observe(anchor);
-  } else {
-    bar.classList.add("up");
-  }
-
-  let last = window.scrollY;
-  addEventListener("scroll", () => {
-    const y = window.scrollY;
-    const nearBottom = innerHeight + y > document.documentElement.scrollHeight - 120;
-
-    // Checked before the jitter guard, not inside it. A scroll to the foot
-    // arrives as a long run of movement that decays to a few pixels at the
-    // end — and those last pixels, the ones that actually reach the
-    // bottom, were being filtered out as jitter. The bar stayed tucked
-    // away exactly where the code meant it to be showing.
-    if (nearBottom) { bar.classList.remove("hide"); last = y; return; }
-
-    if (Math.abs(y - last) > 6) {
-      bar.classList.toggle("hide", y > last);
-      last = y;
-    }
-  }, { passive: true });
-}
+/* The five-icon mobile action bar and the scroll logic that showed and
+   hid it are gone — see the note in _shell.js. The floating WhatsApp
+   pill is the only fixed element left at the foot of a phone screen. */
 
 /* ── Reveal on scroll ── */
 const reveals = document.querySelectorAll(".reveal");
@@ -156,11 +124,12 @@ if (heroStack) {
 
   sb.from("sites").select("name_he,url,screenshot_url")
     .eq("is_published", true).not("screenshot_url", "is", null)
-    .order("sort_order").limit(3)
+    .order("sort_order").limit(1)
     .then(({ data, error }) => {
-      // No screenshots means no stack. An empty browser chrome
-      // sitting in the hero is worse than a one-column hero.
-      if (error || !data?.length) { heroStack.closest(".hero-visual")?.remove(); return; }
+      // No screenshots means no window. An empty browser chrome sitting on
+      // the hero photo is worse than the photo on its own — and only the
+      // window goes, never .hero-visual, which is now the face as well.
+      if (error || !data?.length) { heroStack.remove(); return; }
 
       // A no-code demo host in the address bar — busbarjl-haiojnej
       // .manus.space — reads as "hobby project" to the exact person
@@ -215,16 +184,27 @@ if (priceGrid) {
     const pick = (r, k) => (en && r[k + "_en"]) || r[k + "_he"];
     priceGrid.innerHTML = rows.map(r => {
       const feats = (en && r.features_en?.length ? r.features_en : r.features_he) || [];
+      // Every card asks for the same thing as every other button on the
+      // site. What the DB's per-package cta text used to say now rides in
+      // the WhatsApp message instead, so the first thing Natan reads is
+      // which package the person was looking at.
+      const name = pick(r, "name");
+      const ask = en
+        ? `Hi Natan, I came from the site — I'm interested in the "${name}" package.`
+        : `היי נתן, הגעתי מהאתר ומעניינת אותי חבילת "${name}".`;
       return `
       <article class="price glow fx in${r.is_featured ? " featured" : ""}">
         ${r.is_featured ? `<span class="price-badge">${esc(en ? "Most popular" : "הכי נפוץ")}</span>` : ""}
-        <h3>${esc(pick(r, "name"))}</h3>
+        <h3>${esc(name)}</h3>
         ${r.for_he ? `<p class="price-for">${esc(pick(r, "for"))}</p>` : ""}
         <div class="price-tag">${esc(pick(r, "price"))}</div>
         <ul>${feats.map(f => `<li>${TICK} <span>${esc(f)}</span></li>`).join("")}</ul>
-        <a href="#contact" class="btn btn-on-paper">${esc(pick(r, "cta") || (en ? "Get a quote" : "לקבלת הצעה"))}</a>
+        <a href="#" class="btn btn-wa" data-wa="${esc(ask)}">
+          <span>${esc(en ? "Get in touch" : "צור קשר")}</span>
+        </a>
       </article>`;
     }).join("");
+    wireWhatsApp(priceGrid);
   };
 
   sb.from("packages").select("*").eq("is_published", true).order("sort_order")
@@ -422,104 +402,12 @@ if (testGrid) {
     });
 }
 
-/* ── Lead form ───────────────────────────────────────────
-   Submitting is the whole point of the page, so failure has
-   to leave the visitor a way through rather than a dead end.
-   ────────────────────────────────────────────────────── */
-const form = $("#lead-form");
-if (form) {
-  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-  const btn = $("#lf-submit");
-  const msg = $("#form-msg");
+/* The lead form is gone. It collected a name and a phone number into
+   public.leads and fired the notify-lead edge function; the site asks
+   for one thing now, over WhatsApp, so there is nothing here to submit.
+   The table and the function are untouched — every lead already taken
+   is still in /admin. */
 
-  const show = (text, kind) => {
-    msg.innerHTML = "";
-    if (!text) return;
-    const d = document.createElement("div");
-    d.className = "form-msg " + kind;
-    d.setAttribute("role", kind === "err" ? "alert" : "status");
-    d.textContent = text;
-    msg.append(d);
-  };
-
-  // At least 9 digits — enough to reject a stray keystroke without
-  // fighting over international/local formatting.
-  const phoneOk = v => v.replace(/\D/g, "").length >= 9;
-
-  form.addEventListener("submit", async e => {
-    e.preventDefault();
-    const name = $("#lf-name").value.trim();
-    const phone = $("#lf-phone").value.trim();
-    const subject = $("#lf-subject").value.trim();
-    const method = form.querySelector('input[name="method"]:checked')?.value || "whatsapp";
-    const ctime = form.querySelector('input[name="ctime"]:checked')?.value || "";
-
-    if (!name) {
-      show(t("form.noname") || "צריך שם כדי שאדע איך לפנות אליך.", "err");
-      $("#lf-name").focus(); return;
-    }
-    if (!phoneOk(phone)) {
-      show(t("form.nophone") || "מספר הטלפון לא נראה תקין. בלעדיו לא אוכל לחזור אליך.", "err");
-      $("#lf-phone").focus(); return;
-    }
-    // Subject and preferred time used to block the submit too. They are
-    // now optional: Unbounce's benchmark across 41k landing pages shows
-    // conversion falling off consistently as a form grows past three
-    // fields, and both of these are questions Natan can just as easily
-    // ask in the first WhatsApp message. A name and a reachable phone
-    // number are the only things he genuinely cannot proceed without.
-
-    show("", "ok");
-    const label = btn.textContent;   // after any language switch
-    btn.disabled = true;
-    btn.textContent = t("form.sending") || "שולח…";
-
-    const lead = {
-      name, phone,
-      subject: subject || null,
-      contact_method: method,
-      contact_time: ctime || null,
-      note: $("#lf-note").value.trim() || null,
-      source: location.pathname + location.search,
-    };
-
-    // 1. Save to the database first — this must succeed for the lead
-    //    to count. Email is a notification on top, never the record.
-    const { error } = await sb.from("leads").insert(lead);
-
-    // 2. Fire the email notification. Best-effort: a failure here does
-    //    NOT fail the submission, because the lead is already saved and
-    //    visible in /admin.
-    if (!error) {
-      try {
-        await fetch(`${SUPABASE_URL}/functions/v1/notify-lead`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY },
-          body: JSON.stringify(lead),
-        });
-      } catch (_) { /* email is optional; the lead is safe */ }
-    }
-
-    btn.disabled = false;
-    btn.textContent = label;
-
-    if (error) {
-      // Never strand a lead on a technical failure — hand them WhatsApp.
-      show(t("form.failed") || "השליחה נכשלה. תוכל לשלוח לי וואטסאפ ואחזור אליך מיד.", "err");
-      return;
-    }
-
-    form.reset();
-    show(t("form.ok") || "קיבלתי. אחזור אליך תוך 24 שעות.", "ok");
-  });
-}
-
-/* ── Floating CTA: step aside once the form is on screen ── */
-const floatCta = $("#float-cta");
-const contactSec = $("#contact");
-if (floatCta && contactSec) {
-  new IntersectionObserver(
-    ([e]) => floatCta.classList.toggle("at-contact", e.isIntersecting),
-    { threshold: 0.2 }
-  ).observe(contactSec);
-}
+/* The floating pill used to fade out at the contact section, back when
+   it was a second copy of the same ask. It opens the answers now, which
+   is worth having on screen wherever someone is still deciding. */

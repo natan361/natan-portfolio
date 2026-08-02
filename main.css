@@ -187,6 +187,63 @@ section { padding-block: var(--gap); }
 
 .btn-on-paper { background: var(--paper-ink); color: var(--paper); border-color: var(--paper-ink); }
 
+/* ── The one button ──────────────────────────────────────
+   Every call to action on this site is this button, drawn to the
+   reference Natan supplied: an outlined pill, ink on the surface,
+   with the WhatsApp mark sitting on its leading corner and breaking
+   the outline.
+
+   It was a solid green slab before. Monochrome is the better call
+   here and not only because it was asked for: the page already
+   spends its colour on the accent — eyebrows, the highlighted word,
+   the stat numbers — and a saturated green button was a third
+   colour competing with those. Ink-on-white is the quietest thing
+   on the page and still the highest-contrast, so it reads as the
+   one thing to press without shouting.
+
+   The badge is the signature. It is the only place colour survives,
+   it is the WhatsApp mark rather than a green field so it says which
+   app opens without a word of copy, and by breaking the outline it
+   gives an otherwise plain pill something to be remembered by. */
+.btn-wa {
+  position: relative; overflow: visible;
+  background: var(--surface);
+  color: var(--white);
+  border: 2px solid var(--white);
+  font-weight: 700;
+  /* Room for the badge to rise above the pill without being clipped
+     by a flex row or a card that crops its overflow. */
+  margin-block-start: 14px;
+  padding-inline: 30px;
+}
+.btn-wa:hover {
+  background: var(--white); color: var(--surface);
+  filter: none; border-color: var(--white);
+}
+.btn-wa:hover .wa-badge { transform: scale(1.06) rotate(-4deg); }
+
+/* The mark. --surface for the ring, matching the pill it sits on, so
+   the green never touches the outline — the gap is what makes it read
+   as applied on top rather than drawn in. */
+/* The disc is the logo's own, drawn inside the SVG — so the mark keeps
+   its official proportions instead of being a glyph floated on a green
+   circle this stylesheet invented. */
+.wa-badge {
+  position: absolute; inset-block-start: -17px; inset-inline-start: -13px;
+  width: 44px; height: 44px; border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--surface), 0 7px 16px -5px rgba(0,0,0,.4);
+  transition: transform .25s cubic-bezier(.22,.8,.3,1);
+}
+.wa-badge svg { width: 100%; height: 100%; display: block; }
+@media (prefers-reduced-motion: reduce) { .wa-badge { transition: none; } }
+
+/* On the light "paper" panels the page ground is a different white
+   from --surface, so the ring has to follow the panel it is on or it
+   draws a visible disc edge. */
+.paper .wa-badge, .price .wa-badge { box-shadow: 0 0 0 4px var(--price-card), 0 7px 16px -5px rgba(0,0,0,.4); }
+.paper .btn-wa, .price .btn-wa { background: var(--price-card); color: var(--paper-ink); border-color: var(--paper-ink); }
+.paper .btn-wa:hover, .price .btn-wa:hover { background: var(--paper-ink); color: var(--price-card); }
+
 /* ═══════════ NAV ═══════════
    A floating pill rather than a full-bleed bar. Taken from the
    reference's layout grammar: a contained, rounded chrome reads as
@@ -227,32 +284,64 @@ section { padding-block: var(--gap); }
 .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
 .nav-logo span { font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
 
+/* ── The menu, behind the burger, at every width ──────────
+   It used to be a row of five links across the top on a desktop and
+   a drawer on a phone — two different navigations to keep honest,
+   and on a wide screen five links sat with the same weight as the
+   one thing the page is actually asking for. Now it is one control
+   everywhere: press the three lines, the menu opens. Someone who
+   wants the pricing page still finds it in one tap; nobody is
+   offered it instead of the button. */
 .nav-links {
-  display: flex; gap: 4px; list-style: none; margin: 0; padding: 0;
-  margin-inline-start: auto;
+  display: none;
+  position: fixed; z-index: 99;
+  inset-block-start: calc(var(--nav-h) - 4px);
+  inset-inline-end: calc(var(--pad) + 4px);
+  min-width: 236px;
+  flex-direction: column; gap: 2px;
+  list-style: none; margin: 0; padding: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border-2); border-radius: 20px;
+  box-shadow: 0 26px 60px -22px rgba(0,0,0,.40);
+  animation: menuIn .18s cubic-bezier(.22,.8,.3,1) both;
 }
+:root[data-theme="dark"] .nav-links { box-shadow: 0 26px 60px -18px rgba(0,0,0,.75); }
+.nav-links.open { display: flex; }
+@keyframes menuIn { from { opacity: 0; transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .nav-links { animation: none; } }
+
 .nav-links a {
-  text-decoration: none; color: var(--dim); font-size: 14.5px; font-weight: 600;
-  padding: 8px 14px; border-radius: 999px;
+  text-decoration: none; color: var(--dim); font-size: 15.5px; font-weight: 600;
+  padding: 11px 15px; border-radius: 13px;
   transition: color .2s ease, background .2s ease;
-  display: inline-flex; align-items: center; min-height: 38px;
+  display: flex; align-items: center; min-height: 46px;
 }
 .nav-links a:hover { color: var(--white); background: var(--surface-2); }
 /* The page you're on is stated, not guessed at. */
 .nav-links a[aria-current="page"] {
   color: var(--white); background: var(--surface-2);
 }
+
+.nav-tools { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
+
 .nav .btn {
-  padding: 9px 18px; min-height: 40px; font-size: 14.5px;
-  margin-inline-end: 8px;
+  padding: 9px 18px; min-height: 42px; font-size: 14.5px;
+  gap: 8px;
 }
+/* The nav pill wears the mark inline, not as a badge — see wireWhatsApp().
+   No top margin either: inside a 66px bar there is nothing to clear. */
+.nav-cta { margin-block-start: 0; }
+.nav-wa { flex: none; width: 21px; height: 21px; }
+.nav-wa svg { width: 100%; height: 100%; display: block; }
 
 .nav-burger {
-  display: none; background: none; border: 1px solid var(--border-2);
+  display: grid; place-items: center;
+  background: none; border: 1px solid var(--border-2);
   border-radius: 999px; color: var(--white); padding: 8px;
-  min-width: 42px; min-height: 42px; margin-inline-start: auto;
+  min-width: 42px; min-height: 42px;
   margin-inline-end: 8px;
 }
+.nav-burger:hover { background: var(--surface-2); }
 
 /* ═══════════ HERO ═══════════ */
 .hero {
@@ -262,50 +351,87 @@ section { padding-block: var(--gap); }
   position: relative; overflow: hidden;
 }
 
-/* Two columns. The copy no longer sits alone against 60% of
-   empty ground — the other half is real work. */
+/* Two columns: the offer, and a face. */
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
   gap: clamp(28px, 4vw, 64px);
   align-items: center;
 }
 .hero-copy { min-width: 0; }
 
-.hero-visual { position: relative; min-width: 0; perspective: 1400px; }
+/* Sized to the photo, not to the column — the browser window below is
+   positioned against this box, and while it spanned the full column the
+   window anchored to the column's far edge instead of the picture's. */
+.hero-visual {
+  position: relative; min-width: 0;
+  width: min(100%, 420px); margin-inline: auto;
+}
+
+/* ── The face ────────────────────────────────────────────
+   A stock photograph (CC0, StockSnap) of a business owner, not of
+   Natan — this side of the hero stands for the person reading it.
+   His own portrait is in "עליי", where it means something. */
+.hero-person {
+  position: relative; z-index: 1;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px; overflow: hidden;
+  background: var(--surface-2);
+  box-shadow: 0 44px 84px -40px rgba(0,0,0,.55);
+}
+:root:not([data-theme="dark"]) .hero-person {
+  box-shadow: 0 30px 60px -26px rgba(22,22,26,.32), 0 2px 10px rgba(22,22,26,.07);
+}
+.hero-person picture { display: contents; }
+.hero-person img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: 50% 18%;
+}
+/* An accent frame offset behind the photo — a rule, not a slab. Filled,
+   it was a coloured block the eye read before the face; as an outline it
+   does the same job of giving the picture something to sit against, and
+   ties it to the brand colour, without competing with it. */
+.hero-visual::before {
+  content: ""; position: absolute; z-index: 0;
+  /* Offset toward the OUTER edge. Offset inward it drew a coloured line
+     down the gap between the picture and the headline, which read as a
+     stray rule rather than as a frame. */
+  inset-block: 30px -22px; inset-inline: 30px -22px;
+  border: 2px solid var(--accent-fill);
+  border-radius: 28px;
+}
+
+/* ── The proof, still here ───────────────────────────────
+   One real site Natan built, in a browser frame, overlapping the
+   photo's outer corner — the side away from the headline, so it never
+   crowds the words. It was three stacked windows filling this whole
+   column; one is enough now that it is a supporting claim rather than
+   the entire visual. */
 .hero-stack {
-  position: relative;
-  aspect-ratio: 4 / 3.4;
-  transform-style: preserve-3d;
+  position: absolute; z-index: 2;
+  inset-block-end: -26px; inset-inline-end: -34px;
+  width: 60%;
 }
 .hero-win {
-  position: absolute; inset-inline-start: 0;
-  width: 84%; overflow: hidden;
+  position: relative; width: 100%; overflow: hidden;
   will-change: transform;
+  box-shadow: 0 40px 70px -30px rgba(0,0,0,.75);
 }
 .hero-win .hero-shot {
   width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center;
   background: var(--surface-2); display: block;
 }
-/* Stacked, not tiled: depth from overlap and scale, which is
-   cheaper and calmer than three equal cards in a row. */
-.hero-win-back  { top: 0;   inset-inline-start: 16%; width: 78%; opacity: .38; filter: saturate(.5); }
-.hero-win-mid   { top: 16%; inset-inline-start: 8%;  width: 84%; opacity: .66; filter: saturate(.75); }
-.hero-win-front { top: 34%; inset-inline-start: 0;   width: 92%; }
-.hero-win-front { box-shadow: 0 50px 90px -34px rgba(0,0,0,.75); }
 /* Light ground: a soft shadow disappears, so it needs to be tighter
    and darker, plus a hairline to hold the edge. */
-:root:not([data-theme="dark"]) .hero-win-front {
-  box-shadow: 0 26px 50px -18px rgba(22,22,26,.30), 0 2px 8px rgba(22,22,26,.08);
-}
-:root:not([data-theme="dark"]) .hero-win { border-color: rgba(22,22,26,.16); }
-:root:not([data-theme="dark"]) .hero-win-back,
-:root:not([data-theme="dark"]) .hero-win-mid {
-  box-shadow: 0 14px 30px -14px rgba(22,22,26,.22);
+:root:not([data-theme="dark"]) .hero-win {
+  border-color: rgba(22,22,26,.16);
+  box-shadow: 0 22px 44px -18px rgba(22,22,26,.34), 0 2px 8px rgba(22,22,26,.10);
 }
 
+/* The project's name, above its window rather than below it — below
+   is now the bottom edge of the hero. */
 .hero-cap {
-  position: absolute; inset-block-end: -14px; inset-inline-start: 0;
+  position: absolute; inset-block-start: -16px; inset-inline-end: 0;
   font-family: var(--mono); font-size: 11.5px; color: var(--dim);
   display: inline-flex; align-items: center; gap: 7px;
   background: var(--surface); border: 1px solid var(--border);
@@ -338,48 +464,53 @@ section { padding-block: var(--gap); }
 }
 
 .hero h1 {
-  font-size: clamp(38px, 7.2vw, 76px);
-  line-height: 1.06;
-  max-width: 16ch;
+  font-size: clamp(34px, 4.6vw, 58px);
+  line-height: 1.1;
+  max-width: 19ch;
 }
-/* The highlighted word. Yellow-as-text fails contrast on the light
-   ground (1.3:1), so light gets a yellow highlighter MARKER behind ink
-   text — the same trick .stat-n uses — while dark keeps the pure-yellow
-   word it wears well. Either way the emphasis reads in both themes. */
-.hero h1 em { font-style: normal; color: var(--white); }
-/* A highlighter band, painted as a background gradient. SplitText turns
-   the word into <em><div.word><div.ch>… and the inline em's own
-   background collapses — so the band goes on the atomic .ch boxes, with
-   the bare em kept for the reduced-motion / no-split case. */
-.hero h1 em,
-.hero h1 em .ch {
-  background-image: linear-gradient(
-    to top,
-    transparent 8%, var(--accent-fill) 8%,
-    var(--accent-fill) 40%, transparent 40%);
-}
-/* Dark: the word is yellow itself; a band behind it would be
-   yellow-on-yellow, so drop it and let the text carry the accent. */
-:root[data-theme="dark"] .hero h1 em { color: var(--accent); }
-:root[data-theme="dark"] .hero h1 em,
-:root[data-theme="dark"] .hero h1 em .ch { background-image: none; }
+/* ── Typewriter ──────────────────────────────────────────
+   The headline types itself out, one character at a time, behind a
+   blinking caret. Third treatment this line has worn — the yellow
+   highlighter band and the gradient shimmer are both gone, not stacked
+   under it. typewriter.js owns the behaviour; this owns the caret. */
+/* Set by the boot script in index.html before first paint, cleared by a
+   3s timer there if motion.js never turns up. Keeps the finished
+   headline from flashing on screen a moment before it is erased. */
+.tw-wait .hero h1 { opacity: 0; }
 
-/* A dark brand colour breaks both of the treatments above: as a band it
-   covers the bottom of the letters in near-black, and as the word's own
-   colour it disappears into a dark ground. So it becomes a solid block
-   with the word knocked out of it — set by cms.js, which knows whether
-   the chosen colour needs light text. */
-:root[data-accent="dark"] .hero h1 em,
-:root[data-accent="dark"][data-theme="dark"] .hero h1 em {
-  color: var(--accent-ink);
+.tw-caret {
+  display: inline-block;
+  width: 0.07em; height: 0.82em;
+  margin-inline-start: 0.06em;
+  vertical-align: -0.06em;
+  /* currentColor, not the accent: the brand colour is a light
+     lavender now and the caret read at 1.68:1 against the page —
+     technically decorative, practically not there. */
+  background: currentColor;
+  animation: twBlink 1.05s steps(1, end) infinite;
 }
-:root[data-accent="dark"] .hero h1 em,
-:root[data-accent="dark"] .hero h1 em .ch,
-:root[data-accent="dark"][data-theme="dark"] .hero h1 em,
-:root[data-accent="dark"][data-theme="dark"] .hero h1 em .ch {
-  background-image: linear-gradient(var(--accent-fill), var(--accent-fill));
-  padding-inline: .08em;
-}
+@keyframes twBlink { 0%, 45% { opacity: 1; } 50%, 100% { opacity: 0; } }
+/* Once the line is finished the caret stops competing with the copy
+   underneath it and settles rather than blinking forever. */
+.tw-done .tw-caret { animation-duration: 1.6s; opacity: .55; }
+@media (prefers-reduced-motion: reduce) { .tw-caret { animation: none; } }
+/* The <em> is markup only now. cms.js still writes it from the **word**
+   syntax in /admin, and the site's other emphasis treatments still use
+   it — but in the headline it draws nothing. The shimmer is the effect.
+
+   Everything that used to live here is gone: the yellow highlighter
+   band, its dark-theme variant, and the knocked-out block for a dark
+   brand colour. Keeping the band as a reduced-motion fallback was my
+   idea and it was wrong twice over — it is the old effect Natan asked
+   to be rid of, and because the shimmer only mounts after the fonts
+   settle and the entrance finishes, the band flashed on screen for
+   about a second on every single load before disappearing. */
+/* The emphasised words lost every marker when the highlighter band and
+   then the shimmer were removed, so "שמביאים לקוחות" — the actual claim
+   in the headline — read exactly like the rest of the line. Weight is
+   the one emphasis that costs nothing: no second colour, no band, no
+   effect to flash before the typewriter starts. Heebo carries 900. */
+.hero h1 em { font-style: normal; color: inherit; background: none; font-weight: 900; }
 
 .hero-sub {
   margin-top: 22px; font-size: clamp(17px, 2.1vw, 21px);
@@ -387,6 +518,19 @@ section { padding-block: var(--gap); }
 }
 .hero-cta { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
 .hero-note { margin-top: 18px; font-size: 14px; color: var(--faint); }
+
+/* The way to the portfolio, kept as a link. It was a second button
+   sitting next to the first, which is the whole reason a visitor
+   arriving from an ad had to choose instead of act. */
+.hero-alt { margin-top: 14px; }
+.hero-alt a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--dim); font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-2);
+  transition: color .2s ease, border-color .2s ease;
+}
+.hero-alt a:hover { color: var(--white); border-bottom-color: var(--white); }
 
 /* ═══════════ TRUST STRIP ═══════════ */
 .trust {
@@ -412,17 +556,88 @@ section { padding-block: var(--gap); }
 .prob {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r-lg); padding: 26px 24px;
+  transition: border-color .3s ease, box-shadow .3s ease;
 }
 .prob-icon {
   width: 42px; height: 42px; border-radius: 11px;
   background: var(--accent-dim); color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
   display: grid; place-items: center; margin-bottom: 18px;
-  transition: background .25s ease, transform .25s ease;
+  transition: background .25s ease, transform .25s ease, color .25s ease, border-color .25s ease;
 }
 .prob:hover .prob-icon { background: var(--accent-fill); color: var(--accent-ink); }
-.prob h3 { font-size: 19px; margin-bottom: 8px; }
-.prob p { color: var(--dim); font-size: 15.5px; line-height: 1.65; }
+.prob h3 { font-size: 19px; margin-bottom: 8px; transition: color .3s ease; }
+.prob p { color: var(--dim); font-size: 15.5px; line-height: 1.65; transition: color .3s ease; }
+
+/* ── Hover reveal ────────────────────────────────────────
+   A card hides a photograph of the thing it describes, behind a heavy
+   scrim, so hovering turns it into a dark panel with light text — the
+   treatment Natan pointed at from the Eli Hovalot site.
+
+   One class, .photo-card, carries it everywhere: the problem cards and
+   the services grid on the home page, and "what happens on the call"
+   on the contact page. They have different icon chips and different
+   internals, so the shared rules touch only what they genuinely share.
+
+   The whole thing lives inside @media (hover: hover) on purpose, and
+   not as a nicety: a background-image inside a media query that does
+   not match is never fetched. A phone — which is where the paid
+   traffic lands, and where there is no cursor to hover with — does not
+   download a single one of these files. That is ~125KB of photography
+   the mobile visitor never pays for.
+
+   The URL comes from an inline --card-img on each card, so the photo
+   travels with the card's own markup instead of being pinned to
+   :nth-child in a stylesheet that knows nothing about the content. */
+@media (hover: hover) and (pointer: fine) {
+  .photo-card { position: relative; overflow: hidden; }
+
+  .photo-card::after {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    border-radius: inherit;
+    /* Graded, not flat: lighter at the top where the photo has to be
+       legible, heavier at the bottom where the body copy sits. The top
+       stop is .66 and not lighter because at .55 a white-ish photo put
+       the 18px card titles at 4.41:1 — under AA for text that size. */
+    background-image:
+      linear-gradient(rgba(10,10,12,.66), rgba(10,10,12,.88)),
+      var(--card-img);
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.07);
+    transition: opacity .42s ease, transform .7s cubic-bezier(.22,.8,.3,1);
+    pointer-events: none;
+  }
+  .photo-card:hover::after { opacity: 1; transform: scale(1); }
+
+  /* The content has to outrank the photo, which is a positioned layer. */
+  .photo-card > * { position: relative; z-index: 1; }
+
+  .photo-card:hover {
+    border-color: var(--accent-fill);
+    box-shadow: 0 22px 44px -20px rgba(0,0,0,.45);
+    transform: none;          /* .svc lifts on hover; not while it is a photo panel */
+  }
+  .photo-card:hover h3 { color: #fff; }
+  .photo-card:hover p  { color: rgba(255,255,255,.82); }
+
+  /* Every icon chip fills with the brand colour and drops its outline. */
+  .photo-card:hover .prob-icon,
+  .photo-card:hover .svc-i,
+  .photo-card:hover .expect-i {
+    background: var(--accent-fill);
+    border-color: transparent;
+  }
+  .photo-card:hover .prob-icon { color: var(--accent-ink); }
+  .photo-card:hover .svc-i svg,
+  .photo-card:hover .expect-i svg { stroke: var(--accent-ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-card::after { transition: opacity .2s ease; transform: none; }
+    .photo-card:hover::after { transform: none; }
+  }
+}
 
 /* ═══════════ WORK TEASER (the button, not the gallery) ═══════════ */
 .teaser {
@@ -439,30 +654,98 @@ section { padding-block: var(--gap); }
 }
 .teaser-stats b { color: var(--accent); font-weight: 400; }
 
-/* ═══════════ PROCESS ═══════════ */
-.steps { margin-top: 46px; display: grid; gap: 2px; }
-.step {
-  display: grid; grid-template-columns: 62px 1fr auto; gap: 22px;
-  align-items: start;
-  padding: 26px 4px; border-top: 1px solid var(--border);
+/* ═══════════ PROCESS ═══════════
+   Four stages across a rail, not four rows in a ruled list. The old one
+   was a table: number, text, duration, hairline, repeat. It read as a
+   spec sheet for the thing a visitor is most anxious about — what
+   actually happens after they message.
+
+   Each stage gets a photograph, and the numbered node sits ON the photo's
+   corner, breaking its edge. That is the same move the WhatsApp badge
+   makes on the button and the browser window makes on the hero portrait,
+   so the section belongs to the rest of the page rather than being a
+   third idea.
+
+   The rail is what makes it read as a sequence: a hairline running
+   through all four nodes, reaching back across the grid gap to the
+   previous one. First node starts the line at itself; last one ends it.
+   ═══════════════════════════════════════════════════════ */
+.steps {
+  --step-gap: clamp(16px, 2.2vw, 28px);
+  margin-top: 48px;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--step-gap);
 }
-.step:last-child { border-bottom: 1px solid var(--border); }
-/* Light (default): yellow-as-text fails here, so the CHIP carries the
-   accent — a yellow wash + border with an ink number — to match the pop
-   the yellow number gives in dark. */
+.step { display: flex; flex-direction: column; min-width: 0; }
+
+.step-media {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  border-radius: 16px; overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.step-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  /* A touch muted at rest so four photographs in a row support the copy
+     instead of shouting over it. */
+  filter: saturate(.88);
+  transition: transform .5s cubic-bezier(.22,.8,.3,1), filter .35s ease;
+}
+.step:hover .step-media img { transform: scale(1.04); filter: saturate(1); }
+
+/* The rail gets its own row, so the node's vertical centre is a known
+   quantity and the connector can be drawn without measuring a photo.
+   Pulled up by half the node so it straddles the photo's bottom edge —
+   the node breaks the frame instead of sitting politely below it. */
+.step-rail {
+  position: relative; height: 46px; display: flex; align-items: center;
+  margin-block-start: -19px;
+}
+.step-rail::before {
+  content: ""; position: absolute; top: 50%; height: 1px;
+  inset-inline-start: calc(-1 * var(--step-gap)); inset-inline-end: 0;
+  background: var(--border-2);
+}
+.step:first-child .step-rail::before { inset-inline-start: 20px; }
+.step:last-child  .step-rail::before { inset-inline-end: calc(100% - 20px); }
+
 .step-n {
-  font-family: var(--mono); font-size: 13px; color: var(--white);
-  background: var(--accent-dim);
-  border: 1px solid color-mix(in srgb, var(--accent-fill) 55%, transparent);
-  border-radius: 8px;
-  width: 40px; height: 40px; display: grid; place-items: center;
+  position: relative;                 /* above the rail line */
+  font-family: var(--mono); font-size: 12.5px; font-weight: 700;
+  color: var(--accent-ink); background: var(--accent-fill);
+  border-radius: 50%;
+  width: 38px; height: 38px; display: grid; place-items: center; flex: none;
+  /* The ring is the page ground, so the rail appears to pass behind the
+     node rather than through it. */
+  box-shadow: 0 0 0 5px var(--black);
 }
-:root[data-theme="dark"] .step-n { color: var(--accent); background: transparent; border-color: var(--border-2); }
-.step h3 { font-size: 20px; margin-bottom: 6px; }
-.step p { color: var(--dim); font-size: 15.5px; max-width: 56ch; }
+
+.step h3 { font-size: 18.5px; margin-bottom: 6px; }
+.step p { color: var(--dim); font-size: 15px; line-height: 1.6; }
 .step-when {
-  font-family: var(--mono); font-size: 12.5px; color: var(--faint);
-  white-space: nowrap; padding-top: 10px;
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  margin-top: 10px; display: inline-flex; align-items: center; gap: 6px;
+}
+.step-when::before {
+  content: ""; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent-fill); flex: none;
+}
+
+/* Two-up, then one. Four 16:11 photographs side by side stop being
+   legible somewhere around a tablet. */
+@media (max-width: 900px) {
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(3) .step-rail::before { inset-inline-start: 20px; }
+  .step:nth-child(2) .step-rail::before { inset-inline-end: calc(100% - 20px); }
+}
+@media (max-width: 560px) {
+  .steps { grid-template-columns: 1fr; gap: 26px; }
+  /* One column: the rail would be four disconnected stubs. The numbers
+     carry the order on their own here. */
+  .step-rail::before { display: none; }
+  .step-rail { height: 42px; }
+  .step-media { aspect-ratio: 16 / 9; }
 }
 
 /* ═══════════ PRICING — light ground ═══════════ */
@@ -580,16 +863,24 @@ details p {
 }
 
 /* ═══════════ CONTACT ═══════════ */
+/* One column, centred. This was a two-up: copy on one side, a lead form
+   on the other. The form is gone — it asked for the same thing the
+   WhatsApp button asks for, by a slower route — so the card holds one
+   thing and says it once. */
 .contact-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r-lg); padding: clamp(28px, 5vw, 52px);
-  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 56px);
+  border-radius: var(--r-lg); padding: clamp(30px, 5vw, 56px);
+  text-align: center;
 }
 .contact-card h2 { font-size: clamp(26px, 3.6vw, 36px); }
-.contact-card > div > p { color: var(--dim); margin-top: 12px; max-width: 40ch; }
+.contact-card > div > p { color: var(--dim); margin-top: 12px; max-width: 46ch; margin-inline: auto; }
 .contact-direct {
-  margin-top: 26px; display: flex; flex-direction: column; gap: 10px;
+  margin-top: 28px; display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
 }
+/* The card's own WhatsApp button carries the section, so it is bigger
+   than the same button in a nav or a teaser. */
+.contact-direct .wa-btn { font-size: 17px; min-height: 56px; padding: 16px 30px; }
 .contact-direct a {
   display: inline-flex; align-items: center; gap: 10px;
   color: var(--dim); text-decoration: none; font-size: 15.5px;
@@ -602,53 +893,10 @@ details p {
 .contact-direct a.wa-btn { color: #fff; }
 .contact-direct a.wa-btn:hover { color: #fff; }
 
-.field { margin-bottom: 15px; }
-.field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.field .req { color: var(--accent); }
-
-/* Radio choices as tappable pills — contact method and time window.
-   Checked pill uses the yellow FILL, so it reads the same in both
-   themes (yellow-as-text would fail on light). */
-.pillset { display: flex; gap: 8px; flex-wrap: wrap; }
-.pill-opt { position: relative; }
-.pill-opt input { position: absolute; inset: 0; opacity: 0; cursor: pointer; margin: 0; }
-.pill-opt span {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 10px 18px; min-height: 44px; border-radius: 999px;
-  border: 1px solid var(--border-2); color: var(--dim);
-  font-size: 14.5px; cursor: pointer; transition: background .15s, color .15s, border-color .15s;
-}
-.pill-opt input:checked + span {
-  background: var(--accent-fill); color: var(--accent-ink);
-  border-color: var(--accent-fill); font-weight: 600;
-}
-.pill-opt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
-.input {
-  width: 100%; background: var(--black); color: var(--white);
-  border: 1px solid var(--border-2); border-radius: 9px;
-  padding: 12px 14px; min-height: 48px; font-family: inherit; font-size: 16px;
-  transition: border-color .18s ease;
-}
-.input:focus { border-color: var(--accent); outline: none; }
-textarea.input { min-height: 92px; resize: vertical; }
-.form-msg { border-radius: 9px; padding: 12px 14px; font-size: 14.5px; margin-bottom: 14px; }
-.form-msg.err { background: rgba(255,107,74,.12); border: 1px solid var(--danger); color: var(--danger); }
-.form-msg.ok  { background: rgba(110,231,168,.10); border: 1px solid var(--ok); color: var(--ok); }
-.form-fine { font-size: 13px; color: var(--faint); margin-top: 12px; }
-
-/* The optional half of the lead form, collapsed by default. It inherits
-   the FAQ disclosure behaviour above (marker, rotation, 44px target) and
-   only turns the volume down: this is an invitation to say more, and it
-   must never look like a step standing between the visitor and Send. */
-.field-more { border-bottom: none; margin-bottom: 15px; }
-.field-more > summary {
-  padding: 12px 0; font-weight: 500; font-size: 14.5px; color: var(--dim);
-  border-bottom: 1px dashed var(--border-2);
-}
-.field-more > summary::after { font-size: 16px; color: var(--accent); }
-.field-more > summary:hover { color: var(--white); }
-.field-more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.field-more[open] > summary { margin-bottom: 15px; }
+/* Everything the lead form needed — .field, .input, the radio pills,
+   the status message, the collapsed "more details" disclosure — went
+   with the form. /admin carries its own copies of .field and .input in
+   its own <style>; it never loaded this file. */
 
 /* ── Market comparison, inside the pricing section ──
    Rows sit on the light "paper" background, so every colour here comes
@@ -804,22 +1052,19 @@ select.input:invalid { color: var(--faint); }
 :root[data-theme="dark"] .float-cta { box-shadow: 0 14px 34px -12px rgba(0,0,0,.7); }
 .float-cta:hover { transform: translateY(-3px); box-shadow: 0 20px 44px -14px rgba(0,0,0,.5); }
 
-/* Avatar in its own ring, face centred, with a live dot. */
+/* The pill opens the answers now, so its disc carries a question mark
+   and the site's own accent — not WhatsApp green. Green here would
+   promise a chat and deliver a FAQ, and it would put a second green
+   circle on screen beside the one on the button that really does open
+   WhatsApp. */
 .float-cta-av {
   position: relative; flex: none;
   width: 48px; height: 48px; border-radius: 50%;
-  padding: 2px; background: var(--accent-fill);
+  display: grid; place-items: center;
+  background: var(--accent-fill); color: var(--accent-ink);
 }
-.float-cta-av img {
-  width: 100%; height: 100%; border-radius: 50%;
-  object-fit: cover; object-position: center 28%;
-  display: block;
-}
-.float-cta-av::after {
-  content: ""; position: absolute; inset-block-end: 0; inset-inline-end: 0;
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--ok); border: 2px solid var(--surface);
-}
+.float-cta-av svg { width: 24px; height: 24px; }
+.float-cta.is-loading { opacity: .6; pointer-events: none; }
 .float-cta-txt { display: grid; line-height: 1.2; }
 .float-cta-txt b { font-size: 15px; font-weight: 700; }
 .float-cta-txt small { font-size: 11px; color: var(--faint); font-family: var(--mono); }
@@ -836,32 +1081,159 @@ select.input:invalid { color: var(--faint); }
 [dir="ltr"] .float-cta:hover .float-cta-arrow { transform: translateX(3px); }
 
 @keyframes floatIn { from { opacity: 0; transform: translateY(20px) scale(.9); } }
-/* Hidden once the contact section is in view — the ask is already there. */
-.float-cta.at-contact { opacity: 0; pointer-events: none; transform: translateY(20px); }
+/* The pill used to hide at the contact section, when it was a second
+   copy of the same ask. It answers questions now, which is worth having
+   on screen wherever someone is still deciding — including there. */
 
-/* On a phone it sits above the action bar rather than being dropped.
-   The bar tucks itself away while you read downward, which left a
-   paid-ad visitor scrolling with no way to make contact on screen —
-   and that is the one thing this pill exists to prevent. Slightly
-   tighter here so it takes a corner, not the width of the screen. */
+/* ═══════════ ASK-ME PANEL ═══════════
+   Opened by the floating pill. A short, scrollable card anchored to the
+   pill on a desktop and a bottom sheet on a phone — the two shapes a
+   panel like this can take without fighting the thumb.
+
+   Deliberately NOT a chat: no input, no typing indicator, no illusion
+   that a person is on the other end. Topics, questions, answers, and
+   one way out to a real conversation. */
+.qa-backdrop {
+  position: fixed; inset: 0; z-index: 96;
+  background: rgba(11,11,11,.35);
+  backdrop-filter: blur(2px);
+  animation: qaFade .2s ease both;
+}
+@keyframes qaFade { from { opacity: 0; } }
+
+.qa-panel {
+  position: fixed; z-index: 97;
+  inset-block-end: 92px; inset-inline-start: 22px;
+  width: min(420px, calc(100vw - 44px));
+  max-height: min(620px, calc(100dvh - 140px));
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border-2); border-radius: 22px;
+  box-shadow: 0 30px 70px -22px rgba(0,0,0,.45);
+  overflow: hidden;
+  animation: qaIn .24s cubic-bezier(.22,.8,.3,1) both;
+}
+/* An explicit display: value outranks the UA's [hidden]{display:none},
+   so closing the panel set the attribute and changed nothing on screen.
+   The backdrop DID vanish — it has no display of its own — which left
+   the panel stuck open with no way out of it. */
+.qa-panel[hidden], .qa-backdrop[hidden] { display: none; }
+:root[data-theme="dark"] .qa-panel { box-shadow: 0 30px 70px -18px rgba(0,0,0,.8); }
+@keyframes qaIn { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+@media (prefers-reduced-motion: reduce) {
+  .qa-panel, .qa-backdrop { animation: none; }
+}
+
+.qa-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.qa-titles { flex: 1; min-width: 0; }
+.qa-head h2 { font-size: 17px; }
+/* The subtitle is the funnel's position indicator — "on what?", then the
+   subject you chose. It changes on every step, so it must not wrap and
+   shove the close button around. */
+.qa-sub {
+  color: var(--dim); font-size: 13px; margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.qa-back, .qa-x {
+  flex: none; background: none; border: 1px solid var(--border-2);
+  color: var(--dim); border-radius: 999px;
+  min-height: 36px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 12px; font-size: 13px; font-weight: 600;
+}
+/* display:inline-flex outranks the UA's [hidden]{display:none}, which is
+   how the back button stayed on screen one of the funnel. */
+.qa-back[hidden] { display: none; }
+.qa-x { width: 36px; padding: 0; justify-content: center; }
+.qa-back:hover, .qa-x:hover { color: var(--white); border-color: var(--white); }
+/* The arrow points the way back, which in RTL is toward the end. */
+[dir="rtl"] .qa-back svg { transform: scaleX(-1); }
+
+.qa-body { overflow-y: auto; padding: 8px 18px 16px; flex: 1; }
+.qa-body:focus { outline: none; }
+.qa-in { animation: qaStep .22s cubic-bezier(.22,.8,.3,1) both; }
+@keyframes qaStep { from { opacity: 0; transform: translateX(14px); } }
+[dir="ltr"] .qa-in { animation-name: qaStepLtr; }
+@keyframes qaStepLtr { from { opacity: 0; transform: translateX(-14px); } }
+@media (prefers-reduced-motion: reduce) { .qa-in { animation: none; } }
+
+/* One choice per row, at thumb height, all the way down. */
+.qa-row {
+  width: 100%; background: none; border: none;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  padding: 15px 2px; min-height: 56px;
+  text-align: start; color: var(--white);
+  font-size: 15.5px; font-weight: 600; line-height: 1.45;
+  transition: color .15s ease;
+}
+.qa-row:last-child { border-bottom: none; }
+.qa-row:hover { color: var(--accent); }
+.qa-row-t { flex: 1; min-width: 0; }
+.qa-go { flex: none; color: var(--faint); transition: transform .18s ease; }
+[dir="ltr"] .qa-go { transform: scaleX(-1); }
+.qa-row:hover .qa-go { transform: translateX(-3px); }
+[dir="ltr"] .qa-row:hover .qa-go { transform: scaleX(-1) translateX(-3px); }
+/* How many answers sit behind a subject — it tells you the tap is worth
+   making, and it comes free from data we already have. */
+.qa-count {
+  flex: none; font-family: var(--mono); font-size: 11.5px;
+  color: var(--faint); background: var(--surface-2);
+  border-radius: 999px; padding: 2px 9px;
+}
+
+.qa-answer { padding-block: 6px 4px; }
+.qa-answer h3 { font-size: 17px; line-height: 1.4; margin-bottom: 12px; }
+.qa-answer p { color: var(--dim); font-size: 15px; line-height: 1.75; }
+.qa-answer p + p { margin-top: 12px; }
+.qa-more {
+  margin-top: 20px; background: none; border: 1px dashed var(--border-2);
+  border-radius: 12px; color: var(--dim); width: 100%;
+  padding: 12px; min-height: 46px; font-size: 14px; font-weight: 600;
+}
+.qa-more:hover { color: var(--white); border-color: var(--white); }
+.qa-empty { color: var(--dim); font-size: 15px; padding: 26px 0; text-align: center; line-height: 1.7; }
+.qa-empty a { color: var(--accent); }
+
+.qa-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; padding: 14px 20px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.qa-foot-t { color: var(--dim); font-size: 13.5px; max-width: 15ch; line-height: 1.4; }
+.btn-sm { min-height: 44px; padding: 10px 22px; font-size: 14.5px; }
+.qa-foot .btn-wa { margin-block-start: 10px; }
+.qa-foot .wa-badge { width: 34px; height: 34px; inset-block-start: -13px; inset-inline-start: -10px; }
+
+/* Phone: a bottom sheet. A 420px card floating over a 390px screen is
+   a card that has already lost. */
+@media (max-width: 620px) {
+  .qa-panel {
+    inset-inline: 0; inset-block-end: 0;
+    width: 100%; max-width: none;
+    max-height: 86dvh;
+    border-radius: 22px 22px 0 0;
+    border-inline: none; border-block-end: none;
+  }
+  /* The launcher would sit on top of the sheet it opened. */
+  body.qa-open .float-cta { opacity: 0; pointer-events: none; }
+  .qa-head { padding-block-start: 22px; }
+}
+
+/* On a phone this is now the only fixed thing at the foot of the
+   screen — the five-icon action bar it used to share the space with
+   is gone. So it takes the corner it always wanted, and stays put. */
 @media (max-width: 700px) {
   .float-cta {
-    /* Sits low while you read. The bar is tucked away then, so the space
-       it would occupy is free and the pill should use it. */
     inset-block-end: calc(12px + env(safe-area-inset-bottom));
     inset-inline-start: 12px;
     gap: 10px; padding: 6px 9px 6px 6px;
   }
-
-  /* The bar is a preceding sibling of the pill — _shell.js appends the
-     pill to <body> after it — so the pill can follow the bar's own state
-     instead of a second scroll listener guessing at it. Rides up only
-     while the bar is actually on screen. */
-  #mobile-bar.up:not(.hide) ~ .float-cta {
-    inset-block-end: calc(60px + env(safe-area-inset-bottom) + 12px);
-  }
   .float-cta-av { width: 40px; height: 40px; }
-  .float-cta-av::after { width: 10px; height: 10px; }
   .float-cta-txt b { font-size: 14px; }
   .float-cta-txt small { font-size: 10px; }
   .float-cta-arrow { width: 30px; height: 30px; }
@@ -991,11 +1363,11 @@ body::after {
 .nav { transition: border-color .3s ease, transform .38s cubic-bezier(.22,.8,.3,1); }
 .nav.gone { transform: translateY(-100%); }
 
-/* ── Hero: bigger, with depth behind it ── */
-.hero h1 { font-size: clamp(44px, 9vw, 110px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; }
-.hero h1 .ch { display: inline-block; will-change: transform; }
-/* SplitText measures lines; overflow must not clip the rise. */
-.hero h1 .word { overflow: hidden; display: inline-block; padding-block: .08em; }
+/* ── Hero, with depth behind it ──
+   110px was right for five short words. The headline now names the
+   service, which makes it a sentence, and at that size a sentence ran
+   to six lines and pushed the button clean off the first screen. */
+.hero h1 { font-size: clamp(33px, 4.3vw, 58px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 800; }
 
 .hero::after {
   content: ""; position: absolute; z-index: 0; pointer-events: none;
@@ -1171,54 +1543,6 @@ body::after {
   }
 }
 
-/* ═══════════ MOBILE NAV BAR ═══════════
-   Phone traffic arrives from a paid ad and browses with a thumb — it
-   shouldn't need to open a hamburger drawer to reach the portfolio or
-   pricing. Icons, not a hidden list. WhatsApp stays the one visually
-   distinct item, since it's the fastest path to a real conversation.
-   Desktop never sees it.
-
-   Shares its show/hide state with the JS in site.js: `.up` is added
-   once the hero (or page head) has scrolled past — so it doesn't
-   compete with the hero's own CTA — and `.hide` while scrolling DOWN,
-   mirroring the top nav. */
-.mobile-bar {
-  display: none;
-  position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 90;
-  align-items: stretch;
-  /* Solid, not glass — a tab bar reads whatever colour section happens
-     to be scrolled underneath it if it's translucent (a lime panel one
-     scroll position, a dark one the next), which washed the icons out
-     inconsistently. A bottom bar is opaque in every native app for
-     exactly this reason. */
-  background: var(--surface);
-  border-top: 1px solid var(--border-2);
-  padding-inline: 4px;
-  padding-block-start: 6px;
-  padding-block-end: calc(6px + env(safe-area-inset-bottom));
-  transform: translateY(100%); opacity: 0;
-  transition: transform .3s ease, opacity .3s ease;
-}
-.mobile-bar.up { opacity: 1; transform: translateY(0); }
-.mobile-bar.up.hide { transform: translateY(100%); }
-@media (prefers-reduced-motion: reduce) { .mobile-bar { transition: opacity .2s ease; } }
-
-.mbar-i {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 2px;
-  min-height: 48px; margin: 2px; border-radius: 10px;
-  color: var(--dim); text-decoration: none;
-  font-family: var(--body); font-size: 10.5px; font-weight: 600;
-  transition: color .2s ease, background .2s ease;
-}
-.mbar-i svg { stroke: currentColor; flex: none; }
-/* --accent, not --accent-ink: the text here sits on the 10-30% wash, not
-   on the solid fill, so it needs the theme's readable accent rather than
-   the ink that pairs with a fully saturated background. */
-.mbar-i.current { color: var(--accent); background: var(--accent-dim); }
-:root[data-theme="dark"] .mbar-i.current { color: var(--accent); }
-.mbar-i.mbar-wa { color: #25D366; }
-
 /* ═══════════════════════════════════════════════════════
    MOBILE — a different design, not a smaller one
 
@@ -1231,42 +1555,60 @@ body::after {
 @media (max-width: 700px) {
   :root { --gap: 54px; --nav-h: 60px; }
 
-  /* Room at the foot of every page so the fixed bar never covers the
-     last thing on it — the footer links, a final CTA. */
-  body { padding-block-end: calc(60px + env(safe-area-inset-bottom)); }
-  .mobile-bar { display: flex; }
+  /* Room at the foot of every page for the floating WhatsApp pill —
+     its own height (52) plus the 12px it sits off the bottom, plus
+     air. At 48 it sat on top of the last row of footer links. */
+  body { padding-block-end: calc(88px + env(safe-area-inset-bottom)); }
 
-  /* ── Nav ── */
-  .nav { gap: 10px; }
-  .nav-links { display: none; }
-  .nav-links.open {
-    display: flex; flex-direction: column; gap: 0;
-    position: fixed; inset-block-start: var(--nav-h); inset-inline: 0;
-    background: var(--black); border-bottom: 1px solid var(--border);
+  /* ── Nav ──
+     Same burger as the desktop, same menu behind it. The only phone
+     change is the panel: it spans the screen rather than hanging as a
+     card, because at this width a card IS the screen. */
+  .nav { gap: 8px; }
+  .nav-links {
+    inset-block-start: var(--nav-h); inset-inline: 0;
+    min-width: 0; border-radius: 0; border-inline: none; border-block-start: none;
+    background: var(--black); box-shadow: none;
     padding: 8px var(--pad) 20px;
     max-height: calc(100dvh - var(--nav-h)); overflow-y: auto;
+    gap: 0;
   }
-  .nav-links.open a {
-    padding: 15px 0; border-bottom: 1px solid var(--border);
+  .nav-links a {
+    padding: 15px 0; border-radius: 0; border-bottom: 1px solid var(--border);
     font-size: 17px; color: var(--white);
   }
-  .nav-tools { margin-inline-start: auto; }
-  .nav > .nav-cta { display: none; }
-  .nav-burger { display: grid; place-items: center; margin-inline-start: 0; }
+  .nav-links a:hover, .nav-links a[aria-current="page"] { background: none; }
+  /* The button stays on a phone — with the bottom bar gone this is the
+     only WhatsApp tap that's on screen before you scroll. Icon only:
+     the label doesn't fit next to a logo, two tools and a burger. */
+  .nav .btn.nav-cta { padding: 0; min-width: 44px; min-height: 44px; }
+  .nav-cta-txt { display: none; }
 
-  /* ── Hero: the offer and one tap, nothing else ──
-     No stack: it would push the CTA under the fold, and paid
-     traffic that has to scroll to find the ask is paid traffic
-     you lose. */
-  .hero { min-height: auto; padding-block: calc(var(--nav-h) + 26px) 40px; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-visual { display: none; }
-  .hero h1 { font-size: clamp(30px, 8.6vw, 40px); line-height: 1.1; }
-  .hero-sub { font-size: 16px; margin-top: 14px; }
-  .hero-status { margin-bottom: 16px; font-size: 12px; padding: 6px 12px; }
-  .hero-cta { flex-direction: column; align-items: stretch; margin-top: 24px; gap: 10px; }
+  /* ── Hero: a face, the offer, one tap ──
+     The photo comes FIRST, above the headline. The audit's finding was
+     that a visitor arriving from an ad meets a wall of type; on a phone
+     that wall is the whole first screen. It is a short 16:10 crop, not
+     the desktop portrait, so it introduces the page without pushing the
+     button under the fold. */
+  .hero { min-height: auto; padding-block: calc(var(--nav-h) + 18px) 40px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 22px; }
+  .hero-visual { order: -1; }
+  .hero-visual::before { display: none; }        /* the plate needs room it doesn't have here */
+  .hero-person {
+    max-width: none; margin-inline: 0;
+    aspect-ratio: 16 / 10; border-radius: 20px;
+    max-height: 33svh;
+  }
+  .hero-person img { object-position: 50% 22%; }
+  .hero-stack { display: none; }                 /* one visual per screen */
+  .hero h1 { font-size: clamp(28px, 8vw, 38px); line-height: 1.12; }
+  .hero-sub { font-size: 16px; margin-top: 12px; }
+  .hero-status { margin-bottom: 14px; font-size: 12px; padding: 6px 12px; }
+  .hero-cta { flex-direction: column; align-items: stretch; margin-top: 20px; gap: 10px; }
   .hero-cta .btn { width: 100%; }
-  .hero-note { font-size: 13px; margin-top: 14px; }
+  .hero-note { font-size: 13px; margin-top: 12px; }
+  .hero-alt { margin-top: 10px; }
+  .hero-alt a { font-size: 14.5px; min-height: 40px; }
   .hero::before, .hero::after { display: none; }   /* two washes on a small screen is mud */
 
   /* ── Numbers: a 2×2 block, aligned, not four centred towers ── */
@@ -1347,7 +1689,6 @@ body::after {
 }
 
 /* Very small phones — 320px still has to work. */
-@media (max-width: 360px) {
+@media (max-width: 400px) {
   .nav-logo span { display: none; }
-  .mbar-i { font-size: 9.5px; }
 }

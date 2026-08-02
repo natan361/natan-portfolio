@@ -4,13 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>תיק עבודות — Natan-עיצוב אתרים</title>
-<meta name="description" content="אתרים שבניתי לעסקים ולמוסדות, הדמיות אדריכליות וסרטונים." />
+<meta name="description" content="עבודות לדוגמה בעיצוב ובניית אתרים לעסקים ולמוסדות, וגם הדמיות אדריכליות וסרטונים." />
 <link rel="canonical" href="https://natanchaim.org/portfolio.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Natan-עיצוב אתרים" />
 <meta property="og:locale" content="he_IL" />
 <meta property="og:title" content="תיק עבודות — Natan-עיצוב אתרים" />
-<meta property="og:description" content="אתרים שבניתי לעסקים ולמוסדות, הדמיות אדריכליות וסרטונים." />
+<meta property="og:description" content="עבודות לדוגמה בעיצוב ובניית אתרים לעסקים ולמוסדות, וגם הדמיות אדריכליות וסרטונים." />
 <meta property="og:url" content="https://natanchaim.org/portfolio.html" />
 <meta property="og:image" content="https://natanchaim.org/assets-opt/og-cover.png?v=2" />
 <meta property="og:image:width" content="1200" />
@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="main.css?v=4" />
+<link rel="stylesheet" href="main.css?v=5" />
 <script>
   try {
     var s = localStorage.getItem("natan-theme");
@@ -248,13 +248,14 @@
   <section class="pf-cta">
     <h2 data-i18n="pf.ctat">רוצה אתר כזה לעסק שלך?</h2>
     <p data-i18n="pf.ctap">שיחה של 15 דקות, בלי עלות ובלי התחייבות.</p>
-    <a href="index.html#contact" class="btn" data-i18n="pf.cta">בוא נדבר</a>
+    <a href="#" class="btn btn-wa" data-wa>
+      <span data-i18n="cta.wa">צור קשר</span>
+    </a>
   </section>
 
 </main>
 
 <footer id="footer"></footer>
-<div id="mobile-bar"></div>
 
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -390,9 +391,9 @@ show("sites");
 Promise.all(["renders", "videos"].map(k => load(k).catch(() => {})));
 </script>
 <script type="module">
-  import { mountChrome } from "./_shell.js?v=4";
+  import { mountChrome } from "./_shell.js?v=5";
   mountChrome({ active: "portfolio.html" });
 </script>
-<script type="module" src="site.js?v=4"></script>
+<script type="module" src="site.js?v=5"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 # Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים
 
-> בונה אתרים לעסקים קטנים בכל הארץ. אתרים מהירים, מותאמים לנייד, שמביאים פניות — מוכנים תוך כשבועיים, במחיר סגור מראש. עובד עם כלי AI כדי לספק מהר ובמחיר שמתאים לעסק קטן. אדם אחד, לא סטודיו — מדברים ישירות איתו, מההצעה ועד אחרי שהאתר עלה.
+> עיצוב ובניית אתרים לעסקים קטנים בכל הארץ. אתרים מהירים, מותאמים לנייד, שמביאים פניות — במחיר סגור מראש — כ-60% פחות ממה שסוכנות גובה על אותו אתר. עובד עם כלי AI, ולכן המחיר מתאים לעסק קטן. אדם אחד, לא סטודיו — מדברים ישירות איתו, מההצעה ועד אחרי שהאתר עלה.
 
-(English: Natan Chaim builds fast, mobile-first websites for small businesses across Israel. Delivered in about two weeks at a fixed, up-front price. Solo builder using AI tools — you talk to him directly.)
+(English: Natan Chaim builds fast, mobile-first websites for small businesses across Israel. Fixed, up-front price — around 60% below what an agency charges for the same site. Solo builder using AI tools — you talk to him directly.)
 
 ## שירותים
-- בניית אתר חדש לעסק — מותאם לנייד, בנוי כדי להביא פניות
+- עיצוב ובניית אתר חדש לעסק — מותאם לנייד, בנוי כדי להביא פניות
 - שדרוג / עיצוב מחדש לאתר קיים שלא מביא תוצאות
 - אוטומציה — חיבור טפסים, וואטסאפ ומערכות
 - הדמיות אדריכליות פוטוריאליסטיות
@@ -13,7 +13,7 @@
 
 ## פרטים
 - אזור שירות: כל הארץ (העבודה נעשית מרחוק)
-- זמן אספקה: כשבועיים
+- זמן אספקה: משתנה לפי הפרויקט, נקבע בשיחה
 - מחיר: החל מ־₪1,500, סגור מראש, בלי הפתעות
 - טלפון / וואטסאפ: 055-680-7812
 - אימייל: work71work72@gmail.com
@@ -25,4 +25,4 @@
 - [שאלות נפוצות](https://natanchaim.org/faq.html): מחיר, זמנים, בעלות, שינויים
 - [מדריכים](https://natanchaim.org/articles.html): מדריכים לבעלי עסקים על אתרים
 - [תיק עבודות](https://natanchaim.org/portfolio.html): אתרים שבנה
-- [יצירת קשר](https://natanchaim.org/contact.html): טופס ווואטסאפ
+- [יצירת קשר](https://natanchaim.org/contact.html): וואטסאפ בלבד — אין טופס באתר

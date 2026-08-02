@@ -10,6 +10,9 @@
    ═══════════════════════════════════════════════════════ */
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
+// This page's markup is rendered after mountChrome() has already run, so
+// its own WhatsApp button has to be pointed at the number here.
+import { wireWhatsApp } from "./_shell.js?v=5";
 
 /* ── Demo copy ────────────────────────────────────────────
    PLACEHOLDER. Deliberately kept in this file and NOT written
@@ -47,7 +50,7 @@ const DEMO = {
     { t: "בנייה ומשוב",
       d: "מעלה גרסה חיה תוך ימים, ואתה רואה את האתר מתעדכן. סבב תיקונים אחד מרוכז במקום עשרים הודעות ווטסאפ." },
     { t: "עלייה לאוויר",
-      d: "דומיין, אחסון, חיבור לגוגל וקוד מעקב. אחרי זה שבועיים ליווי — כל שינוי קטן שצריך, בלי חשבון." },
+      d: "דומיין, אחסון על שם הלקוח, חיבור לגוגל וקוד מעקב. אחרי זה תקופת ליווי — כל שינוי קטן שצריך, בלי חשבון." },
   ],
 };
 
@@ -74,7 +77,7 @@ if (root) {
       <div class="case-error">
         <h1 style="font-size:26px;margin-bottom:10px">הפרויקט לא נמצא</h1>
         <p style="margin-bottom:22px">יכול להיות שהקישור ישן, או שהפרויקט ירד מהאתר.</p>
-        <a class="btn" href="portfolio.html">לכל העבודות</a>
+        <a class="live-link" href="portfolio.html">לכל העבודות</a>
       </div>`;
   };
 
@@ -257,7 +260,7 @@ if (root) {
           <b>רוצה לראות את האתר החי?</b>
           <p>נפתח בלשונית חדשה — העמוד הזה יישאר פתוח.</p>
         </div>
-        <a class="btn" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">לאתר של ${esc(name)} ↗</a>
+        <a class="live-link" href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">לאתר של ${esc(name)} ↗</a>
       </div>
 
       ${related ? `
@@ -278,9 +281,12 @@ if (root) {
       <section class="case-cta">
         <h2>רוצה אתר כזה לעסק שלך?</h2>
         <p>שיחה של רבע שעה, והצעה בכתב תוך 24 שעות.</p>
-        <a class="btn" href="contact.html">בוא נדבר</a>
+        <a class="btn btn-wa" href="#" data-wa="${esc(`היי נתן, ראיתי את הפרויקט של ${name} באתר ואשמח לאתר דומה לעסק שלי.`)}">
+          <span>צור קשר</span>
+        </a>
       </section>`;
 
+    wireWhatsApp(root);
     if (row.fullshot_url) initPreview();
   }
 

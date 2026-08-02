@@ -9,9 +9,9 @@
      · pointer-driven effects behind (hover:hover)
      · prefers-reduced-motion kills motion but NEVER content
    ═══════════════════════════════════════════════════════ */
-import { gsap, ScrollTrigger, SplitText } from "./vendor.js";
+import { gsap, ScrollTrigger } from "./vendor.js";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -75,43 +75,74 @@ mm.add("(prefers-reduced-motion: no-preference)", () => {
     stagger: 0.09, delay: 0.42,
   });
 
+  /* The headline types itself out. This is the third treatment it has
+     carried and the previous two are gone, not layered underneath:
+     SplitText's per-letter rise, and the gradient shimmer after it.
+
+     Two things have to be true before the first character is typed:
+
+       · the FONT is settled, or the height gets pinned against the
+         fallback face and the reserved space is wrong;
+       · the DATABASE copy has landed, because cms.js writes the real
+         headline into this element and would overwrite a half-typed
+         one. __natanCms covers the case where it finished first.
+
+     Loaded on demand — a phone shouldn't fetch it before the headline
+     is even on screen. */
   const h1 = $(".hero h1");
   if (h1) {
-    // Fonts must be settled or SplitText measures the fallback face.
-    const splitIt = () => {
-      const split = new SplitText(h1, { type: "chars,words", charsClass: "ch", wordsClass: "word" });
-      gsap.set(h1, { opacity: 1 });
-      gsap.fromTo(split.chars,
-        { yPercent: 108, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.72, ease: "power3.out",
-          stagger: { each: 0.018, from: "start" }, delay: 0.1 });
-    };
-    // If the font never resolves, the headline must still show up.
+    gsap.set(h1, { opacity: 0, y: 18 });
+
+    /* Order matters, and getting it wrong is what Natan saw: the first
+       version faded the FULL headline in and only then emptied it to
+       start typing, so the line appeared, sat there, and got deleted in
+       front of him.
+
+       The element is emptied while it is still invisible. What fades in
+       is a blank line with a caret on it, and the first character
+       arrives after. Nothing is ever shown and then taken away. */
+    const start = () =>
+      import("./typewriter.js?v=5")
+        .then(({ typewriter }) => {
+          typewriter(h1);                       // empties it, still hidden
+          gsap.to(h1, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" });
+        })
+        // A headline that never arrives is worse than one with no effect.
+        .catch(() => gsap.set(h1, { opacity: 1, y: 0 }));
+
+    const cms = window.__natanCms
+      ? Promise.resolve()
+      : new Promise(r => {
+          addEventListener("natan:cms", r, { once: true });
+          setTimeout(r, 2000);          // never wait on a fetch that failed
+        });
     const fonts = document.fonts?.ready ?? Promise.resolve();
-    Promise.race([fonts, new Promise(r => setTimeout(r, 1200))]).then(splitIt);
+
+    Promise.all([
+      Promise.race([fonts, new Promise(r => setTimeout(r, 1200))]),
+      cms,
+    ]).then(start);
   }
 
-  /* ── Hero stack ──────────────────────────────────────
-     Cards arrive from the database after load, so this waits
-     for the event rather than animating three empty frames.
+  /* ── The hero's proof window ─────────────────────────
+     One browser frame overlapping the photo, filled from the
+     database after load — so this waits for the event rather than
+     animating an empty frame. It used to be three stacked windows
+     dealt one after another; there is one now, and it slides up
+     onto the photo once the photo is already there.
      ─────────────────────────────────────────────────── */
   const dealStack = () => {
-    const wins = $$(".hero-win");
-    if (!wins.length) return;
-    gsap.fromTo(wins,
-      { yPercent: 14, opacity: 0, rotateY: -9 },
-      { yPercent: 0, opacity: (i, el) =>
-          el.classList.contains("hero-win-back") ? 0.38
-          : el.classList.contains("hero-win-mid") ? 0.66 : 1,
-        rotateY: 0, duration: 1, ease: "power3.out", stagger: 0.11, delay: 0.5 });
+    const win = document.querySelector(".hero-win");
+    if (!win) return;
+    gsap.fromTo(win,
+      { y: 26, opacity: 0 },
+      { y: 0, opacity: 1, duration: .8, ease: "power3.out", delay: .45 });
 
-    // Each layer drifts at its own rate — depth you feel rather
-    // than a drop shadow you look at.
-    wins.forEach((win, i) => {
-      gsap.to(win, {
-        yPercent: -6 - i * 4, ease: "none",
-        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.7 },
-      });
+    // A slow drift against the photo behind it — depth you feel
+    // rather than a drop shadow you look at.
+    gsap.to(win, {
+      yPercent: -8, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.7 },
     });
   };
   addEventListener("natan:hero-stack", dealStack, { once: true });

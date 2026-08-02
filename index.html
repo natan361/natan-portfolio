@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="google-site-verification" content="qx2b90_PXOia1VlLvlGnAw4HmJwRs-GygcYn7qAapXI" />
 <title>Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים</title>
-<meta name="description" content="בונה אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — מוכן תוך שבועיים, במחיר סגור מראש." />
+<meta name="description" content="עיצוב ובניית אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — במחיר סגור מראש, כ-60% פחות ממה שסוכנות גובה על אותו אתר." />
 <link rel="canonical" href="https://natanchaim.org/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Natan-עיצוב אתרים" />
 <meta property="og:locale" content="he_IL" />
 <meta property="og:title" content="Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים" />
-<meta property="og:description" content="בונה אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — מוכן תוך שבועיים, במחיר סגור מראש." />
+<meta property="og:description" content="עיצוב ובניית אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — במחיר סגור מראש, כ-60% פחות ממה שסוכנות גובה על אותו אתר." />
 <meta property="og:url" content="https://natanchaim.org/" />
 <meta property="og:image" content="https://natanchaim.org/assets-opt/og-cover.png?v=2" />
 <meta property="og:image:width" content="1200" />
@@ -20,7 +20,7 @@
 <meta property="og:image:alt" content="Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Natan-עיצוב אתרים — בניית אתרים לעסקים קטנים" />
-<meta name="twitter:description" content="אתר מהיר שמביא פניות. מוכן תוך שבועיים, מחיר סגור מראש." />
+<meta name="twitter:description" content="אתר מהיר שמביא פניות. מחיר סגור מראש, כ-60% פחות מסוכנות." />
 <meta name="twitter:image" content="https://natanchaim.org/assets-opt/og-cover.png?v=2" />
 <meta name="theme-color" content="#F5F4F0" id="theme-color" />
 
@@ -33,7 +33,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="main.css?v=4" />
+<link rel="stylesheet" href="main.css?v=5" />
 
 <!-- Set the theme before first paint. Without this the page flashes
      dark for a frame before switching to a saved light theme. -->
@@ -41,6 +41,23 @@
   // Marks that JS is alive, so .fx is allowed to start hidden.
   // Without this the whole page would read blank if JS failed.
   document.documentElement.classList.add("js");
+
+  // Hold the headline back before first paint. motion.js hides it too,
+  // but it has to wait for GSAP over the network first — so without
+  // this the full line paints, sits there, and is then wiped by the
+  // typewriter. Which is exactly what it looked like: text that jumps
+  // in and gets deleted.
+  //
+  // The timer is the safety net: if motion.js never arrives, the
+  // headline comes back on its own rather than staying invisible.
+  try {
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("tw-wait");
+      setTimeout(function () {
+        document.documentElement.classList.remove("tw-wait");
+      }, 3000);
+    }
+  } catch (e) {}
   try {
     var s = localStorage.getItem("natan-theme");
     if (s) document.documentElement.dataset.theme = s;
@@ -73,7 +90,7 @@
   "@type": "ProfessionalService",
   "@id": "https://natanchaim.org/#business",
   "name": "Natan-עיצוב אתרים",
-  "description": "בניית אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — מוכן תוך שבועיים במחיר סגור מראש.",
+  "description": "בניית אתרים לעסקים קטנים בכל הארץ. אתר מהיר, מותאם לנייד, שמביא פניות — במחיר סגור מראש, כ-60% פחות ממה שסוכנות גובה על אותו אתר.",
   "url": "https://natanchaim.org/",
   "image": "https://natanchaim.org/assets-opt/og-cover.png?v=2",
   "logo": "https://natanchaim.org/assets/logo.png?v=2",
@@ -87,7 +104,7 @@
     "@type": "OfferCatalog",
     "name": "שירותים",
     "itemListElement": [
-      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "בניית אתר חדש", "description": "אתר חדש לעסק, מותאם לנייד, שמביא פניות." } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "עיצוב ובניית אתר חדש", "description": "עיצוב אתר חדש לעסק, מותאם לנייד ובנוי כדי להביא פניות." } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "שדרוג אתר קיים", "description": "עיצוב מחדש לאתר קיים שלא מביא תוצאות." } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "אוטומציה", "description": "חיבור טפסים, וואטסאפ ומערכות לעסק." } },
       { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "הדמיות אדריכליות", "description": "הדמיות פוטוריאליסטיות של פרויקטים." } }
@@ -105,13 +122,22 @@
 <main id="main">
 
 <!-- ═══════════════ HERO ═══════════════
-     Two columns. The old one put copy on the right and left
-     60% of the screen as void — which is what read as "cold"
-     and "unfinished", not the colour.
+     Two columns: the offer on one side, a face on the other.
 
-     The left column is real work: sites Natan actually built.
-     It fills the space AND answers "what do you do" and "can
-     you do it" before a word is read. -->
+     The face is deliberate. A landing page whose first screen is
+     type and browser chrome asks the visitor to read before it
+     gives them anything to connect to, and this page's traffic is
+     paid mobile — people who decide in about a second. The photo
+     is stock (CC0, StockSnap) and stands for the customer, not for
+     Natan; his own portrait stays where it belongs, in "עליי".
+
+     The proof didn't leave: one real site Natan built, in a real
+     browser frame, overlaps the photo. Populated from the database
+     so it can never show work that's been hidden in /admin.
+
+     The headline names the service in words, because "your website
+     should be bringing you customers" told a visitor what he ought
+     to have and never once said what is being sold. -->
 <section class="hero" id="top">
   <div class="wrap hero-grid">
 
@@ -121,34 +147,38 @@
         <span data-i18n="hero.status">פנוי לפרויקטים חדשים · עובד עם עסקים בכל הארץ</span>
       </div>
 
-      <h1 data-i18n-html="hero.h1">האתר שלך אמור להביא לך <em>לקוחות</em>.</h1>
+      <h1 data-i18n-html="hero.h1">עיצוב ובניית אתרים לעסקים — <em>שמביאים לקוחות</em>.</h1>
 
       <p class="hero-sub" data-i18n="hero.sub">
-        בונה אתרים חדשים ומחדש אתרים קיימים, לעסקים קטנים.
-        מהיר, מותאם לנייד, ומביא פניות — תוך שבועיים, במחיר סגור מראש.
+        אני לא עוד ספק שמעביר לך קובץ ונעלם. אני נכנס לעומק העסק, מבין מי הלקוח שלך,
+        ובונה אתר שעובד בשבילו — במחיר סגור מראש.
       </p>
 
       <div class="hero-cta">
-        <a href="#contact" class="btn">
-          <span data-i18n="hero.cta">בוא נדבר — 15 דקות</span>
-          <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-          </svg>
+        <a href="#" class="btn btn-wa" data-wa>
+          <span data-i18n="cta.wa">צור קשר</span>
         </a>
-        <a href="portfolio.html" class="btn btn-ghost" data-i18n="hero.cta2">לראות עבודות</a>
       </div>
 
       <p class="hero-note" data-i18n="hero.note">בלי עלות, בלי התחייבות. פשוט נבין אם זה מתאים.</p>
+
+      <!-- A link, not a button. The portfolio is worth reaching; it is
+           not a second thing being asked for. -->
+      <p class="hero-alt"><a href="portfolio.html" data-i18n="hero.cta2">או לראות קודם אתרים שבניתי</a></p>
     </div>
 
-    <!-- Real sites, in real browser frames. Populated from the
-         database by site.js so it can never show work that's
-         been hidden in /admin. -->
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-stack" id="hero-stack">
-        <div class="browser hero-win hero-win-back"></div>
-        <div class="browser hero-win hero-win-mid"></div>
-        <div class="browser hero-win hero-win-front"></div>
+    <div class="hero-visual">
+      <div class="hero-person">
+        <picture>
+          <source media="(max-width: 760px)" srcset="assets-opt/hero-person-wide.webp?v=1" width="780" height="488" />
+          <img src="assets-opt/hero-person.webp?v=1" width="512" height="640"
+               alt="בעל עסק מחייך, מרוצה מהאתר שלו"
+               fetchpriority="high" decoding="async" />
+        </picture>
+      </div>
+
+      <div class="hero-stack" id="hero-stack" aria-hidden="true">
+        <div class="browser hero-win"></div>
       </div>
     </div>
 
@@ -164,9 +194,15 @@
         <div class="stat-n" data-to="10" data-suffix="+">0</div>
         <div class="stat-l" data-i18n="stat.1">אתרים שעלו לאוויר</div>
       </div>
+      <!-- Was "14 ימים — מהשיחה ועד אתר חי". Natan's delivery time is not
+           fixed, so a hard number here was a promise he had not made. The
+           price gap is the claim that IS true and checkable: ₪2,499
+           against the ₪6,000–9,000 agency range in the comparison table
+           further down, sources and all. 58% at the near end of that
+           range, so 60% is the conservative read, not the flattering one. -->
       <div class="stat fx">
-        <div class="stat-n" data-to="14" data-suffix=" ימים">0</div>
-        <div class="stat-l" data-i18n="stat.2">מהשיחה ועד אתר חי</div>
+        <div class="stat-n" data-to="60" data-suffix="%">0</div>
+        <div class="stat-l" data-i18n="stat.2">פחות ממה שסוכנות גובה</div>
       </div>
       <div class="stat fx">
         <div class="stat-n" data-to="24" data-suffix=" שעות">0</div>
@@ -268,7 +304,7 @@
     </p>
 
     <div class="prob-grid">
-      <article class="prob tilt glow fx">
+      <article class="prob tilt glow fx photo-card" style="--card-img:url('assets-opt/prob-1.webp')">
         <div class="prob-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -281,7 +317,7 @@
         </p>
       </article>
 
-      <article class="prob tilt glow fx">
+      <article class="prob tilt glow fx photo-card" style="--card-img:url('assets-opt/prob-2.webp')">
         <div class="prob-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
@@ -294,7 +330,7 @@
         </p>
       </article>
 
-      <article class="prob tilt glow fx">
+      <article class="prob tilt glow fx photo-card" style="--card-img:url('assets-opt/prob-3.webp')">
         <div class="prob-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 3v18h18" /><polyline points="19 9 13 15 9 11 5 15" />
@@ -314,37 +350,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ PRICING ═══════════════
-     Moved up from underneath the FAQ. Price is the one thing Natan is
-     unambiguously better at than the market he competes with, and the
-     site's own analytics had it sitting nine screens down, where six
-     visitors in total ever reached it. -->
-<section class="paper" id="pricing">
-  <div class="wrap">
-    <p class="eyebrow fx" data-i18n="price.eyebrow">מחירים</p>
-    <h2 class="sec-title fx" data-i18n="price.title">כמה זה עולה</h2>
-    <p class="sec-lede fx" data-i18n="price.lede">
-      אני מפרסם טווחים כי אני חושב שמגיע לך לדעת לפני שאתה מרים טלפון.
-      המחיר הסופי נקבע בשיחה, לפי מה שהעסק שלך באמת צריך.
-    </p>
-
-    <div class="price-grid" id="price-grid"></div>
-
-    <!-- Market comparison. Rows come from the database so Natan can
-         edit them in /admin when the market moves, and every row that
-         is not his own carries the published price list it came from —
-         a comparison against unnamed "others" is worth nothing. -->
-    <div class="market" id="market-cmp" hidden></div>
-
-    <p class="price-note" data-i18n="price.note">
-      כל המחירים כוללים אחסון לשנה הראשונה. הדומיין נרשם על שמך — האתר שלך, תמיד.
-    </p>
-    <p class="more on-paper fx">
-      <a href="pricing.html" data-i18n="more.pricing">השוואה מלאה, מה לא כלול, ומה עולה אחרי</a>
-    </p>
-  </div>
-</section>
-
 <!-- ═══════════════ SERVICES ═══════════════
      Monoline stroke icons, sized and weighted consistently: one
      stroke width, one grid, no fills. That consistency is what makes
@@ -358,37 +363,37 @@
     </p>
 
     <div class="svc-grid">
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-1.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="14" height="10" rx="2"/><path d="M5 18h8"/><rect x="17" y="9" width="5" height="11" rx="1.5"/></svg></span>
         <h3 data-i18n="svc.1t">אתר חדש</h3>
         <p data-i18n="svc.1p">מאפס, סביב העסק שלך. מותאם לנייד מהשורה הראשונה, לא אחרי.</p>
       </article>
 
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-2.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><polyline points="21 3 21 9 15 9"/></svg></span>
         <h3 data-i18n="svc.2t">חידוש אתר קיים</h3>
         <p data-i18n="svc.2p">יש לך אתר שלא עובד? לא תמיד צריך לזרוק. לפעמים צריך.</p>
       </article>
 
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-3.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="9 8 5 12 9 16"/><polyline points="15 8 19 12 15 16"/></svg></span>
         <h3 data-i18n="svc.3t">בלי קוד לתחזק</h3>
         <p data-i18n="svc.3p">אתה לא נשאר עם משהו שרק אני מבין. ממשק פשוט, ואתה מעדכן לבד.</p>
       </article>
 
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-4.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
         <h3 data-i18n="svc.4t">שגוגל ימצא אותך</h3>
-        <p data-i18n="svc.4p">מבנה נכון, מהירות, ופרופיל עסקי. כלול, בלי תוספת.</p>
+        <p data-i18n="svc.4p">מבנה נכון, מהירות וחיבור לגוגל. על כרטיס העסק אני מלווה אותך — הוא נפתח על שמך.</p>
       </article>
 
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-5.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg></span>
         <h3 data-i18n="svc.5t">פרסום בפייסבוק</h3>
         <p data-i18n="svc.5p">אתר לא מייצר מבקרים. אם צריך תנועה — גם את זה אני מקים.</p>
       </article>
 
-      <article class="svc fx glow">
+      <article class="svc fx glow photo-card" style="--card-img:url('assets-opt/svc-6.webp')">
         <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l9 5v6c0 5-3.8 8.4-9 9-5.2-.6-9-4-9-9V7l9-5z"/><polyline points="9 12 11 14 15 10"/></svg></span>
         <h3 data-i18n="svc.6t">האתר בבעלותך</h3>
         <p data-i18n="svc.6p">הדומיין על שמך מהיום הראשון. עוזב — לוקח הכול.</p>
@@ -408,38 +413,42 @@
 
     <div class="steps">
       <div class="step fx">
-        <div class="step-n">01</div>
-        <div>
-          <h3 data-i18n="proc.1t">שיחה קצרה</h3>
-          <p data-i18n="proc.1p">מבינים מה העסק שלך צריך ומי הלקוח שלך. בלי עלות ובלי התחייבות. אם זה לא מתאים — אני אגיד לך.</p>
+        <div class="step-media">
+          <img src="assets-opt/step-1.webp" alt="" width="460" height="317" loading="lazy" decoding="async" />
         </div>
+        <div class="step-rail"><div class="step-n">01</div></div>
+        <h3 data-i18n="proc.1t">שיחה קצרה</h3>
+        <p data-i18n="proc.1p">מבינים מה העסק שלך צריך ומי הלקוח שלך. בלי עלות ובלי התחייבות. אם זה לא מתאים — אני אגיד לך.</p>
         <div class="step-when" data-i18n="proc.1w">15 דקות</div>
       </div>
 
       <div class="step fx">
-        <div class="step-n">02</div>
-        <div>
-          <h3 data-i18n="proc.2t">הצעה ומחיר סגור</h3>
-          <p data-i18n="proc.2p">אתה מקבל בכתב מה בדיוק ייבנה וכמה זה עולה. המחיר לא זז אחר כך.</p>
+        <div class="step-media">
+          <img src="assets-opt/step-2.webp" alt="" width="460" height="317" loading="lazy" decoding="async" />
         </div>
+        <div class="step-rail"><div class="step-n">02</div></div>
+        <h3 data-i18n="proc.2t">הצעה ומחיר סגור</h3>
+        <p data-i18n="proc.2p">אתה מקבל בכתב מה בדיוק ייבנה וכמה זה עולה. המחיר לא זז אחר כך.</p>
         <div class="step-when" data-i18n="proc.2w">תוך 24 שעות</div>
       </div>
 
       <div class="step fx">
-        <div class="step-n">03</div>
-        <div>
-          <h3 data-i18n="proc.3t">בנייה</h3>
-          <p data-i18n="proc.3p">מקבל קישור לצפייה תוך כמה ימים, ואומר מה לשנות. עובדים על זה יחד עד שזה נכון.</p>
+        <div class="step-media">
+          <img src="assets-opt/step-3.webp" alt="" width="460" height="317" loading="lazy" decoding="async" />
         </div>
+        <div class="step-rail"><div class="step-n">03</div></div>
+        <h3 data-i18n="proc.3t">בנייה</h3>
+        <p data-i18n="proc.3p">מקבל קישור לצפייה תוך כמה ימים, ואומר מה לשנות. עובדים על זה יחד עד שזה נכון.</p>
         <div class="step-when" data-i18n="proc.3w">7–14 יום</div>
       </div>
 
       <div class="step fx">
-        <div class="step-n">04</div>
-        <div>
-          <h3 data-i18n="proc.4t">עולה לאוויר</h3>
-          <p data-i18n="proc.4p">האתר שלך, על הדומיין שלך, בבעלותך המלאה. אני מלווה גם אחרי.</p>
+        <div class="step-media">
+          <img src="assets-opt/step-4.webp" alt="" width="460" height="317" loading="lazy" decoding="async" />
         </div>
+        <div class="step-rail"><div class="step-n">04</div></div>
+        <h3 data-i18n="proc.4t">עולה לאוויר</h3>
+        <p data-i18n="proc.4p">האתר שלך, על הדומיין שלך, בבעלותך המלאה. אני מלווה גם אחרי.</p>
         <div class="step-when" data-i18n="proc.4w">יום אחד</div>
       </div>
     </div>
@@ -459,7 +468,7 @@
     <div class="faq fx">
       <details>
         <summary><span data-i18n="faq.q1">כמה זמן זה לוקח?</span></summary>
-        <p data-i18n="faq.a1">אתר של עמוד אחד — בערך שבוע. אתר תדמית — שבועיים. זה תלוי בעיקר בכמה מהר אתה מחזיר לי תכנים ותשובות, לא בי.</p>
+        <p data-i18n="faq.a1">אין מספר קבוע — זה משתנה מפרויקט לפרויקט. מה שהכי מזיז את התאריך זה כמה מהר אתה מחזיר לי תכנים ותשובות, לא אני.</p>
       </details>
       <details>
         <summary><span data-i18n="faq.q2">האתר יהיה בבעלותי?</span></summary>
@@ -471,7 +480,7 @@
       </details>
       <details>
         <summary><span data-i18n="faq.q4">מי מטפל באחסון ובדומיין?</span></summary>
-        <p data-i18n="faq.a4">אני מסדר את הכול. השנה הראשונה של האחסון כלולה במחיר. אחרי זה זו עלות שנתית קטנה שמשולמת ישירות לספק — לא דרכי.</p>
+        <p data-i18n="faq.a4">אני מסדר את הכול. האחסון לא עולה לך כלום — הוא יושב על חשבון שנפתח על שמך ואני מעביר לך את הניהול. דומיין, אם צריך, בערך ₪20 לשנה ישירות לרשם ועל שמך.</p>
       </details>
       <details>
         <summary><span data-i18n="faq.q5">מה אם לא אהבתי את התוצאה?</span></summary>
@@ -479,7 +488,7 @@
       </details>
       <details>
         <summary><span data-i18n="faq.q6">אתה עובד עם AI. זה אומר שהאתר גנרי?</span></summary>
-        <p data-i18n="faq.a6">לא. AI זה מה שמאפשר לי לספק תוך שבועיים במחיר שמתאים לעסק קטן, במקום חודשיים במחיר של סטודיו. התוכן, המבנה וההחלטות — אלה שלי ושלך, לפי העסק שלך.</p>
+        <p data-i18n="faq.a6">לא. AI זה מה שמאפשר לי לבנות אתר תדמית מלא ב-₪2,499, כשסוכנות גובה ₪6,000–9,000 על אותו דבר. התוכן, המבנה וההחלטות — אלה שלי ושלך, לפי העסק שלך.</p>
       </details>
       <details>
         <summary><span data-i18n="faq.q7">אתה עושה גם הדמיות וסרטונים?</span></summary>
@@ -506,7 +515,7 @@
         <h2 data-i18n="about.title">נתן חיים. אדם אחד, לא סטודיו.</h2>
         <p data-i18n="about.p1">
           בונה אתרים לעסקים קטנים בכל הארץ. בניתי מעל 10 אתרים — בתי כנסת, נותני שירות,
-          ועסקים קטנים. אני עובד עם כלי AI, ולכן אני מספק תוך שבועיים מה שסטודיו מספק
+          ועסקים קטנים. אני עובד עם כלי AI, ולכן אני מספק במחיר שסטודיו לא מתקרב אליו
           בחודשיים, במחיר שמתאים לעסק קטן.
         </p>
         <p data-i18n="about.p2">
@@ -524,6 +533,42 @@
   </div>
 </section>
 
+<!-- ═══════════════ PRICING ═══════════════
+     Last, by Natan's call. It sat high up because price is the thing he
+     is unambiguously better at than the market he competes with, and the
+     analytics showed almost nobody reaching it nine screens down.
+
+     He wants it at the foot of the page instead: the visitor meets the
+     work, the process and the person first, and only then the number.
+     Worth watching in the traffic tab — if reads of #pricing collapse,
+     that is the trade showing up. -->
+<section class="paper" id="pricing">
+  <div class="wrap">
+    <p class="eyebrow fx" data-i18n="price.eyebrow">מחירים</p>
+    <h2 class="sec-title fx" data-i18n="price.title">כמה זה עולה</h2>
+    <p class="sec-lede fx" data-i18n="price.lede">
+      אני מפרסם טווחים כי אני חושב שמגיע לך לדעת לפני שאתה מרים טלפון.
+      המחיר הסופי נקבע בשיחה, לפי מה שהעסק שלך באמת צריך.
+    </p>
+
+    <div class="price-grid" id="price-grid"></div>
+
+    <!-- Market comparison. Rows come from the database so Natan can
+         edit them in /admin when the market moves, and every row that
+         is not his own carries the published price list it came from —
+         a comparison against unnamed "others" is worth nothing. -->
+    <div class="market" id="market-cmp" hidden></div>
+
+    <p class="price-note" data-i18n="price.note">
+      האחסון לא עולה לך כלום, על חשבון שנפתח על שמך. הדומיין נרשם על שמך — האתר שלך, תמיד.
+    </p>
+    <p class="more on-paper fx">
+      <a href="pricing.html" data-i18n="more.pricing">השוואה מלאה, מה לא כלול, ומה עולה אחרי</a>
+    </p>
+  </div>
+</section>
+
+
 <!-- ═══════════════ CONTACT ═══════════════ -->
 <section id="contact">
   <div class="wrap">
@@ -532,16 +577,16 @@
         <p class="eyebrow" data-i18n="contact.eyebrow">יצירת קשר</p>
         <h2 data-i18n="contact.title">בוא נבין אם זה מתאים</h2>
         <p data-i18n="contact.p">
-          שיחה של 15 דקות. אני שואל על העסק, אתה שואל מה שבא לך,
-          ואם זה לא מתאים — אני אגיד לך את זה ישר.
+          כותב לי בוואטסאפ, ואנחנו קובעים שיחה של 15 דקות. אני שואל על העסק,
+          אתה שואל מה שבא לך, ואם זה לא מתאים — אני אגיד לך את זה ישר.
         </p>
 
         <div class="contact-direct">
-          <!-- WhatsApp keeps its brand green so it's recognised instantly.
-               The call option is gone — Natan asked for WhatsApp + form. -->
-          <a href="#" id="wa-link" class="wa-btn" target="_blank" rel="noopener">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>
-            <span data-i18n="contact.wa">וואטסאפ — הכי מהיר</span>
+          <!-- The lead form that used to sit beside this is gone. It was a
+               second way of asking for the same thing, and the site now
+               asks once. Email stays as a quiet fallback, not a button. -->
+          <a href="#" id="wa-link" class="wa-btn" data-wa target="_blank" rel="noopener">
+            <span data-i18n="cta.wa">צור קשר</span>
           </a>
           <a href="mailto:work71work72@gmail.com" class="mail-link">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -550,63 +595,6 @@
         </div>
       </div>
 
-      <form id="lead-form" novalidate>
-        <div id="form-msg"></div>
-        <div class="field">
-          <label for="lf-name"><span data-i18n="contact.name">שם</span> <span class="req">*</span></label>
-          <input class="input" id="lf-name" name="name" required autocomplete="name" />
-        </div>
-        <div class="field">
-          <label for="lf-phone"><span data-i18n="contact.phone">טלפון</span> <span class="req">*</span></label>
-          <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" required autocomplete="tel" dir="ltr" placeholder="050-000-0000" />
-        </div>
-        <div class="field">
-          <label><span data-i18n="contact.method">איך נוח לך שניצור קשר?</span></label>
-          <div class="pillset" role="radiogroup" aria-label="דרך יצירת קשר">
-            <label class="pill-opt"><input type="radio" name="method" value="whatsapp" checked /><span data-i18n="contact.m_wa">וואטסאפ</span></label>
-            <label class="pill-opt"><input type="radio" name="method" value="call" /><span data-i18n="contact.m_call">שיחת טלפון</span></label>
-          </div>
-        </div>
-
-        <!-- Everything below this line is genuinely optional, so it starts
-             collapsed. A form is judged by how long it LOOKS before it is
-             judged by how long it takes: the three questions in here are
-             ones Natan can ask just as easily in the first WhatsApp
-             message, and none of them should stand between a visitor and
-             sending his phone number. Anyone who wants to say more taps
-             once and says more. -->
-        <details class="field-more">
-          <summary data-i18n="contact.more">רוצה להוסיף פרטים? (לא חובה)</summary>
-
-          <div class="field">
-            <label><span data-i18n="contact.time">באיזה שעות נוח לך?</span></label>
-            <div class="pillset" role="radiogroup" aria-label="שעות נוחות">
-              <label class="pill-opt"><input type="radio" name="ctime" value="morning" /><span data-i18n="contact.t_morning">בוקר</span></label>
-              <label class="pill-opt"><input type="radio" name="ctime" value="noon" /><span data-i18n="contact.t_noon">צהריים</span></label>
-              <label class="pill-opt"><input type="radio" name="ctime" value="evening" /><span data-i18n="contact.t_evening">ערב</span></label>
-            </div>
-          </div>
-          <div class="field">
-            <label for="lf-subject" data-i18n="contact.subject">הנושא</label>
-            <select class="input" id="lf-subject" name="subject">
-              <option value="" data-i18n="contact.subj0">בחר נושא…</option>
-              <option data-i18n="contact.subj1">בניית אתר חדש</option>
-              <option data-i18n="contact.subj2">שדרוג אתר קיים</option>
-              <option data-i18n="contact.subj3">אוטומציה</option>
-              <option data-i18n="contact.subj4">הדמיות</option>
-              <option data-i18n="contact.subj5">אחר</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="lf-note" data-i18n="contact.note">ההודעה שלך</label>
-            <textarea class="input" id="lf-note" name="note"
-                      placeholder="ספר לי בקצרה על העסק ומה אתה צריך…"
-                      data-i18n-attr="placeholder:contact.noteph"></textarea>
-          </div>
-        </details>
-        <button class="btn" id="lf-submit" style="width:100%" data-i18n="contact.submit">שליחה — אחזור אליך תוך 24 שעות</button>
-        <p class="form-fine" data-i18n="contact.fine">הפרטים שלך נשמרים אצלי בלבד ולא מועברים לאף אחד.</p>
-      </form>
     </div>
   </div>
 </section>
@@ -618,13 +606,12 @@
      not just this one — see mountChrome(). -->
 
 <footer id="footer"></footer>
-<div id="mobile-bar"></div>
 
 <script type="module">
-  import { mountChrome } from "./_shell.js?v=4";
+  import { mountChrome } from "./_shell.js?v=5";
   mountChrome({ active: "index.html" });
 </script>
-<script type="module" src="site.js?v=4"></script>
+<script type="module" src="site.js?v=5"></script>
 <script type="module" src="motion.js"></script>
 </body>
 </html>

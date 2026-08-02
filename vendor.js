@@ -12,4 +12,6 @@
    why the headline split costs 7KB instead of a subscription. */
 export { default as gsap } from "https://cdn.jsdelivr.net/npm/gsap@3.15.0/+esm";
 export { default as ScrollTrigger } from "https://cdn.jsdelivr.net/npm/gsap@3.15.0/ScrollTrigger/+esm";
-export { default as SplitText } from "https://cdn.jsdelivr.net/npm/gsap@3.15.0/SplitText/+esm";
+// SplitText was only ever used on the hero headline, which carries the
+// typewriter now. Dropping the export stops a separate CDN module
+// being fetched on every page load for nothing.

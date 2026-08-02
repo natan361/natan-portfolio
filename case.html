@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="main.css?v=4" />
+<link rel="stylesheet" href="main.css?v=5" />
 <script>
   try {
     var s = localStorage.getItem("natan-theme"); if (s) document.documentElement.dataset.theme = s;
@@ -344,6 +344,17 @@
   .live b { display: block; font-size: 17.5px; margin-bottom: 4px; }
   .live p { color: var(--read); font-size: 15.5px; }
 
+  /* Going to the client's own site is navigation, not the ask. It used
+     to wear .btn, which made two buttons on a page that has one. */
+  .live-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--white); font-weight: 700; font-size: 15.5px;
+    text-decoration: none; min-height: 44px;
+    border-bottom: 1px solid var(--border-2);
+    transition: border-color .2s ease;
+  }
+  .live-link:hover { border-bottom-color: var(--white); }
+
   /* ── Pager ──────────────────────────────────────────── */
   .pager {
     display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
@@ -384,8 +395,7 @@
     .pages { grid-template-columns: 1fr; }
     .pager { grid-template-columns: 1fr; }
     .pager .next { text-align: start; }
-    .live { flex-direction: column; align-items: stretch; }
-    .live .btn { width: 100%; }
+    .live { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -401,13 +411,12 @@
 </main>
 
 <footer id="footer"></footer>
-<div id="mobile-bar"></div>
 
 <script type="module">
-  import { mountChrome } from "./_shell.js?v=4";
+  import { mountChrome } from "./_shell.js?v=5";
   mountChrome({ active: "portfolio.html" });
 </script>
-<script type="module" src="case.js?v=3"></script>
-<script type="module" src="site.js?v=4"></script>
+<script type="module" src="case.js?v=5"></script>
+<script type="module" src="site.js?v=5"></script>
 </body>
 </html>

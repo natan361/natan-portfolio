@@ -135,17 +135,20 @@ if (!skip()) {
   send({ type: "pageview" });
 
   // ── 2 · clicks on the buttons that matter ──
-  // First match wins, so order most-specific first.
+  // First match wins, so order most-specific first. Every CTA on the
+  // site is now the same WhatsApp button, so the useful question is no
+  // longer "which of the three asks did they take" but WHERE on the
+  // page they took the only one — hence a label per position rather
+  // than per destination.
   const CLICKS = [
-    ["#wa-link, .wa-btn, a[href*='wa.me']",      "whatsapp"],
-    ["#lf-submit",                                "form-submit"],
+    ["#qa-launch",                                "qa-open"],
+    [".qa-foot [data-wa]",                        "qa-whatsapp"],
+    [".nav-cta",                                  "nav-cta"],
+    [".hero-cta [data-wa]",                       "hero-cta"],
+    [".price [data-wa], .btn-on-paper",           "pricing-cta"],
+    ["#wa-link, .wa-btn, [data-wa], a[href*='wa.me']", "whatsapp"],
     ["a[href^='mailto:'], .mail-link",            "email"],
     ["a[href^='tel:']",                           "phone"],
-    ["#float-cta, .float-cta",                    "float-cta"],
-    [".nav-cta",                                  "nav-cta"],
-    [".price a, .btn-on-paper",                   "pricing-cta"],
-    ["a[href='#contact']",                        "cta-contact"],
-    ["a[href='contact.html']",                    "cta-contact-page"],
     ["a[href='portfolio.html']",                  "cta-portfolio"],
   ];
   addEventListener("click", (e) => {

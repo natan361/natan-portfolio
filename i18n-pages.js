@@ -3,8 +3,6 @@
    these three pages carry more prose than the whole homepage. */
 export const EN_PAGES = {
   // ── shared chrome ──
-  "bar.wa": "WhatsApp",
-  "bar.call": "Leave details",
   "more.process": "The full process — what I need from you at each step",
   "prob.more": "New builds and redesigns — how it works",
   "svc.eyebrow": "What I do",
@@ -31,7 +29,7 @@ export const EN_PAGES = {
 
   // ── stats / marquee / signature / gallery ──
   "stat.1": "websites live",
-  "stat.2": "from call to a live site",
+  "stat.2": "below what an agency charges",
   "stat.3": "response time to an enquiry",
   "stat.4": "you own the site",
 
@@ -49,7 +47,7 @@ export const EN_PAGES = {
 
   // ══ process.html ══
   "procmeta.title": "How it works — from first call to a live site | Natan",
-  "procmeta.desc": "The full process of building a website: call, fixed quote, build, launch. What I need from you at each step and how long it takes.",
+  "procmeta.desc": "The full process of designing and building a website: call, fixed quote, build, launch. What I need from you at each step and how long it takes.",
   "procpage.h1": "From the call to a live site.<br>No surprises in between.",
   "procpage.lede": "This is the whole process, including what I need from you at each stage and what usually causes delays. I publish it because most people who got burned once got burned precisely because nobody told them what was coming.",
   "procpage.need": "What I need from you",
@@ -90,7 +88,7 @@ export const EN_PAGES = {
 
   // ══ pricing.html ══
   "pricemeta.title": "Pricing — what a website for a small business costs | Natan",
-  "pricemeta.desc": "Open pricing for a small business website: what each package includes, what it doesn't, payment terms, and the ongoing costs afterwards.",
+  "pricemeta.desc": "Open pricing for small business web design: what each package includes, what it doesn't, payment terms, and the ongoing costs afterwards.",
   "pricepage.h1": "What it costs, and what isn't included.",
   "pricepage.lede": "Most web builders don't publish a price because they want you to call first. I publish, because if your budget doesn't fit, we're both better off knowing now rather than after a quarter of an hour on the phone.",
   "pricepage.from": "from",
@@ -164,7 +162,7 @@ export const EN_PAGES = {
   "faqpage.a4": "<p>A domain, about ₪60 a year, directly to the registrar and in your name. Hosting — the first year is included, after that a small cost directly to the provider.</p><p>None of it goes through me and I don't take a cut.</p>",
 
   "faqpage.q5": "How long does it take?",
-  "faqpage.a5": "<p>One page — about a week. A full site — two weeks.</p><p><b>But honestly:</b> it depends on you more than on me. I can build in a week, but if I'm waiting two weeks for photos and text, the site launches two weeks later. Content is what causes delays, almost every time.</p>",
+  "faqpage.a5": "<p>There is no fixed number — it varies from project to project.</p><p><b>But honestly:</b> it depends on you more than on me. I can build in a week, but if I'm waiting two weeks for photos and text, the site launches two weeks later. Content is what causes delays, almost every time.</p>",
   "faqpage.q6": "I'm in a hurry. Can it be faster?",
   "faqpage.a6": "<p>Sometimes, depending on what's on my desk. Tell me the deadline on the call and I'll tell you if it's realistic — I won't promise a date I can't hit just to close a deal.</p>",
 
@@ -176,7 +174,7 @@ export const EN_PAGES = {
   "faqpage.a9": "<p>First month — small changes included. After that hourly, or through the admin panel if we built you one.</p>",
 
   "faqpage.q10": "You work with AI. Does that mean the site is generic?",
-  "faqpage.a10": "<p>No. AI is a tool, the way a power drill is a tool — it doesn't make the carpenter worse.</p><p>What it does mean: I deliver in two weeks what a studio delivers in two months, at a price that suits a small business. <b>The content, the structure and the decisions are mine and yours</b>, based on your business. If you ever see a site of mine that looks like a template, don't pay me.</p>",
+  "faqpage.a10": "<p>No. AI is a tool, the way a power drill is a tool — it doesn't make the carpenter worse.</p><p>What it does mean: I build a full brochure site for a price an agency does not come close to. <b>The content, the structure and the decisions are mine and yours</b>, based on your business. If you ever see a site of mine that looks like a template, don't pay me.</p>",
   "faqpage.q11": "You're on your own? What if you disappear?",
   "faqpage.a11": "<p>Fair question. Yes, I'm on my own — and that's exactly why the domain and the accounts are in your name from day one. Even if I vanished, the site is yours and it keeps working.</p><p>The upside of one person: you talk to me, not to an account manager relaying messages to someone you've never met.</p>",
   "faqpage.q12": "I don't understand technology at all. Is that a problem?",

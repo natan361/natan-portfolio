@@ -13,20 +13,62 @@ const ICON = {
   burger: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
   sun: `<svg class="i-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>`,
   moon: `<svg class="i-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`,
-  wa: `<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>`,
+  /* The real WhatsApp mark, not an approximation of one: the official
+     silhouette (bubble + tail) filled white on the brand green #25D366,
+     with the handset knocked back out in green. Drawing "a phone in a
+     speech bubble" by hand gets the proportions wrong and reads as a
+     lookalike — which is the one thing a trust badge must not do.
+     Geometry from the published WhatsApp glyph, inset inside the disc. */
+  wa: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#25D366"/><g transform="translate(3.9 3.6) scale(.675)"><path fill="#fff" d="M20.463 3.488A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></g></svg>`,
   phone: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
-  home: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9"/></svg>`,
-  work: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"/></svg>`,
-  price: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 6.5c0-1.8-2-3-5-3s-5 1.3-5 3.3 2 2.8 5 3.2 5 1.4 5 3.3-2 3.2-5 3.2-5-1.2-5-3"/></svg>`,
-  faq: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.9.5-1.2 1-1.2 1.9"/><circle cx="12" cy="17" r=".25" fill="currentColor"/></svg>`,
-  art: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19V6.5a2 2 0 0 1 2-2H19V19H6.5a2 2 0 0 0-2 2z"/><path d="M8.5 8.5h6.5M8.5 12h4.5"/></svg>`,
+  // A question mark in a speech bubble: this opens answers, not a chat
+  // with a person, and the shape should not promise a person.
+  ask: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14.5a2.5 2.5 0 0 1-2.5 2.5H8l-4.5 4V5.5A2.5 2.5 0 0 1 6 3h12.5A2.5 2.5 0 0 1 21 5.5z"/><path d="M9.6 8.4a2.5 2.5 0 1 1 3.6 2.2c-.85.45-1.2.95-1.2 1.7"/><circle cx="12" cy="15.4" r=".6" fill="currentColor" stroke="none"/></svg>`,
 };
 
-// One place. Every page and the mobile bar read from here.
+// One place. Every page reads from here.
 // wa.me needs the international form: 055-680-7812 -> 972556807812
 export const PHONE = "972556807812";
 export const PHONE_LOCAL = "055-680-7812";
 export const EMAIL = "work71work72@gmail.com";
+
+/* ── The one call to action ───────────────────────────────
+   The site used to ask for three different things — start a
+   conversation, request a quote, go look at the portfolio — and a
+   visitor who is offered three next steps takes none. Every button
+   on every page is now the same button: WhatsApp, opened with the
+   first message already typed so the visitor only has to press send.
+
+   Anything that wants to be that button carries data-wa. An optional
+   value overrides the default opening line (a pricing card names its
+   own package, a case study names the project), so the message Natan
+   receives already says what the person was looking at.
+   ────────────────────────────────────────────────────── */
+export const WA_TEXT = "היי נתן, הגעתי מהאתר ואשמח לשמוע פרטים על בניית אתר לעסק שלי.";
+export const waHref = (text) =>
+  `https://wa.me/${PHONE}?text=${encodeURIComponent(text || WA_TEXT)}`;
+
+/* The WhatsApp mark that rides the button's leading corner. Injected
+   here rather than pasted into eight HTML files — the badge is one
+   shape and it should have one definition. */
+const WA_BADGE = `<span class="wa-badge" aria-hidden="true">${ICON.wa}</span>`;
+
+/** Points every [data-wa] element at WhatsApp and gives the pill buttons
+ *  their badge. Safe to call again after new markup is rendered from the
+ *  database — it never double-adds. */
+export function wireWhatsApp(root = document) {
+  for (const a of root.querySelectorAll("[data-wa]")) {
+    a.href = waHref(a.dataset.wa);
+    a.target = "_blank";
+    a.rel = "noopener";
+    // The nav pill is 66px tall and carries the mark inline instead —
+    // a badge rising 17px above it would hang off the top of the page.
+    if (a.classList.contains("btn-wa") && !a.classList.contains("nav-cta")
+        && !a.querySelector(".wa-badge")) {
+      a.insertAdjacentHTML("afterbegin", WA_BADGE);
+    }
+  }
+}
 
 const LINKS = [
   { href: "process.html",   key: "nav.process", he: "איך זה עובד" },
@@ -56,7 +98,10 @@ export function mountChrome({ active = "" } = {}) {
         <button class="icon-btn" id="theme-toggle" aria-label="החלפת ערכת צבע" data-i18n-attr="aria-label:nav.theme">${ICON.sun}${ICON.moon}</button>
         <button class="icon-btn lang" id="lang-toggle" aria-label="Switch to English">EN</button>
       </div>
-      <a href="contact.html" class="btn nav-cta" data-i18n="nav.cta">בוא נדבר</a>
+      <a href="#" class="btn btn-wa nav-cta" data-wa aria-label="צור קשר בוואטסאפ" data-i18n-attr="aria-label:cta.wa">
+        <span class="nav-wa" aria-hidden="true">${ICON.wa}</span>
+        <span class="nav-cta-txt" data-i18n="cta.wa">צור קשר</span>
+      </a>
       <button class="nav-burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false" aria-controls="nav-links">${ICON.burger}</button>`;
   }
 
@@ -73,67 +118,70 @@ export function mountChrome({ active = "" } = {}) {
         <span class="footer-sep" aria-hidden="true"></span>
         <a href="accessibility.html" data-i18n="foot.a11y">הצהרת נגישות</a>
         <a href="privacy.html" data-i18n="foot.privacy">מדיניות פרטיות</a>
+        <a href="terms.html" data-i18n="foot.terms">תנאי שימוש</a>
       </div>`;
   }
 
   // The contact block on the homepage reads the same constant, so the
   // number can never be right in one place and stale in another.
   const wa = document.getElementById("wa-link");
-  if (wa) wa.href = `https://wa.me/${PHONE}`;
+  if (wa) wa.href = waHref();
   const tel = document.getElementById("tel-link");
   if (tel) tel.href = `tel:+${PHONE}`;
   const telText = document.getElementById("tel-text");
   if (telText) telText.textContent = PHONE_LOCAL;
 
-  /* The persistent mobile nav — icons, not a hidden hamburger drawer.
-     Someone browsing on a phone shouldn't need to open a menu to get
-     to the portfolio or pricing; those are the two pages that close a
-     sale. WhatsApp stays the one visually distinct item — it's the
-     fastest path to a real conversation. */
-  const bar = document.getElementById("mobile-bar");
-  if (bar) {
-    bar.className = "mobile-bar";
-    const items = [
-      { href: "index.html",     icon: ICON.home,  key: "bar.home",  he: "בית" },
-      { href: "portfolio.html", icon: ICON.work,  key: "bar.work",  he: "עבודות" },
-      { href: "pricing.html",   icon: ICON.price, key: "bar.price", he: "מחירים" },
-      { href: "faq.html",       icon: ICON.faq,   key: "bar.faq",   he: "שאלות" },
-      // Guides were reachable from the top nav but not from here, so on a
-      // phone — where the top nav collapses — they were effectively hidden.
-      { href: "articles.html",  icon: ICON.art,   key: "nav.art",   he: "מדריכים" },
-    ];
-    bar.innerHTML = `
-      ${items.map(it => `
-      <a class="mbar-i${it.href === active ? " current" : ""}" href="${it.href}"${it.href === active ? ' aria-current="page"' : ""}>
-        ${it.icon}<span data-i18n="${it.key}">${it.he}</span>
-      </a>`).join("")}
-      <a class="mbar-i mbar-wa" href="https://wa.me/${PHONE}" target="_blank" rel="noopener">
-        ${ICON.wa}<span data-i18n="bar.wa">וואטסאפ</span>
-      </a>`;
+  /* The five-icon bar that used to live along the bottom of every phone
+     screen is gone. It was a second navigation competing with the top
+     one, it sat on top of the content permanently, and it put four
+     browsing links at thumb height next to the one thing that actually
+     matters. The menu is the burger now — same menu, same place, on
+     every screen size — and the bottom of a phone screen belongs to the
+     single call to action instead. */
+
+  /* The floating pill was a second WhatsApp button. It is now the way in
+     to the answers instead — a visitor who is not ready to message has
+     something to do other than leave, and the questions Natan gets asked
+     twenty times a week get answered without him typing.
+
+     It opens a panel; the panel's own footer is the WhatsApp button. So
+     the page still asks for exactly one thing, it just stops asking for
+     it twice at once.
+
+     The panel itself lives in qa.js and is fetched on first press —
+     nobody pays for it on a page load they never interact with. */
+  if (!document.getElementById("qa-launch")) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "float-cta";
+    btn.id = "qa-launch";
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-haspopup", "dialog");
+    btn.innerHTML = `
+      <span class="float-cta-av">${ICON.ask}</span>
+      <span class="float-cta-txt">
+        <b data-i18n="qa.launch">יש לך שאלה?</b>
+        <small data-i18n="qa.launchs">תשובה מיידית, בלי לחכות לי</small>
+      </span>`;
+    document.body.appendChild(btn);
+
+    let opening = false;
+    btn.addEventListener("click", async () => {
+      if (opening) return;
+      opening = true;
+      btn.classList.add("is-loading");
+      try {
+        const { toggleQA } = await import("./qa.js?v=5");
+        await toggleQA();
+      } finally {
+        btn.classList.remove("is-loading");
+        opening = false;
+      }
+    });
   }
 
-  /* Floating "בוא נדבר" pill — built here so it rides EVERY page, not
-     just the homepage where it used to be hardcoded. Skipped on the
-     contact page (you're already there) and never duplicated if a page
-     still ships its own. Hidden under 700px, where the mobile-bar takes
-     over — that rule lives in main.css. */
-  if (active !== "contact.html" && !document.getElementById("float-cta")) {
-    const cta = document.createElement("a");
-    cta.href = "contact.html";
-    cta.className = "float-cta";
-    cta.id = "float-cta";
-    cta.setAttribute("aria-label", "בוא נדבר");
-    cta.innerHTML = `
-      <span class="float-cta-av"><img src="assets-opt/natan-avatar.webp" alt="" width="46" height="46" loading="lazy" /></span>
-      <span class="float-cta-txt">
-        <b data-i18n="float.t">בוא נדבר</b>
-        <small data-i18n="float.s">נתן · תגובה תוך 24 שעות</small>
-      </span>
-      <span class="float-cta-arrow" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      </span>`;
-    document.body.appendChild(cta);
-  }
+  // Every button on the page, including the one just appended.
+  wireWhatsApp();
 
   // Anonymous visitor analytics — loaded at idle so it never competes
   // with first paint on a paid-ad mobile visit. Public pages only:
