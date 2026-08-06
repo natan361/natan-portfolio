@@ -3,7 +3,7 @@ import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 import { applyLang, currentLang, t } from "./i18n.js";
 // Cards rendered from the database need their WhatsApp links wired after
 // the fact — mountChrome() has already run by the time they exist.
-import { wireWhatsApp } from "./_shell.js?v=5";
+import { wireWhatsApp } from "./_shell.js?v=6";
 // Overlays the hardcoded copy with whatever is in /admin. Imported here
 // rather than per page so every page picks up the contact details.
 import "./cms.js";

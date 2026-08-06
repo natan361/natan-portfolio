@@ -61,6 +61,15 @@ export function wireWhatsApp(root = document) {
     a.href = waHref(a.dataset.wa);
     a.target = "_blank";
     a.rel = "noopener";
+    // Opening WhatsApp is the loudest possible "I am in touch now".
+    // The consultation popup must not interrupt that person afterwards.
+    // Written here rather than by importing consult.js: this fires on
+    // the single most valuable click on the site, and it is not worth a
+    // network request to set one string.
+    if (!a.dataset.waWired) {
+      a.dataset.waWired = "1";
+      a.addEventListener("click", quietConsult);
+    }
     // The nav pill is 66px tall and carries the mark inline instead —
     // a badge rising 17px above it would hang off the top of the page.
     if (a.classList.contains("btn-wa") && !a.classList.contains("nav-cta")
@@ -68,6 +77,73 @@ export function wireWhatsApp(root = document) {
       a.insertAdjacentHTML("afterbegin", WA_BADGE);
     }
   }
+}
+
+/* ── The consultation popup's trigger ─────────────────────
+   The panel itself lives in consult.js and is fetched only when one of
+   these two signals fires, so a visitor who leaves in ten seconds never
+   downloads it. On paid mobile traffic that is ad budget, not bytes.
+
+   Two signals, whichever lands first:
+     · fifteen seconds on the page
+     · half the page scrolled
+
+   Neither is arbitrary. Both are the cheapest available proxies for
+   "this person is reading rather than bouncing", and asking someone who
+   has read nothing whether they want a consultation is how a modal
+   becomes a back-button press.
+
+   Not armed at all where a popup would be indefensible: the legal and
+   accessibility pages, where someone may be mid-way through exercising
+   a right, and any page reached with ?noconsult (so Natan can screenshot
+   his own site in peace).
+   ────────────────────────────────────────────────────── */
+const CONSULT_KEY = "na_consult";
+const CONSULT_WEEK = 7 * 24 * 60 * 60 * 1000;
+
+/** Mark the popup as unwanted for a week. Exported behaviour lives in
+ *  consult.js; this is the same write, done without loading it. */
+function quietConsult() {
+  try {
+    if (localStorage.getItem(CONSULT_KEY) !== "done") {
+      localStorage.setItem(CONSULT_KEY, String(Date.now()));
+    }
+  } catch { /* private mode: nothing to remember with */ }
+}
+
+const NO_CONSULT = ["privacy.html", "terms.html", "accessibility.html"];
+
+function armConsult() {
+  const page = location.pathname.split("/").pop() || "index.html";
+  if (NO_CONSULT.includes(page)) return;
+  if (new URLSearchParams(location.search).has("noconsult")) return;
+
+  // Cheap local check before anything else — a returning visitor who
+  // already left details must never pay to find that out.
+  let seen;
+  try { seen = localStorage.getItem(CONSULT_KEY); } catch { seen = null; }
+  if (seen === "done") return;
+  if (seen && Date.now() - Number(seen) < CONSULT_WEEK) return;
+
+  let fired = false;
+  const fire = () => {
+    if (fired) return;
+    fired = true;
+    clearTimeout(timer);
+    removeEventListener("scroll", onScroll);
+    import("./consult.js?v=6").then(m => m.open()).catch(() => {});
+  };
+
+  const timer = setTimeout(fire, 15000);
+
+  const onScroll = () => {
+    const h = document.documentElement;
+    const scrollable = h.scrollHeight - innerHeight;
+    // A page shorter than the viewport can never reach 50%; it has the
+    // timer, and that is the correct answer for it.
+    if (scrollable > 0 && (h.scrollTop || document.body.scrollTop) / scrollable >= 0.5) fire();
+  };
+  addEventListener("scroll", onScroll, { passive: true });
 }
 
 const LINKS = [
@@ -171,7 +247,7 @@ export function mountChrome({ active = "" } = {}) {
       opening = true;
       btn.classList.add("is-loading");
       try {
-        const { toggleQA } = await import("./qa.js?v=5");
+        const { toggleQA } = await import("./qa.js?v=6");
         await toggleQA();
       } finally {
         btn.classList.remove("is-loading");
@@ -182,6 +258,8 @@ export function mountChrome({ active = "" } = {}) {
 
   // Every button on the page, including the one just appended.
   wireWhatsApp();
+
+  armConsult();
 
   // Anonymous visitor analytics — loaded at idle so it never competes
   // with first paint on a paid-ad mobile visit. Public pages only:

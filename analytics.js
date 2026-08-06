@@ -141,6 +141,12 @@ if (!skip()) {
   // page they took the only one — hence a label per position rather
   // than per destination.
   const CLICKS = [
+    // The consultation popup, before the generic [data-wa] rule below —
+    // its WhatsApp link is a [data-wa] too, and it means something
+    // different from the same click made on the page itself.
+    [".cs-submit",                                "consult-submit"],
+    [".cs-wa",                                    "consult-whatsapp"],
+    [".cs-x, .cs-backdrop",                       "consult-close"],
     ["#qa-launch",                                "qa-open"],
     [".qa-foot [data-wa]",                        "qa-whatsapp"],
     [".nav-cta",                                  "nav-cta"],
@@ -158,6 +164,13 @@ if (!skip()) {
       }
     } catch { /* ignore */ }
   }, { capture: true, passive: true });
+
+  // How often the popup was actually shown. Without it the submit count
+  // has no denominator, and "is this thing worth interrupting people
+  // for" is exactly the question it exists to answer. This module is
+  // loaded at idle and the popup cannot fire before 15s, so it is
+  // always listening by then.
+  addEventListener("natan:consult-shown", () => send({ type: "click", label: "consult-shown" }));
 
   // ── 3 · dwell time, sent once when the tab first goes away ──
   const start = performance.now();

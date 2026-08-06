@@ -459,8 +459,8 @@ const TYPES = {
   leads: {
     label: "פניות", single: "פנייה", table: "leads",
     readonly: true,
-    empty: "אין פניות. טופס יצירת הקשר הוסר מהאתר — פניות חדשות מגיעות אליך ישירות בוואטסאפ.",
-    sub: "פניות שהגיעו מטופס יצירת הקשר, כשהוא היה באתר. הטופס הוסר — היום פונים אליך בוואטסאפ, וההודעות מגיעות לטלפון. הרשומות כאן נשמרות.",
+    empty: "אין פניות עדיין. מי שישאיר שם וטלפון בחלון \"צריכים ייעוץ?\" יופיע כאן, ותקבל על זה מייל.",
+    sub: "מי שהשאיר שם וטלפון בחלון \"צריכים ייעוץ?\" שקופץ באתר. כל פנייה נשלחת אליך גם במייל. מי שמעדיף לדבר מיד פונה בוואטסאפ, ואותן הודעות מגיעות לטלפון ולא לכאן.",
     order: q => q.order("created_at", { ascending: false }),
     title: r => r.name,
     sub2:  r => [r.phone, r.subject].filter(Boolean).join(" · "),
@@ -1168,7 +1168,7 @@ function leadCard(r) {
    everything that reaches innerHTML. */
 let anRange = 7;
 const AN_SRC = { facebook:"פייסבוק", instagram:"אינסטגרם", google:"גוגל", youtube:"יוטיוב", whatsapp:"וואטסאפ", direct:"כניסה ישירה", other:"אחר" };
-const AN_CLICK = { whatsapp:"וואטסאפ", "form-submit":"שליחת טופס", email:"אימייל", phone:"טלפון", "qa-open":"פתח שאלות נפוצות", "qa-whatsapp":"וואטסאפ (מתוך השאלות)", "float-cta":"וואטסאפ (כפתור מרחף)", "nav-cta":"וואטסאפ (תפריט עליון)", "hero-cta":"וואטסאפ (ראש העמוד)", "pricing-cta":"וואטסאפ (כרטיס מחיר)", "cta-portfolio":"לעבודות", "cta-contact":"בוא נדבר", "cta-contact-page":"בוא נדבר" };
+const AN_CLICK = { whatsapp:"וואטסאפ", "form-submit":"שליחת טופס", email:"אימייל", phone:"טלפון", "consult-shown":"חלון הייעוץ נפתח", "consult-submit":"השאיר פרטים בחלון", "consult-whatsapp":"וואטסאפ (מתוך חלון הייעוץ)", "consult-close":"סגר את חלון הייעוץ", "qa-open":"פתח שאלות נפוצות", "qa-whatsapp":"וואטסאפ (מתוך השאלות)", "float-cta":"וואטסאפ (כפתור מרחף)", "nav-cta":"וואטסאפ (תפריט עליון)", "hero-cta":"וואטסאפ (ראש העמוד)", "pricing-cta":"וואטסאפ (כרטיס מחיר)", "cta-portfolio":"לעבודות", "cta-contact":"בוא נדבר", "cta-contact-page":"בוא נדבר" };
 const AN_PAGE = { "/":"דף הבית", "/contact.html":"יצירת קשר", "/pricing.html":"מחירים", "/portfolio.html":"עבודות", "/process.html":"איך זה עובד", "/faq.html":"שאלות", "/articles.html":"מדריכים" };
 
 const anEsc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));

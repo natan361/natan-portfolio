@@ -12,7 +12,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
 // This page's markup is rendered after mountChrome() has already run, so
 // its own WhatsApp button has to be pointed at the number here.
-import { wireWhatsApp } from "./_shell.js?v=5";
+import { wireWhatsApp } from "./_shell.js?v=6";
 
 /* ── Demo copy ────────────────────────────────────────────
    PLACEHOLDER. Deliberately kept in this file and NOT written

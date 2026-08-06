@@ -1240,6 +1240,154 @@ select.input:invalid { color: var(--faint); }
 }
 @media (prefers-reduced-motion: reduce) { .float-cta { animation: none; } }
 
+/* ═══════════ CONSULTATION POPUP ═══════════
+   The answers panel (.qa-*) sits in a corner because it is optional —
+   the visitor asked for it. This one interrupts, so it takes the
+   middle of the screen and dims the page behind it. A modal that
+   interrupts politely from a corner just gets ignored twice.
+
+   It is the site's second door, and it is built to look like the
+   smaller one: no lime fill on the heading, no badge, a plain black
+   submit. The WhatsApp route inside it stays a text link, because the
+   whole site still asks for exactly one thing. */
+.cs-backdrop {
+  position: fixed; inset: 0; z-index: 98;
+  background: rgba(11,11,11,.55);
+  backdrop-filter: blur(3px);
+  animation: qaFade .22s ease both;
+}
+.cs-panel {
+  position: fixed; z-index: 99;
+  inset-block-start: 50%; inset-inline-start: 50%;
+  transform: translate(50%, -50%);
+  width: min(410px, calc(100vw - 36px));
+  max-height: calc(100dvh - 48px);
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border-2); border-radius: 20px;
+  box-shadow: 0 34px 80px -24px rgba(0,0,0,.5);
+  overflow: hidden;
+  animation: csIn .26s cubic-bezier(.22,.8,.3,1) both;
+}
+/* RTL puts the origin on the right, so the centring offset flips with it. */
+[dir="ltr"] .cs-panel { transform: translate(-50%, -50%); }
+/* Same trap as the answers panel: an explicit display: outranks the
+   UA's [hidden]{display:none} and the thing never closes. */
+.cs-panel[hidden], .cs-backdrop[hidden] { display: none; }
+:root[data-theme="dark"] .cs-panel { box-shadow: 0 34px 80px -20px rgba(0,0,0,.85); }
+@keyframes csIn {
+  from { opacity: 0; transform: translate(50%, calc(-50% + 16px)) scale(.96); }
+}
+[dir="ltr"] .cs-panel { animation-name: csInLtr; }
+@keyframes csInLtr {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 16px)) scale(.96); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-panel, .cs-backdrop { animation: none; }
+}
+
+.cs-x {
+  position: absolute; inset-block-start: 12px; inset-inline-end: 12px;
+  z-index: 1;
+  width: 34px; height: 34px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid var(--border-2);
+  color: var(--dim); border-radius: 999px;
+}
+.cs-x:hover { color: var(--white); border-color: var(--white); }
+
+.cs-body { overflow-y: auto; padding: 30px 26px 24px; }
+.cs-body h2 { font-size: 25px; line-height: 1.2; }
+.cs-sub { color: var(--dim); font-size: 15px; margin-top: 8px; }
+
+.cs-form { margin-top: 20px; display: flex; flex-direction: column; gap: 13px; }
+.cs-field { display: block; }
+.cs-label {
+  display: block; font-size: 13px; font-weight: 700;
+  color: var(--dim); margin-bottom: 6px;
+}
+.cs-field input {
+  width: 100%; font-family: inherit; font-size: 16px;  /* 16px: any less and iOS zooms the page on focus */
+  color: var(--white); background: var(--black);
+  border: 1px solid var(--border-2); border-radius: var(--r);
+  padding: 12px 14px; min-height: 50px;
+}
+.cs-field input:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+  border-color: transparent;
+}
+/* The phone field is dir="ltr" so digits type left-to-right, but the
+   field itself still belongs to a right-to-left form. */
+[dir="rtl"] .cs-field input[type="tel"] { text-align: right; }
+
+.cs-submit {
+  width: 100%; justify-content: center; margin-top: 3px;
+  background: var(--white); color: var(--black);
+  border: 1px solid var(--white);
+}
+.cs-submit:hover { background: transparent; color: var(--white); }
+.cs-submit[disabled] { opacity: .6; pointer-events: none; }
+
+.cs-msg:empty { display: none; }
+.cs-note {
+  font-size: 14px; line-height: 1.5; border-radius: var(--r);
+  padding: 10px 12px; border: 1px solid;
+}
+.cs-note.is-err { color: var(--danger); border-color: var(--danger); background: color-mix(in srgb, var(--danger) 8%, transparent); }
+.cs-note.is-ok  { color: var(--ok);     border-color: var(--ok);     background: color-mix(in srgb, var(--ok) 8%, transparent); }
+
+/* Amendment 13 wants the purpose stated where the data is asked for —
+   not only buried in a policy page. So it is stated here, and the page
+   is linked from the same sentence. */
+.cs-legal { color: var(--faint); font-size: 12.5px; line-height: 1.55; }
+/* nowrap: the link is a page name, and "מדיניות / הפרטיות" broken over
+   two lines reads as two different things. */
+.cs-legal a { color: var(--dim); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.cs-legal a:hover { color: var(--white); }
+
+.cs-or {
+  display: flex; align-items: center; gap: 12px;
+  margin: 18px 0 14px; color: var(--faint); font-size: 12.5px;
+}
+.cs-or::before, .cs-or::after {
+  content: ""; flex: 1; height: 1px; background: var(--border);
+}
+.cs-wa {
+  display: block; text-align: center; font-size: 14.5px; font-weight: 600;
+  color: var(--dim); text-decoration: underline; text-underline-offset: 3px;
+}
+.cs-wa:hover { color: var(--white); }
+
+.cs-done { text-align: center; padding: 22px 0 12px; }
+.cs-done h2 { font-size: 22px; margin-top: 16px; }
+.cs-done p { color: var(--dim); font-size: 15px; margin-top: 8px; }
+.cs-tick {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--accent-fill); color: var(--accent-ink);
+}
+
+/* Phone: a bottom sheet, the same shape the answers panel takes, and
+   for the same reason — a floating card on a 390px screen has already
+   lost, and the fields belong within reach of a thumb. */
+@media (max-width: 620px) {
+  .cs-panel {
+    inset-block-start: auto; inset-block-end: 0;
+    inset-inline: 0;
+    transform: none;
+    width: 100%; max-width: none;
+    max-height: 92dvh;
+    border-radius: 22px 22px 0 0;
+    border-inline: none; border-block-end: none;
+    animation-name: csSheet;
+  }
+  [dir="ltr"] .cs-panel { transform: none; animation-name: csSheet; }
+  @keyframes csSheet { from { opacity: 0; transform: translateY(100%); } }
+  .cs-body { padding: 28px 20px calc(22px + env(safe-area-inset-bottom)); }
+  /* The launcher would sit on top of the sheet that just covered it. */
+  body.cs-open .float-cta { opacity: 0; pointer-events: none; }
+}
+
 /* ═══════════ REVEAL ═══════════ */
 .reveal { opacity: 0; transform: translateY(18px); }
 .reveal.in {

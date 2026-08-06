@@ -24,7 +24,7 @@
    ────────────────────────────────────────────────────── */
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 import { SUPABASE_URL, SUPABASE_KEY } from "./supabase-config.js";
-import { waHref, wireWhatsApp } from "./_shell.js?v=5";
+import { waHref, wireWhatsApp } from "./_shell.js?v=6";
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
